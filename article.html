@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NewsWave - Article</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./quelora/css/quelora.css">
+  <style>
+    :root {
+      --google-blue: #4285F4;
+      --background-color: #f8f9fa;
+      --surface-color: #ffffff;
+      --on-surface-primary: #202124;
+      --on-surface-secondary: #5f6368;
+      --border-color: #dadce0;
+      --card-border-radius: 8px;
+      --header-height: 60px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      color: var(--on-surface-primary);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--header-height);
+      padding: 0 24px;
+      background-color: var(--surface-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--google-blue);
+    }
+
+    .google-apps-container {
+      position: relative;
+    }
+
+    .google-apps-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .google-apps-button:hover {
+      background-color: rgba(60,64,67,.08);
+    }
+
+    .google-apps-icon {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .google-apps-icon span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      background-color: var(--on-surface-secondary);
+      border-radius: 50%;
+    }
+
+    .google-apps-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background-color: var(--surface-color);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
+      width: 320px;
+      padding: 8px;
+      display: none;
+      z-index: 1001;
+    }
+
+    .google-apps-dropdown.show {
+      display: block;
+    }
+
+    .google-apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .google-app-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      background-color: #fff;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .google-app-item:hover {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transform: translateY(-3px);
+    }
+
+    .google-app-item .google-app-icon {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+
+    .google-app-item span {
+      margin-top: 8px;
+      color: #6b7280;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .google-app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--google-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      color: white;
+      font-weight: 500;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 24px;
+      margin-top: var(--header-height);
+      margin-bottom: 60px;
+    }
+
+    .article-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 24px;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-border-radius);
+    }
+
+    .article-container img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      border-radius: var(--card-border-radius);
+      margin-bottom: 16px;
+    }
+
+    .article-container h1 {
+      font-size: 28px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .article-meta {
+      font-size: 14px;
+      color: var(--on-surface-secondary);
+      margin-bottom: 24px;
+    }
+
+    .article-content {
+      font-size: 16px;
+      color: var(--on-surface-primary);
+      white-space: pre-wrap;
+      line-height: 1.5;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-top: 24px;
+      padding: 8px 16px;
+      background: var(--google-blue);
+      color: #fff;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .back-button:hover {
+      background: #1557b0;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--on-surface-secondary);
+      padding: 16px;
+      background-color: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    footer a {
+      color: var(--google-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 16px;
+      }
+      
+      .article-container {
+        padding: 16px;
+      }
+      
+      .google-apps-dropdown {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-header {
+        padding: 0 16px;
+      }
+      
+      .article-container h1 {
+        font-size: 22px;
+      }
+      
+      .article-container img {
+        height: 200px;
+      }
+      
+      .google-apps-dropdown {
+        width: 260px;
+        right: -10px;
+      }
+      
+      .header-logo {
+        font-size: 18px;
+      }
+    }
+
+     
+        .floating-bar {
+            position: fixed;
+            bottom: 66px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            padding: 8px 6px;
+            background: rgba(250, 250, 250, 0.10);
+            backdrop-filter: blur(1px) saturate(160%);
+            -webkit-backdrop-filter: blur(16px) saturate(160%);
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+            border: 0.5px solid rgba(255, 255, 255, 0.25);
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .action-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.22s ease;
+            padding: 6px 8px;
+            border-radius: 8px;
+            width: 36px;
+        }
+        
+        .action-item:hover {
+            background: rgba(255, 255, 255, 0.32);
+        }
+        
+        .icon {
+            width: 18px;
+            height: 18px;
+            fill: rgba(30, 30, 30, 0.92);
+        }
+        
+        .count {
+            font-size: 9px;
+            color: rgba(50, 50, 50, 0.9);
+            margin-top: 2px;
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-logo">
+      Quelora - Demo Content on Demand
+    </div>
+    
+    <div class="google-apps-container">
+      <button class="google-apps-button" aria-label="Aplicaciones de Google">
+        <div class="google-apps-icon">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+      <div class="google-apps-dropdown">
+        <div class="google-apps-grid">
+          <a href="index.html" class="google-app-item">
+            <div class="google-app-icon">N</div>
+            <span>Home</span>
+          </a>
+          <a href="news.html" class="google-app-item">
+            <div class="google-app-icon">N</div>
+            <span>News Demo</span>
+          </a>
+          <a href="gallery.html" class="google-app-item">
+            <div class="google-app-icon">G</div>
+            <span>Gallery Demo</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="article-container" id="articleContainer">
+      <p>Loading article...</p>
+    </div>
+       <div class="floating-bar">
+        <div class="action-item">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span class="count">243</span>
+        </div>
+        
+        <div class="action-item">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+            </svg>
+            <span class="count">56</span>
+        </div>
+        
+        <div class="action-item">
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+            </svg>
+            <span class="count">18</span>
+        </div>
+    </div>
+  </main>
+
+  <footer>
+    Images by <a href="https://picsum.photos" target="_blank" rel="noopener">Picsum.photos</a> | Quelora - Demo Content on Demand
+  </footer>
+
+  <script type="module">
+    import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
+
+    // Google apps dropdown functionality
+    const googleAppsButton = document.querySelector('.google-apps-button');
+    const googleAppsDropdown = document.querySelector('.google-apps-dropdown');
+
+    googleAppsButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      googleAppsDropdown.classList.toggle('show');
+    });
+
+    window.addEventListener('click', (event) => {
+      if (!event.target.closest('.google-apps-container')) {
+        googleAppsDropdown.classList.remove('show');
+      }
+    });
+
+    // Generate a single article with random data
+    function generateArticle() {
+         const urlParams = new URLSearchParams(window.location.search);
+      const articleId = urlParams.get('id'); // Get ID from URL but don't use it for image
+      return {
+        title: faker.company.catchPhrase(),
+        author: faker.person.fullName(),
+        date: faker.date.recent({ days: 10 }).toLocaleDateString('en-US'),
+        // Use a random image ID between 1-1000 (not tied to article ID)
+        image: `https://picsum.photos/id/${articleId}/800/400`,
+        content: faker.lorem.paragraphs(5, '\n\n')
+      };
+    }
+
+    // Display the article
+    (async () => {
+      const article = generateArticle();
+      const articleContainer = document.getElementById('articleContainer');
+      
+      articleContainer.innerHTML = `
+        <img src="${article.image}" alt="${article.title}">
+        <h1>${article.title}</h1>
+        <div class="article-meta">By ${article.author} | ${article.date}</div>
+        <div class="article-content">${article.content}</div>
+        <a href="index.html" class="back-button">Back to News</a>
+      `;
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galería - Inspirado en Google</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./quelora/css/quelora.css">
+  <style>
+    :root {
+      --google-blue: #4285F4;
+      --background-color: #f8f9fa;
+      --surface-color: #ffffff;
+      --on-surface-primary: #202124;
+      --on-surface-secondary: #5f6368;
+      --border-color: #dadce0;
+      --card-border-radius: 8px;
+      --header-height: 60px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      color: var(--on-surface-primary);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--header-height);
+      padding: 0 24px;
+      background-color: var(--surface-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-logo svg {
+      color: var(--google-blue);
+    }
+    
+    .header-logo span {
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--on-surface-secondary);
+    }
+
+    /* Nuevos estilos para el botón de aplicaciones */
+    .google-apps-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .google-apps-button:hover {
+      background-color: rgba(60,64,67,.08);
+    }
+
+    .google-apps-icon {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .google-apps-icon span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      background-color: var(--on-surface-secondary);
+      border-radius: 50%;
+    }
+
+    .google-apps-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background-color: var(--surface-color);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
+      width: 320px;
+      padding: 8px;
+      display: none;
+      z-index: 1001;
+    }
+
+    .google-apps-dropdown.show {
+      display: block;
+    }
+
+    .google-apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    
+    .google-app-item {
+      display: flex;
+      flex-direction: column; /* Stack icon and text vertically */
+      align-items: center;
+      padding: 16px; /* Increased padding */
+      border: 1px solid #e2e8f0; /* Soft border */
+      border-radius: 12px; /* Smoother rounded corners */
+      background-color: #fff; /* Clean white background */
+      transition: all 0.3s ease; /* Smooth hover transition */
+      cursor: pointer;
+      text-decoration: none; /* Remove text underline */
+    }
+
+    .google-app-item:hover {
+      background-color: #f8fafc; /* Subtle hover background */
+      border-color: #cbd5e1; /* Slightly darker border */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+      transform: translateY(-3px); /* Gentle lift */
+    }
+
+    .google-app-item .google-app-icon {
+      width: 48px; /* Fixed size to prevent deformation */
+      height: 48px;
+      object-fit: contain; /* Maintain icon proportions */
+    }
+
+    .google-app-item span {
+      margin-top: 8px; /* Space between icon and text */
+      color: #6b7280; /* Soft gray text color */
+      font-size: 14px;
+      text-decoration: none; /* Ensure no underline */
+    }
+    
+    .google-app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--google-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      color: white;
+      font-weight: 500;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 24px;
+      margin-top: var(--header-height);
+      margin-bottom: 60px;
+    }
+
+    #gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .card {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--surface-color);
+      border: 1px solid transparent;
+      border-radius: var(--card-border-radius);
+      overflow: visible;
+      transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px 3px rgba(60,64,67,.15);
+      border-color: var(--border-color);
+      z-index: 2;
+    }
+    
+    .card-image-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+    }
+
+    .card img {
+      display: block;
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      background-color: #e8eaed;
+    }
+    
+    .watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      padding: 3px 8px;
+      background-color: rgba(0, 0, 0, 0.55);
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-info {
+      display: flex;
+      align-items: center;
+      padding: 12px 10px 12px 16px;
+      min-height: 60px;
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+    }
+
+    .card-info .label-text {
+      flex-grow: 1;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--on-surface-primary);
+      margin-right: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .options-wrapper {
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .options-wrapper .options-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      border-radius: 50%;
+      color: var(--on-surface-secondary);
+      cursor: pointer;
+    }
+
+    .options-wrapper .options-button:hover {
+      background-color: rgba(60,64,67,.08);
+    }
+    
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background-color: var(--surface-color);
+      border-radius: 4px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      z-index: 1010;
+      list-style: none;
+      padding: 8px 0;
+      min-width: 160px;
+      opacity: 0;
+      transform: scale(0.95);
+      transform-origin: top right;
+      transition: opacity 0.1s ease-out, transform 0.1s ease-out;
+      pointer-events: none;
+    }
+
+    .dropdown-menu.show {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    .dropdown-menu a {
+      display: block;
+      padding: 8px 16px;
+      text-decoration: none;
+      color: var(--on-surface-primary);
+      font-size: 14px;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .dropdown-menu a:hover {
+      background-color: rgba(60,64,67,.08);
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--on-surface-secondary);
+      padding: 16px;
+      background-color: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+    
+    footer a {
+      color: var(--google-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .community-interaction-bar{
+      padding-right: 0px!important;
+      padding-left: 0px!important;
+    }
+    .interaction-actions svg{
+      height: 22px!important;
+      width: 22px!important;
+    }
+
+    @media (max-width: 768px) {
+      main { padding: 16px; }
+      #gallery { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+      .google-apps-dropdown {
+        width: 280px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .app-header { padding: 0 16px; }
+      #gallery { grid-template-columns: 1fr; }
+      .google-apps-dropdown {
+        width: 260px;
+        right: -10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-logo">
+        <span>Quelora - Demo Content on Demand</span>
+    </div>
+    
+    <!-- Nuevo botón de aplicaciones de Google -->
+    <div class="google-apps-container">
+      <button class="google-apps-button" aria-label="Aplicaciones de Google">
+        <div class="google-apps-icon">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+      <div class="google-apps-dropdown">
+        <div class="google-apps-grid">
+          <a href="index.html" class="google-app-item">
+            <div class="google-app-icon">C</div>
+            <span>Demo CMS</span>
+          </a>
+          <a href="gallery.html" class="google-app-item">
+            <div class="google-app-icon">G</div>
+            <span>Demo Gallery</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main>
+    <div id="gallery"></div>
+  </main>
+  
+  <footer>
+    Images by <a href="https://picsum.photos" target="_blank" rel="noopener">Picsum.photos</a> | Quelora - Demo Content on Demand
+  </footer>
+  <script>
+    const gallery = document.getElementById('gallery');
+    let imageIndex = 20;
+
+    function createImageCard(id) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.id = `card-${id}`;
+
+      const imageWrapper = document.createElement('div');
+      imageWrapper.className = 'card-image-wrapper';
+      
+      const img = document.createElement('img');
+      img.src = `https://picsum.photos/id/${id}/500/400`;
+      img.alt = `Image ${id}`;
+      img.loading = 'lazy';
+      
+      const watermark = document.createElement('div');
+      watermark.className = 'watermark';
+      watermark.textContent = 'Picsum.photos';
+      
+      imageWrapper.appendChild(img);
+      imageWrapper.appendChild(watermark);
+
+      const cardInfo = document.createElement('div');
+      cardInfo.className = 'card-info';
+
+      const labelText = document.createElement('p');
+      labelText.className = 'label-text';
+      labelText.textContent = `Imagen #${id}`;
+
+      const interactionBox = document.createElement('div');
+      interactionBox.className = 'interaction';
+      
+      const optionsWrapper = document.createElement('div');
+      optionsWrapper.className = 'options-wrapper';
+
+      const optionsButton = document.createElement('button');
+      optionsButton.className = 'options-button';
+      optionsButton.setAttribute('aria-label', 'Más opciones');
+      optionsButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M0 0h24v24H0V0z" fill="none"/><path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>`;
+
+      const dropdownMenu = document.createElement('ul');
+      dropdownMenu.className = 'dropdown-menu';
+      
+      const viewSourceLink = document.createElement('a');
+      viewSourceLink.href = img.src;
+      viewSourceLink.target = '_blank';
+      viewSourceLink.rel = 'noopener noreferrer';
+      viewSourceLink.textContent = 'Ver en origen';
+
+      const listItem = document.createElement('li');
+      listItem.appendChild(viewSourceLink);
+      dropdownMenu.appendChild(listItem);
+
+      optionsButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+          if (menu !== dropdownMenu) {
+            menu.classList.remove('show');
+          }
+        });
+        dropdownMenu.classList.toggle('show');
+      });
+
+      optionsWrapper.appendChild(optionsButton);
+      optionsWrapper.appendChild(dropdownMenu);
+      cardInfo.appendChild(labelText);
+      cardInfo.appendChild(interactionBox);
+      cardInfo.appendChild(optionsWrapper);
+
+      card.appendChild(imageWrapper);
+      card.appendChild(cardInfo);
+
+      img.onerror = () => {
+        card.remove();
+      };
+
+      return card;
+    }
+
+    // Manejar el clic en el botón de aplicaciones de Google
+    const googleAppsButton = document.querySelector('.google-apps-button');
+    const googleAppsDropdown = document.querySelector('.google-apps-dropdown');
+
+    googleAppsButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      googleAppsDropdown.classList.toggle('show');
+    });
+
+    // Cerrar el dropdown cuando se hace clic fuera de él
+    window.addEventListener('click', (event) => {
+      if (!event.target.closest('.google-apps-button') && !event.target.closest('.google-apps-dropdown')) {
+        googleAppsDropdown.classList.remove('show');
+      }
+      
+      if (!event.target.closest('.options-button')) {
+        document.querySelectorAll('.dropdown-menu.show').forEach(menu => {
+          menu.classList.remove('show');
+        });
+      }
+    });
+
+    function loadImages(count = 18) {
+      for (let i = 0; i < count; i++) {
+        const card = createImageCard(imageIndex);
+        gallery.appendChild(card);
+        imageIndex++;
+      }
+    }
+
+    function debounce(func, wait) {
+      let timeout;
+      return function executedFunction(...args) {
+        const later = () => {
+          clearTimeout(timeout);
+          func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+      };
+    }
+
+    const debouncedLoadImages = debounce(() => {
+      const gallery = document.getElementById('gallery');
+      const lastCard = gallery.lastElementChild;
+      if (lastCard) {
+        const rect = lastCard.getBoundingClientRect();
+        const isVisible = rect.top <= window.innerHeight && rect.bottom >= 0;
+        if (isVisible) {
+          loadImages(18);
+        }
+      }
+    }, 300);
+    
+    window.addEventListener('scroll', debouncedLoadImages);
+    loadImages(24);
+  </script>
+  <script type="module" src="./js/quelora.gallery.conf.js"></script> 
+  <script type="module" src="./quelora/js/quelora.js"></script> 
+</body>
+</html>

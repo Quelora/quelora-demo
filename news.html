@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NewsWave - Discover News</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./quelora/css/quelora.css">
+  <style>
+    :root {
+      --google-blue: #4285F4;
+      --background-color: #f8f9fa;
+      --surface-color: #ffffff;
+      --on-surface-primary: #202124;
+      --on-surface-secondary: #5f6368;
+      --border-color: #dadce0;
+      --card-border-radius: 8px;
+      --header-height: 60px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--background-color);
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      color: var(--on-surface-primary);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .app-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: var(--header-height);
+      padding: 0 24px;
+      background-color: var(--surface-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .header-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 22px;
+      font-weight: 500;
+      color: var(--google-blue);
+    }
+
+    .google-apps-container {
+      position: relative;
+    }
+
+    .google-apps-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .google-apps-button:hover {
+      background-color: rgba(60,64,67,.08);
+    }
+
+    .google-apps-icon {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .google-apps-icon span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      background-color: var(--on-surface-secondary);
+      border-radius: 50%;
+    }
+
+    .google-apps-dropdown {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background-color: var(--surface-color);
+      border-radius: 8px;
+      box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
+      width: 320px;
+      padding: 8px;
+      display: none;
+      z-index: 1001;
+    }
+
+    .google-apps-dropdown.show {
+      display: block;
+    }
+
+    .google-apps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .google-app-item {
+      display: flex;
+      flex-direction: column; /* Stack icon and text vertically */
+      align-items: center;
+      padding: 16px; /* Increased padding */
+      border: 1px solid #e2e8f0; /* Soft border */
+      border-radius: 12px; /* Smoother rounded corners */
+      background-color: #fff; /* Clean white background */
+      transition: all 0.3s ease; /* Smooth hover transition */
+      cursor: pointer;
+      text-decoration: none; /* Remove text underline */
+    }
+
+    .google-app-item:hover {
+      background-color: #f8fafc; /* Subtle hover background */
+      border-color: #cbd5e1; /* Slightly darker border */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+      transform: translateY(-3px); /* Gentle lift */
+    }
+
+    .google-app-item .google-app-icon {
+      width: 48px; /* Fixed size to prevent deformation */
+      height: 48px;
+      object-fit: contain; /* Maintain icon proportions */
+    }
+
+    .google-app-item span {
+      margin-top: 8px; /* Space between icon and text */
+      color: #6b7280; /* Soft gray text color */
+      font-size: 14px;
+      text-decoration: none; /* Ensure no underline */
+    }
+
+    .google-app-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: var(--google-blue);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      color: white;
+      font-weight: 500;
+    }
+
+    main {
+      flex-grow: 1;
+      padding: 24px;
+      margin-top: var(--header-height);
+      margin-bottom: 60px;
+    }
+
+    .news-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      gap: 16px;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    .news-card {
+      display: flex;
+      flex-direction: column;
+      background-color: var(--surface-color);
+      border: 1px solid transparent;
+      border-radius: var(--card-border-radius);
+      overflow: hidden;
+      transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      z-index: 1;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px 3px rgba(60,64,67,.15);
+      border-color: var(--border-color);
+      z-index: 2;
+    }
+
+    .news-image-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+    }
+
+    .news-card img {
+      display: block;
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      background-color: #e8eaed;
+    }
+
+    .watermark {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      padding: 3px 8px;
+      background-color: rgba(0, 0, 0, 0.55);
+      color: #ffffff;
+      font-family: 'Roboto', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 4px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .card-info {
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-top: none;
+      border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+    }
+
+    .card-info .news-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--on-surface-primary);
+      margin-bottom: 8px;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-info .news-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--on-surface-secondary);
+      align-items: center; 
+      gap: 10px; 
+    }
+
+    .loading, .error {
+      text-align: center;
+      padding: 24px;
+      font-size: 14px;
+      grid-column: 1 / -1;
+    }
+
+    .loading {
+      color: var(--on-surface-secondary);
+    }
+
+    .error {
+      color: #d93025;
+    }
+
+    footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 12px;
+      color: var(--on-surface-secondary);
+      padding: 16px;
+      background-color: var(--surface-color);
+      border-top: 1px solid var(--border-color);
+      z-index: 1000;
+    }
+
+    footer a {
+      color: var(--google-blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 16px;
+    }
+
+    .nav-links a {
+      color: var(--on-surface-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--google-blue);
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 16px;
+      }
+      
+      .news-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      }
+      
+      .google-apps-dropdown {
+        width: 280px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-header {
+        padding: 0 16px;
+      }
+      
+      .news-container {
+        grid-template-columns: 1fr;
+      }
+      
+      .google-apps-dropdown {
+        width: 260px;
+        right: -10px;
+      }
+      
+      .header-logo {
+        font-size: 18px;
+      }
+      
+      .nav-links {
+        gap: 12px;
+      }
+      
+      .nav-links a {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-logo">
+      Quelora - Demo Content on Demand
+    </div>
+    
+    <div class="google-apps-container">
+      <button class="google-apps-button" aria-label="Aplicaciones de Google">
+        <div class="google-apps-icon">
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+          <span></span><span></span><span></span>
+        </div>
+      </button>
+      <div class="google-apps-dropdown">
+        <div class="google-apps-grid">
+          <a href="index.html" class="google-app-item">
+            <div class="google-app-icon">N</div>
+            <span>Home</span>
+          </a>
+          <a href="news.html" class="google-app-item">
+            <div class="google-app-icon">N</div>
+            <span>News Demo</span>
+          </a>
+          <a href="gallery.html" class="google-app-item">
+            <div class="google-app-icon">G</div>
+            <span>Gallery Demo</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="news-container" id="newsContainer"></div>
+    <div class="loading" id="loading">Loading more stories...</div>
+    <div class="error" id="error" style="display: none;">Failed to load content.</div>
+  </main>
+
+  <footer>
+    Images by <a href="https://picsum.photos" target="_blank" rel="noopener">Picsum.photos</a> | Quelora - Demo Content on Demand
+  </footer>
+
+  <script type="module">
+    import { faker } from 'https://cdn.skypack.dev/@faker-js/faker';
+
+    const newsContainer = document.getElementById('newsContainer');
+    const loading = document.getElementById('loading');
+    const error = document.getElementById('error');
+    let imageId = 310;
+    let page = 0;
+    let isLoading = false;
+
+    // Manejar el dropdown de aplicaciones
+    const googleAppsButton = document.querySelector('.google-apps-button');
+    const googleAppsDropdown = document.querySelector('.google-apps-dropdown');
+
+    googleAppsButton.addEventListener('click', (event) => {
+      event.stopPropagation();
+      googleAppsDropdown.classList.toggle('show');
+    });
+
+    window.addEventListener('click', (event) => {
+      if (!event.target.closest('.google-apps-container')) {
+        googleAppsDropdown.classList.remove('show');
+      }
+    });
+
+    async function generateHash(input) {
+        try {
+            if (!input) return null;
+            const encoder = new TextEncoder();
+            const data = encoder.encode(input);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex.substring(0, 24).toLowerCase();
+        } catch (error) {
+            console.error('Error generating hash:', error);
+            return null;
+        }
+    }
+
+    async function generateNews(count) {
+      const items = [];
+      for (let i = 1; i <= count; i++) {
+        const news = {
+          id: imageId,
+          imageId: imageId.toString(),
+          title: faker.company.catchPhrase(),
+          summary: faker.hacker.phrase(),
+          author: faker.person.fullName(),
+          date: faker.date.recent({ days: 10 }).toLocaleDateString('en-US'),
+          image: `https://picsum.photos/id/${imageId++}/500/400`,
+          content: faker.lorem.paragraphs(5, '\n\n')
+        };
+        items.push(news);
+      }
+      return items;
+    }
+
+    function renderNews(newsItems) {
+      newsItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'news-card';
+        card.setAttribute('data-id', item.id);
+        card.innerHTML = `
+          <div class="news-image-wrapper">
+            <img src="${item.image}" alt="${item.title}" class="news-image">
+            <div class="watermark">Picsum.photos</div>
+          </div>
+          <div class="card-info">
+            <h3 class="news-title">${item.title}</h3>
+            <p>${item.summary}</p>
+            <div class="news-meta">
+              <span>By ${item.author}</span>
+              <span>${item.date}</span>
+            </div>
+          </div>
+        `;
+
+        const image = card.querySelector('.news-image');
+        const title = card.querySelector('.news-title');
+        image.addEventListener('click', () => {
+          window.location.href = `article.html?id=${item.imageId}`;
+        });
+        title.addEventListener('click', () => {
+          window.location.href = `article.html?id=${item.imageId}`;
+        });
+        newsContainer.appendChild(card);
+      });
+    }
+
+    async function loadMoreNews() {
+      if (isLoading) return;
+      isLoading = true;
+      loading.style.display = 'block';
+      error.style.display = 'none';
+      try {
+        console.log("LoadNews!");
+        const newNews = await generateNews(10);
+        renderNews(newNews);
+        loading.style.display = 'none';
+        page++;
+      } catch (e) {
+        console.error(e);
+        loading.style.display = 'none';
+        error.style.display = 'block';
+      } finally {
+        isLoading = false;
+      }
+    }
+
+    // Función debounce
+    function debounce(func, wait) {
+      let timeout;
+      return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // Ajustar la condición de scroll
+    window.addEventListener('scroll', debounce(() => {
+      const scrollPosition = window.scrollY + window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const threshold = 300; // Píxeles antes del final para disparar la carga
+      if (scrollPosition >= documentHeight - threshold) {
+        loadMoreNews();
+      }
+    }, 200));
+
+    // Inicial: cargar noticias iniciales
+    (async () => {
+      try {
+        const initialNews = await generateNews(10);
+        renderNews(initialNews);
+        page = 1;
+      } catch (e) {
+        console.error(e);
+        loading.style.display = 'none';
+        error.style.display = 'block';
+      }
+    })();
+  </script>
+
+  <script type="module" src="./js/quelora.index.conf.js"></script> 
+  <script type="module" src="./quelora/js/quelora.js"></script> 
+</body>
+</html>
