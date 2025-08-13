@@ -141,3 +141,4 @@ vite.config.ts.timestamp-*
 #Config files
 js/*
 !js/.gitkeep
+js/quelora.*.conf.js
