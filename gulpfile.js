@@ -5,26 +5,26 @@ const cleanCSS = require('gulp-clean-css');
 
 gulp.task('css', () => {
   return gulp.src([
-      "css/animations.css",
-      "css/community.css",
-      "css/cropper.css",
-      "css/emoji.css",
-      "css/icons.css",
-      "css/misc.css",
-      "css/modal.css",
-      "css/notifications.css",
-      "css/player.css",
-      "css/profile.css",
-      "css/quelora.css",
-      "css/responsive.css",
-      "css/session.css",
-      "css/settings.css",
-      "css/toast.css",
-      "css/variables.css"
+      "quelora/css/animations.css",
+      "quelora/css/community.css",
+      "quelora/css/cropper.css",
+      "quelora/css/emoji.css",
+      "quelora/css/icons.css",
+      "quelora/css/misc.css",
+      "quelora/css/modal.css",
+      "quelora/css/notifications.css",
+      "quelora/css/player.css",
+      "quelora/css/profile.css",
+      "quelora/css/quelora.css",
+      "quelora/css/responsive.css",
+      "quelora/css/session.css",
+      "quelora/css/settings.css",
+      "quelora/css/toast.css",
+      "quelora/css/variables.css"
     ])
     .pipe(concat('quelora.min.css'))
     .pipe(cleanCSS())
-    .pipe(gulp.dest('js/quelora/dist'));
+    .pipe(gulp.dest('quelora/js/dist'));
 });
 
 gulp.task('default', gulp.series('css'));
