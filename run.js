@@ -35,6 +35,7 @@ const allowedOrigins = [
   "https://quelora.localhost.ar",
   "https://quelora.localhost.ar:444", // para dev
 ];
+
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -46,21 +47,63 @@ app.use(
     },
   })
 );
+
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
+        // Fuentes por defecto
         defaultSrc: ["'self'"],
+        
+        // Scripts
         scriptSrc: [
           "'self'",
+          "'unsafe-inline'",
+          "'unsafe-eval'",
           "https://unpkg.com",
           "https://cdn.jsdelivr.net",
-          "https://challenges.cloudflare.com"
+          "https://challenges.cloudflare.com",
+          "https://accounts.google.com",
+          "https://accounts.google.com/gsi/client",
+          "https://www.gstatic.com",
+          "https://apis.google.com",
+          "https://connect.facebook.net",
+          "https://connect.facebook.com",
+          "https://cdnjs.cloudflare.com", // Para i18next
+          "https://unpkg.com", // Para bootstrap
+          "https://cdn.jsdelivr.net" // Para npm packages
         ],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
+        
+        // Estilos
+        styleSrc: [
+          "'self'",
+          "'unsafe-inline'",
+          "https://fonts.googleapis.com",
+          "https://accounts.google.com",
+          "https://www.gstatic.com",
+          "https://fonts.googleapis.com/css2",
+          "https://cdn.jsdelivr.net", // Para bootstrap
+          "https://unpkg.com", // Para bootstrap-icons
+          "https://cdnjs.cloudflare.com" // Para otros CDNs
+        ],
+        
+        // Fuentes
+        fontSrc: [
+          "'self'",
+          "data:", // Para data URIs
+          "https://fonts.gstatic.com",
+          "https://fonts.googleapis.com",
+          "https://www.gstatic.com",
+          "https://cdn.jsdelivr.net" // Para bootstrap-icons
+        ],
+        
+        // Imágenes
         imgSrc: [
           "'self'",
+          "data:",
+          "blob:",
+          "https:",
+          "http:", // Permitir todas las imágenes HTTP/HTTPS temporalmente
           "https://external-preview.redd.it",
           "https://i.redd.it/",
           "https://picsum.photos",
@@ -68,23 +111,103 @@ app.use(
           "https://preview.redd.it",
           "https://i.pravatar.cc",
           "https://lh3.googleusercontent.com",
+          "https://*.googleusercontent.com",
+          "https://www.gstatic.com",
+          "https://graph.facebook.com",
+          "https://avatars.githubusercontent.com", // Para GitHub avatars
+          "https://flagcdn.com" // Para las banderas
         ],
+        
+        // Conexiones
         connectSrc: [
           "'self'",
           "https://quelora.localhost.ar:444",
-          "https://cdn.jsdelivr.net"
+          "https://cdn.jsdelivr.net",
+          "https://accounts.google.com",
+          "https://www.googleapis.com",
+          "https://*.google.com",
+          "https://*.gstatic.com",
+          "https://graph.facebook.com",
+          "https://api.twitter.com",
+          "wss://quelora.localhost.ar:445",
+          "https://cdnjs.cloudflare.com" // Para i18next
         ],
-        frameSrc: ["'self'", 
-                   "https://challenges.cloudflare.com",
-                   "https://www.youtube.com",
-                   "https://www.youtube-nocookie.com"],
+        
+        // Frames
+        frameSrc: [
+          "'self'",
+          "https://challenges.cloudflare.com",
+          "https://www.youtube.com",
+          "https://www.youtube-nocookie.com",
+          "https://accounts.google.com",
+          "https://*.google.com",
+          "https://*.gstatic.com",
+          "https://facebook.com",
+          "https://www.facebook.com",
+          "https://staticxx.facebook.com"
+        ],
+        
+        // Objetos multimedia
+        mediaSrc: [
+          "'self'",
+          "https://www.youtube.com",
+          "blob:"
+        ],
+        
+        // Objetos
         objectSrc: ["'none'"],
+        
+        // Base URI
         baseUri: ["'self'"],
+        
+        // Form actions
+        formAction: [
+          "'self'",
+          "https://accounts.google.com"
+        ],
+        
+        // Worker sources
+        workerSrc: [
+          "'self'",
+          "blob:"
+        ],
+        
+        // Manifest sources
+        manifestSrc: ["'self'"]
       },
     },
+    
+    // Otras configuraciones
+    crossOriginEmbedderPolicy: false,
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+    crossOriginResourcePolicy: { policy: "cross-origin" },
+    
+    // HSTS
+    hsts: process.env.NODE_ENV === 'production' ? {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    } : false,
+    
+    // Upgrade insecure requests
+    upgradeInsecureRequests: null, // O eliminar esta línea
+    
+    // No cache
+    noCache: process.env.NODE_ENV === 'development',
+    
+    // Referrer policy
+    referrerPolicy: { 
+      policy: "strict-origin-when-cross-origin" 
+    }
   })
 );
-// ✅ Bloqueo de escrituras en modo demo
+
+app.use((req, res, next) => {
+  res.setHeader('X-Frame-Options', 'ALLOW-FROM https://accounts.google.com');
+  res.setHeader('Permissions-Policy', 'interest-cohort=()'); // Evita FLoC
+  next();
+});
+
 app.use((req, res, next) => {
   if (["POST", "PUT", "DELETE", "PATCH"].includes(req.method)) {
     return res
