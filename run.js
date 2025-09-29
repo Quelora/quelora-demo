@@ -127,6 +127,7 @@ app.use(
           "https://www.googleapis.com",
           "https://*.google.com",
           "https://*.gstatic.com",
+          "https://*.quelora.org",
           "https://graph.facebook.com",
           "https://api.twitter.com",
           "wss://quelora.localhost.ar:445",
