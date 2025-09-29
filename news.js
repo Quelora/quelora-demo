@@ -70,14 +70,7 @@ function renderNews(newsItems) {
     // Clicks solo para imágenes, no iframe
     const image = card.querySelector(".news-image");
     const title = card.querySelector(".news-title");
-    if (image) {
-      image.addEventListener("click", () => {
-        window.location.href = `article.html?id=${card.dataset.id}`;
-      });
-    }
-    title.addEventListener("click", () => {
-      window.location.href = `article.html?id=${card.dataset.id}`;
-    });
+
 
     newsContainer.appendChild(card);
   });
