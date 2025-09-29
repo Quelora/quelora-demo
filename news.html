@@ -8,358 +8,379 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="./quelora/css/quelora.css">
+ 
+
   <style>
-    :root {
-      --google-blue: #4285F4;
-      --background-color: #f8f9fa;
-      --surface-color: #ffffff;
-      --on-surface-primary: #202124;
-      --on-surface-secondary: #5f6368;
-      --border-color: #dadce0;
-      --card-border-radius: 8px;
-      --header-height: 60px;
-    }
+  /* === Variables de Diseño Mejoradas === */
+  :root {
+    --primary-color: #0d47a1; /* Azul más profundo y vibrante */
+    --accent-color: #ff3d00; /* Naranja/Rojo vibrante para acentos (como el logo o hover) */
+    --background-color: #f0f2f5; /* Gris claro suave para un fondo menos duro */
+    --surface-color: #ffffff;
+    --on-surface-primary: #212121; /* Texto principal oscuro */
+    --on-surface-secondary: #757575; /* Texto secundario gris medio */
+    --border-color: #e0e0e0;
+    --card-border-radius: 12px; /* Esquinas más redondeadas */
+    --header-height: 70px; /* Header un poco más alto */
+    --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.05); /* Sombra sutil */
+    --shadow-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra más pronunciada al hacer hover */
+  }
 
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
+  /* === Reset Básico y Tipografía === */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
 
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
 
-    body {
-      background-color: var(--background-color);
-      font-family: 'Google Sans', 'Roboto', sans-serif;
-      color: var(--on-surface-primary);
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
+  body {
+    background-color: var(--background-color);
+    font-family: 'Google Sans', 'Roboto', sans-serif;
+    color: var(--on-surface-primary);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
 
-    .app-header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: var(--header-height);
-      padding: 0 24px;
-      background-color: var(--surface-color);
-      border-bottom: 1px solid var(--border-color);
-    }
+  /* === Encabezado (Header) === */
+  .app-header {
+    position: sticky; /* Sticky header para una mejor experiencia */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--header-height);
+    padding: 0 32px; /* Más padding horizontal */
+    background-color: var(--surface-color);
+    box-shadow: var(--shadow-light); /* Sombra sutil para despegarlo del fondo */
+    border-bottom: none; /* Quitamos el borde duro */
+  }
 
-    .header-logo {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 22px;
-      font-weight: 500;
-      color: var(--google-blue);
-    }
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 26px; /* Letra más grande y audaz */
+    font-weight: 700;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
 
-    .google-apps-container {
-      position: relative;
-    }
+  /* === Dropdown de Aplicaciones (Google-like) - Mantenido, pero más pulido === */
+  .google-apps-container {
+    position: relative;
+  }
 
-    .google-apps-button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: none;
-      background: transparent;
-      cursor: pointer;
-    }
+  .google-apps-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; /* Tamaño un poco más grande */
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
 
-    .google-apps-button:hover {
-      background-color: rgba(60,64,67,.08);
-    }
+  .google-apps-button:hover {
+    background-color: rgba(60,64,67,.04); /* Efecto hover más sutil */
+  }
+  
+  /* Mantener el icono de 9 puntos */
+  .google-apps-icon {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 3px;
+    width: 20px;
+    height: 20px;
+  }
 
-    .google-apps-icon {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, 1fr);
-      gap: 3px;
-      width: 20px;
-      height: 20px;
-    }
+  .google-apps-icon span {
+    display: block;
+    width: 4px;
+    height: 4px;
+    background-color: var(--on-surface-secondary);
+    border-radius: 50%;
+  }
 
-    .google-apps-icon span {
-      display: block;
-      width: 4px;
-      height: 4px;
-      background-color: var(--on-surface-secondary);
-      border-radius: 50%;
-    }
+  /* Dropdown en sí */
+  .google-apps-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 12px;
+    background-color: var(--surface-color);
+    border-radius: 16px; /* Más redondeado */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12); /* Sombra más suave y moderna */
+    width: 350px; /* Un poco más ancho */
+    padding: 16px;
+    display: none;
+    z-index: 1001;
+  }
 
-    .google-apps-dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      margin-top: 8px;
-      background-color: var(--surface-color);
-      border-radius: 8px;
-      box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
-      width: 320px;
-      padding: 8px;
-      display: none;
-      z-index: 1001;
-    }
+  .google-apps-dropdown.show {
+    display: block;
+  }
 
-    .google-apps-dropdown.show {
-      display: block;
-    }
+  .google-apps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columnas para mayor impacto */
+    gap: 16px;
+  }
 
-    .google-apps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-    }
+  .google-app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 8px; 
+    border: none; /* Quitamos el borde */
+    border-radius: 12px;
+    background-color: transparent; 
+    transition: background-color 0.3s ease, transform 0.1s; 
+    cursor: pointer;
+    text-decoration: none;
+  }
 
-    .google-app-item {
-      display: flex;
-      flex-direction: column; /* Stack icon and text vertically */
-      align-items: center;
-      padding: 16px; /* Increased padding */
-      border: 1px solid #e2e8f0; /* Soft border */
-      border-radius: 12px; /* Smoother rounded corners */
-      background-color: #fff; /* Clean white background */
-      transition: all 0.3s ease; /* Smooth hover transition */
-      cursor: pointer;
-      text-decoration: none; /* Remove text underline */
-    }
+  .google-app-item:hover {
+    background-color: var(--background-color); /* Fondo gris sutil al hover */
+    box-shadow: none; 
+    transform: none; 
+  }
 
-    .google-app-item:hover {
-      background-color: #f8fafc; /* Subtle hover background */
-      border-color: #cbd5e1; /* Slightly darker border */
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
-      transform: translateY(-3px); /* Gentle lift */
-    }
+  .google-app-item .google-app-icon {
+    width: 48px; 
+    height: 48px;
+    object-fit: contain; 
+    border-radius: 12px; /* Cuadrado redondeado en lugar de círculo */
+    font-size: 20px;
+  }
 
-    .google-app-item .google-app-icon {
-      width: 48px; /* Fixed size to prevent deformation */
-      height: 48px;
-      object-fit: contain; /* Maintain icon proportions */
-    }
+  .google-app-item span {
+    margin-top: 8px;
+    color: var(--on-surface-primary);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+  }
 
-    .google-app-item span {
-      margin-top: 8px; /* Space between icon and text */
-      color: #6b7280; /* Soft gray text color */
-      font-size: 14px;
-      text-decoration: none; /* Ensure no underline */
-    }
+  /* === Contenido Principal (Main) === */
+  main {
+    flex-grow: 1;
+    padding: 32px 24px; /* Más espacio */
+    margin-top: var(--header-height);
+    margin-bottom: 70px; /* Espacio para el footer */
+  }
 
-    .google-app-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: var(--google-blue);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 8px;
-      color: white;
-      font-weight: 500;
-    }
+  .news-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); /* Min-width un poco menor */
+    gap: 32px; /* Más espacio entre tarjetas */
+    max-width: 1400px; /* Reducir el max-width ligeramente para un mejor flujo */
+    margin: 0 auto;
+  }
 
-    main {
-      flex-grow: 1;
-      padding: 24px;
-      margin-top: var(--header-height);
-      margin-bottom: 60px;
-    }
+  /* === Tarjetas de Noticias (News Card) - EL CAMBIO PRINCIPAL === */
+  .news-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--surface-color);
+    border: none; 
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-light); /* Sombra inicial sutil */
+    overflow: hidden;
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    cursor: pointer;
+  }
 
-    .news-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      gap: 16px;
-      max-width: 1800px;
-      margin: 0 auto;
-    }
+  .news-card:hover {
+    transform: translateY(-5px); /* Desplazamiento más notable */
+    box-shadow: var(--shadow-hover); /* Sombra más dramática */
+  }
 
-    .news-card {
-      display: flex;
-      flex-direction: column;
-      background-color: var(--surface-color);
-      border: 1px solid transparent;
-      border-radius: var(--card-border-radius);
-      overflow: hidden;
-      transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-      position: relative;
-      z-index: 1;
-      cursor: pointer;
-    }
+  .news-image-wrapper {
+    position: relative;
+    overflow: hidden;
+    /* Quitamos el border-radius superior, ya que lo tiene la tarjeta */
+  }
 
-    .news-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px 3px rgba(60,64,67,.15);
-      border-color: var(--border-color);
-      z-index: 2;
-    }
+  .news-card img, .news-card iframe {
+    display: block;
+    width: 100%;
+    height: 250px; /* Imagen un poco más alta */
+    object-fit: cover;
+    background-color: #e8eaed;
+    transition: transform 0.3s ease;
+  }
 
-    .news-image-wrapper {
-      position: relative;
-      overflow: hidden;
-      border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
-    }
+  .news-card:hover img {
+    transform: scale(1.05); /* Zoom sutil en la imagen al hacer hover */
+  }
 
-    .news-card img {
-      display: block;
-      width: 100%;
-      height: 200px;
-      object-fit: cover;
-      background-color: #e8eaed;
-    }
+  .watermark {
+    position: absolute;
+    top: 16px; /* Posición superior derecha */
+    right: 16px;
+    bottom: unset; /* Reiniciar bottom */
+    padding: 5px 10px; 
+    background-color: var(--accent-color); /* Color de acento vibrante */
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+    font-weight: 700; /* Más audaz */
+    border-radius: 6px;
+    z-index: 1;
+    pointer-events: none;
+    text-transform: uppercase;
+  }
 
-    .watermark {
-      position: absolute;
-      bottom: 8px;
-      right: 8px;
-      padding: 3px 8px;
-      background-color: rgba(0, 0, 0, 0.55);
-      color: #ffffff;
-      font-family: 'Roboto', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      border-radius: 4px;
-      z-index: 1;
-      pointer-events: none;
-    }
+  .card-info {
+    display: flex;
+    flex-direction: column;
+    padding: 24px; /* Más padding interno */
+    border: none; /* Quitamos el borde */
+    border-top: none;
+    flex-grow: 1;
+  }
 
-    .card-info {
-      display: flex;
-      flex-direction: column;
-      padding: 16px;
-      border: 1px solid var(--border-color);
-      border-top: none;
-      border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
-    }
-
-    .card-info .news-title {
-      font-size: 16px;
-      font-weight: 500;
-      color: var(--on-surface-primary);
-      margin-bottom: 8px;
-      line-height: 1.4;
+  .card-info .news-title {
+    font-size: 20px; /* Título más grande */
+    font-weight: 700; /* Título más audaz */
+    color: var(--on-surface-primary);
+    margin-bottom: 12px;
+    line-height: 1.3;
+    -webkit-line-clamp: 3; /* Permitir 3 líneas para el título */
+    text-overflow: ellipsis;
+  }
+  
+  .card-info p {
+      color: var(--on-surface-secondary);
+      font-size: 15px;
+      margin-top: 0;
+      margin-bottom: 16px;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  }
 
-    .card-info .news-meta {
-      display: flex;
-      justify-content: space-between;
-      font-size: 12px;
-      color: var(--on-surface-secondary);
-      align-items: center; 
-      gap: 10px; 
-    }
+  .card-info .news-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: var(--on-surface-secondary);
+    align-items: center; 
+    gap: 10px; 
+    margin-top: auto; /* Empuja la meta al fondo */
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color); /* Separador sutil */
+  }
 
-    .loading, .error {
-      text-align: center;
-      padding: 24px;
-      font-size: 14px;
-      grid-column: 1 / -1;
-    }
+  /* === Estados de Carga y Error === */
+  .loading, .error {
+    text-align: center;
+    padding: 40px 24px;
+    font-size: 16px;
+    grid-column: 1 / -1;
+    font-weight: 500;
+  }
 
-    .loading {
-      color: var(--on-surface-secondary);
-    }
+  .loading {
+    color: var(--primary-color);
+  }
 
-    .error {
-      color: #d93025;
-    }
+  .error {
+    color: var(--accent-color);
+  }
 
-    footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      text-align: center;
-      font-size: 12px;
-      color: var(--on-surface-secondary);
-      padding: 16px;
-      background-color: var(--surface-color);
-      border-top: 1px solid var(--border-color);
-      z-index: 1000;
-    }
+  /* === Footer === */
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--on-surface-secondary);
+    padding: 18px;
+    background-color: var(--surface-color);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05); /* Sombra sutil hacia arriba */
+    border-top: none;
+    z-index: 1000;
+  }
 
-    footer a {
-      color: var(--google-blue);
-      text-decoration: none;
-    }
+  footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+  }
 
-    footer a:hover {
-      text-decoration: underline;
+  /* === Media Queries (Mantenidos y Ajustados) === */
+  @media (max-width: 1024px) {
+    .news-container {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
     }
+  }
 
-    .nav-links {
-      display: flex;
-      gap: 16px;
+  @media (max-width: 768px) {
+    main {
+      padding: 24px 16px;
     }
-
-    .nav-links a {
-      color: var(--on-surface-secondary);
-      text-decoration: none;
-      font-size: 14px;
-      transition: color 0.2s;
+    
+    .news-container {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
     }
-
-    .nav-links a:hover {
-      color: var(--google-blue);
+    
+    .google-apps-dropdown {
+      width: 300px;
     }
+    
+    .app-header {
+      padding: 0 16px;
+    }
+  }
 
-    @media (max-width: 768px) {
-      main {
+  @media (max-width: 480px) {
+    .news-container {
+      grid-template-columns: 1fr; /* Columna única en móviles */
+    }
+    
+    .news-card img, .news-card iframe {
+      height: 220px;
+    }
+    
+    .card-info {
         padding: 16px;
-      }
-      
-      .news-container {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      }
-      
-      .google-apps-dropdown {
-        width: 280px;
-      }
     }
 
-    @media (max-width: 480px) {
-      .app-header {
-        padding: 0 16px;
-      }
-      
-      .news-container {
-        grid-template-columns: 1fr;
-      }
-      
-      .google-apps-dropdown {
-        width: 260px;
-        right: -10px;
-      }
-      
-      .header-logo {
+    .card-info .news-title {
         font-size: 18px;
-      }
-      
-      .nav-links {
-        gap: 12px;
-      }
-      
-      .nav-links a {
-        font-size: 13px;
-      }
     }
-  </style>
+    
+    .header-logo {
+      font-size: 20px;
+    }
+    
+    .google-apps-dropdown {
+      width: 90vw; /* Ocupa casi todo el ancho */
+      right: 5vw;
+    }
+  }
+</style>
 </head>
 <body>
   <header class="app-header">

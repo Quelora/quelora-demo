@@ -50,16 +50,16 @@ function renderNews(newsItems) {
       mediaHTML = `
         <div class="news-image-wrapper">
           <img src="${item.image}" alt="${item.title}" class="news-image">
-          <div class="watermark">Source</div>
+          <div class="watermark">Reddit.com</div>
         </div>
       `;
     }
 
-    card.innerHTML = `
+card.innerHTML = `
       ${mediaHTML}
       <div class="card-info">
         <h3 class="news-title">${item.title}</h3>
-        <p>${item.description || item.metadata?.subreddit || ""}</p>
+        <p>${item.description || item.metadata?.subreddit || ""}</p> 
         <div class="news-meta">
           <span>By ${item.metadata?.author || "Unknown"}</span>
           <span>${new Date(item.created_at).toLocaleDateString("en-US")}</span>
