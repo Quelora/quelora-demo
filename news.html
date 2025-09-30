@@ -9,18 +9,18 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./quelora/css/quelora.css">
     <style>
-        /* === Variables de Diseño === */
         :root {
-            --primary-color: #FF4500; /* Naranja Reddit */
-            --secondary-color: #0079D3; /* Azul Reddit */
-            --background-color: #f8f9fa; 
+            --primary-color: #0055d4;
+            --secondary-color: #4a90e2;
+            --background-color: #f0f2f5;
             --surface-color: #ffffff;
-            --on-surface-primary: #1c1c1c; 
-            --on-surface-secondary: #717171; 
-            --card-border-radius: 10px;
-            --header-height: 70px; 
-            --shadow-light: 0 4px 12px rgba(0, 0, 0, 0.08); 
-            --shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.15); 
+            --on-surface-primary: #1a1a1b;
+            --on-surface-secondary: #65676b;
+            --border-color: #dddfe2;
+            --card-border-radius: 8px;
+            --header-height: 70px;
+            --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         *, *::before, *::after {
@@ -35,45 +35,39 @@
 
         body {
             background-color: var(--background-color);
-            font-family: 'Montserrat', sans-serif; 
+            font-family: 'Montserrat', sans-serif;
             color: var(--on-surface-primary);
             display: flex;
             flex-direction: column;
             min-height: 100vh;
             line-height: 1.5;
         }
-        
-        /* === Encabezado (Header) === */
+
         .app-header {
-            position: sticky; 
+            position: sticky;
             top: 0;
             left: 0;
             right: 0;
             z-index: 1000;
             display: flex;
             align-items: center;
-            justify-content: space-between; 
+            justify-content: space-between;
             height: var(--header-height);
-            padding: 0 40px; 
+            padding: 0 40px;
             background-color: var(--surface-color);
-            border-bottom: 3px solid var(--primary-color); 
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+            border-bottom: 3px solid var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         }
 
         .header-logo {
             display: flex;
             align-items: center;
-            font-size: 28px; 
-            font-weight: 800; 
-            color: var(--on-surface-primary); 
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
             cursor: pointer;
         }
-        
-        .logo-accent {
-            color: var(--primary-color);
-            margin-left: 5px;
+
+        .header-logo img {
+            height: 40px;
+            width: auto;
         }
 
         .header-nav {
@@ -88,7 +82,7 @@
             color: var(--on-surface-secondary);
             transition: color 0.2s;
         }
-        
+
         .header-nav a:hover {
             color: var(--primary-color);
         }
@@ -96,30 +90,26 @@
         .google-apps-container { display: none; }
         footer { display: none; }
 
-
-        /* === Contenido Principal (Main) === */
         main {
             flex-grow: 1;
-            padding: 0 0 40px 0; 
+            padding: 0 0 40px 0;
             margin-top: var(--header-height);
         }
-        
-        /* Contenedor del Carrusel (Hero Section) */
+
         #heroCarousel {
             width: 100%;
             max-width: 1400px;
-            margin: 0 auto 40px auto; 
+            margin: 0 auto 40px auto;
             padding: 0 24px;
             display: grid;
-            grid-template-columns: 2fr 1fr; 
+            grid-template-columns: 2fr 1fr;
             gap: 20px;
         }
-        
-        /* Carrusel - Estructura de Grid */
+
         .hero-card-main {
             grid-column: 1 / 2;
         }
-        
+
         .hero-card-secondary-grid {
             grid-column: 2 / 3;
             display: grid;
@@ -127,50 +117,47 @@
             gap: 20px;
         }
 
-        /* === ESTILOS BASE DE TARJETA (GRID) === */
         .news-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 30px; 
-            padding-top: 20px; 
+            gap: 30px;
+            padding-top: 20px;
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 24px;
         }
-        
+
         .news-card {
             display: flex;
             flex-direction: column;
             background-color: var(--surface-color);
             border-radius: var(--card-border-radius);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); 
+            box-shadow: var(--shadow-light);
             overflow: hidden;
             transition: box-shadow 0.3s, transform 0.3s;
             cursor: pointer;
             text-decoration: none;
             color: inherit;
+            position: relative;
         }
 
         .news-card:hover {
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); 
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
         }
-        
-        /* Enlace que envuelve el contenido, sin redirección */
+
         .news-card > a {
             text-decoration: none;
             color: inherit;
-            display: contents; 
+            display: contents;
             pointer-events: all;
         }
-        
-        /* === SOBREESCRITURA PARA HERO (CARRUSEL) === */
+
         .news-card.hero-card, .news-card.hero-card-small {
-            position: relative;
             height: 100%;
             min-height: 250px;
-            border-radius: var(--card-border-radius);
             box-shadow: var(--shadow-light);
-            background-color: transparent; 
+            background-color: transparent;
             padding: 0;
         }
 
@@ -178,50 +165,35 @@
             min-height: 500px;
         }
         
-        .news-card.hero-card:hover, .news-card.hero-card-small:hover {
-            box-shadow: var(--shadow-hover);
-        }
-
-        /* Ocultar card-info en el Hero (texto superpuesto reemplaza) */
         .news-card.hero-card .card-info {
             display: none !important;
         }
 
-        /* Contenido superpuesto del Hero */
         .hero-overlay {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
             padding: 24px;
-            /* Degradado Negro Requerido */
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0)); 
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
             color: white;
             z-index: 2;
+            border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
         }
-        
-        /* Estilos de la barra de Quelora en el Hero */
 
-        /* Estilos para los elementos de interacción de Quelora (lo que inyecta en after .news-meta) */
         .news-card.hero-card .community-interaction-bar,
         .news-card.hero-card .community-interaction-bar * {
-            color: white !important; 
-
+            color: white !important;
         }
-        
+
         .news-card.hero-card .community-interaction-bar a {
             text-decoration: none !important;
         }
 
-
-        .news-card.hero-card-main {
-            min-height: 500px;
-        }
-        
         .news-card.hero-card-main .hero-overlay .title {
             font-size: 36px;
         }
-        
+
         .hero-image-bg {
             position: absolute;
             top: 0;
@@ -230,25 +202,35 @@
             height: 100%;
             background-size: cover;
             background-position: center;
-            transition: transform 0.3s;
+            transition: transform 0.3s ease;
+            border-radius: var(--card-border-radius);
         }
         
-        .news-card img {
+        .news-card:hover .hero-image-bg {
+            transform: scale(1.05);
+        }
+        
+        .news-card .news-image {
             width: 100%;
-            height: 200px; 
+            height: 200px;
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
-        
+
+        .news-card:hover .news-image {
+            transform: scale(1.05);
+        }
+
         .card-info {
             display: flex;
             flex-direction: column;
-            padding: 16px; 
+            padding: 16px;
             flex-grow: 1;
         }
 
         .card-info .news-title {
             font-size: 18px;
-            font-weight: 700; 
+            font-weight: 700;
             margin-bottom: 8px;
             line-height: 1.3;
             display: -webkit-box;
@@ -256,7 +238,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-        
+
         .card-info p {
             font-size: 14px;
             margin-top: 0;
@@ -268,46 +250,84 @@
             color: var(--on-surface-secondary);
         }
 
-        /* .news-meta para el GRID - Normal */
         .news-card:not(.hero-card) .news-meta {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
-            align-items: center; 
+            align-items: center;
             padding-top: 10px;
-            border-top: 1px solid #eee;
-            margin-top: auto; 
+            border-top: 1px solid var(--border-color);
+            margin-top: auto;
             color: var(--on-surface-secondary);
         }
-        
-          .news-card.hero-card .news-meta {
+
+        .news-card.hero-card .news-meta {
             display: flex;
             justify-content:flex-end;
-            align-items: left; 
-            margin-top: auto; 
+            align-items: left;
+            margin-top: auto;
             color: #fff;
         }
 
         .watermark {
             position: absolute;
-            top: 10px; 
+            top: 10px;
             left: 10px;
-            padding: 4px 8px; 
+            padding: 4px 8px;
             background-color: var(--primary-color);
             color: white;
             font-family: 'Roboto', sans-serif;
             font-size: 11px;
             font-weight: 700;
             border-radius: 4px;
-            z-index: 1;
+            z-index: 3;
             pointer-events: none;
             text-transform: uppercase;
         }
+        
+        .status-message {
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 16px;
+            color: var(--on-surface-secondary);
+            width: 100%;
+        }
 
-        /* Media Queries (Mantenidas) */
+        #loader-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.3s ease;
+        }
+        
+        #loader-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(0, 0, 0, 0.1);
+            border-left-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         @media (max-width: 900px) {
             #heroCarousel {
-                grid-template-columns: 1fr; 
+                grid-template-columns: 1fr;
                 padding: 0 16px;
             }
             .news-card.hero-card-main {
@@ -327,28 +347,31 @@
                 padding: 0 20px;
             }
         }
-        
+
         @media (max-width: 600px) {
             .app-header {
                 height: 60px;
             }
-            .header-logo {
-                font-size: 22px;
+            .header-logo img {
+                height: 30px;
             }
             .header-nav {
                 display: none;
             }
             .news-container {
-                grid-template-columns: 1fr; 
+                grid-template-columns: 1fr;
                 gap: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <div id="loader-overlay">
+        <div class="spinner"></div>
+    </div>
     <header class="app-header">
         <div class="header-logo">
-            QUELORA<span class="logo-accent">.</span>
+            <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle">
         </div>
         <nav class="header-nav">
             <a href="#">Home</a>
@@ -361,14 +384,13 @@
         <div id="heroCarousel"></div>
         <div class="grid-container">
             <div class="news-container" id="newsContainer"></div>
-            <div class="loading" id="loading">Cargando más historias...</div>
-            <div class="error" id="error" style="display: none;">Fallo al cargar el contenido.</div>
+            <div id="statusContainer"></div>
         </div>
     </main>
-    
+
     <script type="module" src="./news.js"></script>
-    <script type="module" src="./js/quelora.index.conf.js"></script> 
-    <script type="module" src="./quelora/js/quelora.js"></script> 
-    <script  type="module" src="./quelora/js/development.js"></script> 
+    <script type="module" src="./js/quelora.index.conf.js"></script>
+    <script type="module" src="./quelora/js/quelora.js"></script>
+    <script type="module" src="./quelora/js/development.js"></script>
 </body>
 </html>

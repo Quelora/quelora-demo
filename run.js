@@ -152,7 +152,8 @@ app.use(
         mediaSrc: [
           "'self'",
           "https://www.youtube.com",
-          "blob:"
+          "blob:",
+          "data:"
         ],
         
         // Objetos
