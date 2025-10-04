@@ -189,9 +189,9 @@ async function loadMoreNews(isInitialLoad = false) {
     }
     
     try {
-        const newNews = await fetchNews(page, limit);
+        const fetchedNews = await fetchNews(page, limit);
         
-        if (newNews.length === 0) {
+        if (fetchedNews.length === 0) {
             hasMore = false;
             if (!isInitialLoad) {
                 updateStatus('You have reached the end. No more stories for now!');
@@ -199,18 +199,39 @@ async function loadMoreNews(isInitialLoad = false) {
             return;
         }
 
+        // Filtrar todos los ítems cargados de una vez para obtener solo los válidos.
+        const validNews = fetchedNews.filter(item => {
+            return item && item.title && item.image && item.entity;
+        });
+
+        if (validNews.length === 0 && page === 0) {
+             heroCarousel.style.display = 'none';
+        }
+        
+        if (validNews.length === 0 && !isInitialLoad) {
+            // Si después de filtrar no queda nada y no es la primera carga
+            hasMore = false;
+            updateStatus('No more valid stories found.');
+            return;
+        }
+
+
         let heroItems = [];
-        let gridItems = newNews;
+        let gridItems = validNews;
 
         if (isInitialLoad) {
-            heroItems = newNews.slice(0, HERO_COUNT);
-            gridItems = newNews.slice(HERO_COUNT);
+            // Rebanar solo del arreglo de ítems válidos
+            heroItems = validNews.slice(0, HERO_COUNT);
+            gridItems = validNews.slice(HERO_COUNT);
+            
+            // Renderizar el carrusel con los ítems válidos del hero
             renderHeroCarousel(heroItems);
         }
 
         renderNewsGrid(gridItems);
 
-        if (newNews.length < limit) {
+        // La paginación se basa en la cantidad de ítems solicitados, no en la validez
+        if (fetchedNews.length < limit) {
             hasMore = false;
             updateStatus('You have reached the end. No more stories for now!');
         } else {
