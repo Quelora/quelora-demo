@@ -16,6 +16,7 @@ let slideIndex = 0;
 let slideInterval;
 let heroData = [];
 const SCROLL_THRESHOLD = 800; 
+let isPausedByUser = false; 
 
 function showLoader(show) {
     if (show) {
@@ -110,9 +111,14 @@ function renderHeroCarousel(items) {
 
     heroScrollContainer.innerHTML = '';
 
+    // El ancho de la diapositiva es el ancho del carrusel padre.
+    const slideWidth = heroCarousel.offsetWidth;
+
     itemsToRender.forEach((item) => {
         const wrapper = document.createElement('div');
-        wrapper.className = 'hero-card-container';
+        wrapper.className = 'hero-card-container'; 
+        wrapper.style.width = `${slideWidth}px`; 
+        
         const card = createCardElement(item, 'hero-card hero-card-main', true);
         
         if (card) {
@@ -123,17 +129,31 @@ function renderHeroCarousel(items) {
 
     heroData = validItems;
     slideIndex = 1;
-    updateCarouselPosition(false);
+    updateCarouselPosition(false); 
     startAutoSlide();
 }
 
 function updateCarouselPosition(animated = true) {
-    if (!heroScrollContainer) return;
+    if (!heroScrollContainer || !heroCarousel) return;
     
+    // Obtener el ancho de la diapositiva. heroCarousel.offsetWidth ahora es el ancho correcto de la diapositiva.
+    const slideWidth = heroCarousel.offsetWidth;
+    
+    // 1. Asegurar que cada diapositiva tiene el ancho correcto (importante para el resize)
+    Array.from(heroScrollContainer.children).forEach(slide => {
+        if (slide.classList.contains('hero-card-container')) {
+            slide.style.width = `${slideWidth}px`;
+        }
+    });
+    
+    // 2. Aplicar la transición y el desplazamiento
     heroScrollContainer.style.transition = animated ? 'transform 0.5s ease-in-out' : 'none';
-    const offset = -slideIndex * 100;
-    heroScrollContainer.style.transform = `translateX(${offset}vw)`;
+    
+    // Calcular el desplazamiento en píxeles.
+    const offset = -slideIndex * slideWidth;
+    heroScrollContainer.style.transform = `translateX(${offset}px)`;
 
+    // 3. Lógica para el bucle infinito
     if (slideIndex === heroData.length + 1 || slideIndex === 0) {
         setTimeout(() => {
             heroScrollContainer.style.transition = 'none';
@@ -142,21 +162,21 @@ function updateCarouselPosition(animated = true) {
             } else if (slideIndex === 0) {
                 slideIndex = heroData.length;
             }
-            const newOffset = -slideIndex * 100;
-            heroScrollContainer.style.transform = `translateX(${newOffset}vw)`;
+            const newOffset = -slideIndex * slideWidth;
+            heroScrollContainer.style.transform = `translateX(${newOffset}px)`;
         }, animated ? 500 : 0);
     }
 }
 
 function moveSlide(direction) {
     stopAutoSlide();
+    isPausedByUser = true; 
     slideIndex += direction;
     updateCarouselPosition();
-    setTimeout(startAutoSlide, 500); 
 }
 
 function startAutoSlide() {
-    if (heroData.length > 0) {
+    if (heroData.length > 0 && !isPausedByUser) { 
         stopAutoSlide(); 
         slideInterval = setInterval(() => {
             slideIndex++;
@@ -167,6 +187,12 @@ function startAutoSlide() {
 
 function stopAutoSlide() {
     clearInterval(slideInterval);
+}
+
+function handleCarouselClick() {
+    if (isPausedByUser) return;
+    stopAutoSlide();
+    isPausedByUser = true;
 }
 
 function renderNewsGrid(newsItems) {
@@ -199,7 +225,6 @@ async function loadMoreNews(isInitialLoad = false) {
             return;
         }
 
-        // Filtrar todos los ítems cargados de una vez para obtener solo los válidos.
         const validNews = fetchedNews.filter(item => {
             return item && item.title && item.image && item.entity;
         });
@@ -209,7 +234,6 @@ async function loadMoreNews(isInitialLoad = false) {
         }
         
         if (validNews.length === 0 && !isInitialLoad) {
-            // Si después de filtrar no queda nada y no es la primera carga
             hasMore = false;
             updateStatus('No more valid stories found.');
             return;
@@ -220,17 +244,14 @@ async function loadMoreNews(isInitialLoad = false) {
         let gridItems = validNews;
 
         if (isInitialLoad) {
-            // Rebanar solo del arreglo de ítems válidos
             heroItems = validNews.slice(0, HERO_COUNT);
             gridItems = validNews.slice(HERO_COUNT);
             
-            // Renderizar el carrusel con los ítems válidos del hero
             renderHeroCarousel(heroItems);
         }
 
         renderNewsGrid(gridItems);
 
-        // La paginación se basa en la cantidad de ítems solicitados, no en la validez
         if (fetchedNews.length < limit) {
             hasMore = false;
             updateStatus('You have reached the end. No more stories for now!');
@@ -256,6 +277,11 @@ function debounce(func, wait) {
     };
 }
 
+window.addEventListener('resize', debounce(() => {
+    updateCarouselPosition(false); 
+}, 250)); 
+
+
 if (prevControl && nextControl) {
     prevControl.addEventListener('click', () => moveSlide(-1));
     nextControl.addEventListener('click', () => moveSlide(1));
@@ -264,6 +290,8 @@ if (prevControl && nextControl) {
 if (heroCarousel) {
     heroCarousel.addEventListener('mouseenter', stopAutoSlide);
     heroCarousel.addEventListener('mouseleave', startAutoSlide);
+    // Nuevo event listener para detener con un clic
+    heroCarousel.addEventListener('click', handleCarouselClick);
 }
 
 
@@ -280,5 +308,6 @@ window.addEventListener("scroll", debounce(() => {
 }, 100));
 
 (async () => {
+    showLoader(true);
     await loadMoreNews(true);
 })();
