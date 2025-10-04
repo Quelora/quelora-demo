@@ -1,13 +1,21 @@
-const heroCarousel = document.getElementById("heroCarousel");
+const heroScrollContainer = document.getElementById("heroScrollContainer");
 const newsContainer = document.getElementById("newsContainer");
 const statusContainer = document.getElementById("statusContainer");
 const loaderOverlay = document.getElementById("loader-overlay");
+const prevControl = document.getElementById("prevControl");
+const nextControl = document.getElementById("nextControl");
+const heroCarousel = document.getElementById("heroCarousel");
 
 let page = 0;
 let isLoading = false;
 let hasMore = true;
 const limit = 16;
-const HERO_COUNT = 3;
+const HERO_COUNT = 5;
+const SLIDE_INTERVAL = 3000;
+let slideIndex = 0;
+let slideInterval;
+let heroData = [];
+const SCROLL_THRESHOLD = 800; 
 
 function showLoader(show) {
     if (show) {
@@ -28,13 +36,18 @@ async function fetchNews(page, limit) {
 }
 
 function createCardElement(item, extraClasses = '', isHero = false) {
+    if (!item || !item.title || !item.image || !item.entity) {
+        return null;
+    }
+
     const card = document.createElement("div");
     card.className = `news-card ${extraClasses}`;
     card.dataset.id = item.entity;
     card.dataset.entity = item.entity;
 
     let watermarkText = item.metadata?.subreddit || "SOURCE";
-    const isVideo = item.image.includes("youtube.com") || item.image.includes("youtu.be");
+    
+    const isVideo = item.image && (item.image.includes("youtube.com") || item.image.includes("youtu.be"));
 
     let imageSrc = item.image;
     if (isVideo) {
@@ -74,7 +87,7 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                     <p>${item.description || item.metadata?.subreddit || ""}</p>
                     <div class="news-meta">
                         <span>${item.metadata?.author || "Unknown"}</span>
-                        <span>${new Date(item.created_at).toLocaleDateString("es-ES")}</span>
+                        <span>${new Date(item.created_at).toLocaleDateString("en-US")}</span>
                     </div>
                 </div>
             </a>`;
@@ -82,61 +95,132 @@ function createCardElement(item, extraClasses = '', isHero = false) {
     return card;
 }
 
-function renderHeroCarousel(heroItems) {
-    if (heroItems.length < HERO_COUNT) {
+function renderHeroCarousel(items) {
+    const validItems = items.filter(item => {
+        return item && item.title && item.image && item.entity;
+    });
+
+    if (validItems.length === 0) {
         heroCarousel.style.display = 'none';
         return;
     }
 
-    const mainItem = heroItems[0];
-    const secondaryItems = heroItems.slice(1, HERO_COUNT);
-    const mainCardElement = createCardElement(mainItem, 'hero-card hero-card-main', true);
-    const secondaryCardElements = secondaryItems.map(item => createCardElement(item, 'hero-card hero-card-small', true).outerHTML).join('');
+    const totalSlides = validItems.length;
+    const itemsToRender = [validItems[totalSlides - 1], ...validItems, validItems[0]];
 
-    heroCarousel.innerHTML = `
-        ${mainCardElement.outerHTML}
-        <div class="hero-card-secondary-grid">${secondaryCardElements}</div>
-    `;
+    heroScrollContainer.innerHTML = '';
+
+    itemsToRender.forEach((item) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'hero-card-container';
+        const card = createCardElement(item, 'hero-card hero-card-main', true);
+        
+        if (card) {
+            wrapper.appendChild(card);
+            heroScrollContainer.appendChild(wrapper);
+        }
+    });
+
+    heroData = validItems;
+    slideIndex = 1;
+    updateCarouselPosition(false);
+    startAutoSlide();
+}
+
+function updateCarouselPosition(animated = true) {
+    if (!heroScrollContainer) return;
+    
+    heroScrollContainer.style.transition = animated ? 'transform 0.5s ease-in-out' : 'none';
+    const offset = -slideIndex * 100;
+    heroScrollContainer.style.transform = `translateX(${offset}vw)`;
+
+    if (slideIndex === heroData.length + 1 || slideIndex === 0) {
+        setTimeout(() => {
+            heroScrollContainer.style.transition = 'none';
+            if (slideIndex === heroData.length + 1) {
+                slideIndex = 1;
+            } else if (slideIndex === 0) {
+                slideIndex = heroData.length;
+            }
+            const newOffset = -slideIndex * 100;
+            heroScrollContainer.style.transform = `translateX(${newOffset}vw)`;
+        }, animated ? 500 : 0);
+    }
+}
+
+function moveSlide(direction) {
+    stopAutoSlide();
+    slideIndex += direction;
+    updateCarouselPosition();
+    setTimeout(startAutoSlide, 500); 
+}
+
+function startAutoSlide() {
+    if (heroData.length > 0) {
+        stopAutoSlide(); 
+        slideInterval = setInterval(() => {
+            slideIndex++;
+            updateCarouselPosition();
+        }, SLIDE_INTERVAL);
+    }
+}
+
+function stopAutoSlide() {
+    clearInterval(slideInterval);
 }
 
 function renderNewsGrid(newsItems) {
     newsItems.forEach((item) => {
         const card = createCardElement(item, '', false);
-        newsContainer.appendChild(card);
+        if (card) {
+            newsContainer.appendChild(card);
+        }
     });
 }
 
 async function loadMoreNews(isInitialLoad = false) {
-    if (isLoading || !hasMore) return;
+    if (isLoading || !hasMore) {
+        return;
+    }
+    
     isLoading = true;
-    if (isInitialLoad) {
-        showLoader(true);
-    } else {
-        updateStatus('Cargando más historias...');
+    if (!isInitialLoad) {
+        updateStatus('Loading more stories...');
     }
     
     try {
         const newNews = await fetchNews(page, limit);
-        if (isInitialLoad) {
-            const heroItems = newNews.slice(0, HERO_COUNT);
-            renderHeroCarousel(heroItems);
-            const gridItems = newNews.slice(HERO_COUNT);
-            renderNewsGrid(gridItems);
-        } else {
-            renderNewsGrid(newNews);
+        
+        if (newNews.length === 0) {
+            hasMore = false;
+            if (!isInitialLoad) {
+                updateStatus('You have reached the end. No more stories for now!');
+            }
+            return;
         }
+
+        let heroItems = [];
+        let gridItems = newNews;
+
+        if (isInitialLoad) {
+            heroItems = newNews.slice(0, HERO_COUNT);
+            gridItems = newNews.slice(HERO_COUNT);
+            renderHeroCarousel(heroItems);
+        }
+
+        renderNewsGrid(gridItems);
 
         if (newNews.length < limit) {
             hasMore = false;
-            updateStatus('Has llegado al final. ¡No hay más historias por ahora!');
+            updateStatus('You have reached the end. No more stories for now!');
         } else {
             statusContainer.innerHTML = '';
         }
         
         page++;
     } catch (e) {
-        console.error(e);
-        updateStatus('Error al cargar el contenido. Por favor, inténtalo de nuevo más tarde.');
+        console.error("Error loading news:", e);
+        updateStatus('Error loading content. Please try again later.');
     } finally {
         isLoading = false;
         if (isInitialLoad) showLoader(false);
@@ -151,13 +235,28 @@ function debounce(func, wait) {
     };
 }
 
+if (prevControl && nextControl) {
+    prevControl.addEventListener('click', () => moveSlide(-1));
+    nextControl.addEventListener('click', () => moveSlide(1));
+}
+
+if (heroCarousel) {
+    heroCarousel.addEventListener('mouseenter', stopAutoSlide);
+    heroCarousel.addEventListener('mouseleave', startAutoSlide);
+}
+
+
 window.addEventListener("scroll", debounce(() => {
+    const documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    
     const scrollPosition = window.scrollY + window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    if (scrollPosition >= documentHeight - 600) {
+    
+    const distanceToBottom = documentHeight - scrollPosition;
+    
+    if (distanceToBottom <= SCROLL_THRESHOLD) {
         loadMoreNews();
     }
-}, 200));
+}, 100));
 
 (async () => {
     await loadMoreNews(true);

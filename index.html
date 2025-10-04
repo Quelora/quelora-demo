@@ -3,651 +3,380 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quelora | Open-Source Engagement Platform</title>
-    <!-- Bootstrap 5 + Google Fonts -->
+    <title data-i18n="page_title">Quelora | High-Performance Comment System with Augmented Intelligence</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- i18next for i18n -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://unpkg.com/i18next@23.12.2/i18next.min.js"></script>
+
     <style>
+        /* Paleta de Colores Sofisticada (sin cambios) */
         :root {
-            --quelora-blue: #4285F4;
-            --quelora-green: #34A853;
-            --quelora-red: #EA4335;
-            --quelora-yellow: #FBBC05;
-            --text-primary: #202124;
-            --bg-primary: #ffffff;
-            --bg-secondary: #f8f9fa;
-            --bg-tertiary: #e9ecef;
-            --border-color: #dee2e6;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --color-primary-accent: #007BFF; /* Azul profesional */
+            --color-primary-hover: #0056b3;
+            --color-text-dark: #1C1C1C;
+            --color-text-light: #EAEAEA;
+            --color-text-secondary: #6C757D;
+            --color-background-light: #FFFFFF;
+            --color-background-dark: #F8F9FA;
+            --color-card-background-light: #FFFFFF;
+            --color-card-background-dark: #F0F0F0;
+            --color-border: #E0E0E0;
             --transition-speed: 0.3s;
         }
 
         [data-theme="dark"] {
-            --text-primary: #e3e3e3;
-            --bg-primary: #121212;
-            --bg-secondary: #1e1e1e;
-            --bg-tertiary: #2d2d2d;
-            --border-color: #444;
-            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            --bs-heading-color:  #ccc!important;
-            --bs-card-color: #ddd!important;
-            --bs-card-title-color: #ddd!important;
+            --color-text-dark: #EAEAEA;
+            --color-text-light: #1C1C1C;
+            --color-text-secondary: #9CA3AF;
+            --color-background-light: #0A0A0A; /* Negro puro */
+            --color-background-dark: #1F2937; /* Gris oscuro para contraste */
+            --color-card-background-light: #1F2937;
+            --color-card-background-dark: #151515;
+            --color-border: #374151;
+            --bs-heading-color: var(--color-text-dark) !important;
+            --bs-card-color: var(--color-text-dark) !important;
+            --bs-card-title-color: var(--color-text-dark) !important;
         }
 
+        /* Base */
         body {
             font-family: 'Inter', sans-serif;
-            color: var(--text-primary);
-            background-color: var(--bg-primary);
+            color: var(--color-text-dark);
+            background-color: var(--color-background-light);
             transition: background-color var(--transition-speed);
+            line-height: 1.6;
         }
 
+        /* Tipografía */
+        h1, h2, h3, h4 {
+            font-weight: 800; /* Más audaz */
+            letter-spacing: -0.04em;
+        }
+        .display-4 {
+            font-weight: 900;
+        }
+
+        /* Navbar */
         .navbar {
-            background-color: var(--bg-primary) !important;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+            background-color: var(--color-background-light) !important;
+            box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
+            border-bottom: 1px solid var(--color-border);
         }
-
         [data-theme="dark"] .navbar {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 1px 15px rgba(0, 0, 0, 0.4);
+            border-bottom-color: #2D3748;
+        }
+        .nav-link, .navbar-brand {
+            color: var(--color-text-dark) !important;
+            font-weight: 600;
         }
 
-        .navbar-brand img {
-            height: 30px;
-            width: auto;
-        }
-
-        .navbar-brand, .nav-link {
-            color:var(--bs-card-color);
-        }
-
-        .navbar-brand:hover, .nav-link:hover {
-            color:var(--bs-heading-color);
-        }
-
-        .navbar-toggler, .navbar-toggler-icon {
-            background-color:var(--bs-card-color);
-        }
-
-        .hero {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
-            padding: 5rem 0;
-            transition: background var(--transition-speed);
-        }
-
-        .feature-icon {
-            width: 64px;
-            height: 64px;
-            margin-bottom: 1rem;
-            background-color: var(--quelora-blue);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5rem;
-            transition: transform 0.2s, background-color var(--transition-speed);
-        }
-
-        .feature-icon:hover {
-            transform: scale(1.1);
-        }
-
+        /* Botones Elegantes */
         .btn-quelora {
-            background-color: var(--quelora-blue);
+            background-color: var(--color-primary-accent);
             color: white;
-            border: none;
-            font-weight: 500;
-            padding: 0.5rem 1.5rem;
-            border-radius: 8px;
+            border: 1px solid var(--color-primary-accent);
+            font-weight: 600;
+            padding: 0.6rem 2rem;
+            border-radius: 10px;
             transition: all var(--transition-speed);
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
         }
-
         .btn-quelora:hover {
-            background-color: #3367d6;
-            color: white;
+            background-color: var(--color-primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
+            color: white;
+        }
+        .btn-outline-primary {
+            color: var(--color-primary-accent);
+            border-color: var(--color-primary-accent);
+            border-radius: 10px;
+        }
+        .btn-outline-primary:hover {
+            background-color: var(--color-primary-accent);
+            color: white;
+        }
+        .btn-outline-secondary {
+             color: var(--color-text-secondary);
+             border-color: var(--color-border);
+             border-radius: 10px;
+        }
+        .btn-outline-secondary:hover {
+            background-color: var(--color-background-dark);
+            color: var(--color-text-dark);
+        }
+        [data-theme="dark"] .btn-outline-secondary:hover {
+            background-color: #374151;
         }
 
-        [data-theme="dark"] .btn-quelora:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        /* Hero Section */
+        .hero {
+            background-color: var(--color-background-dark);
+            padding: 8rem 0 6rem;
+            border-bottom: 5px solid var(--color-primary-accent); /* Línea de acento */
         }
 
-        .demo-card {
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            background-color: var(--bg-primary);
-            overflow: hidden;
-        }
-
-        .demo-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        [data-theme="dark"] .demo-card:hover {
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
+        /* Cards and Features (Refinando la estética) */
         .card {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            transition: all var(--transition-speed);
-            color:var(--bs-card-color)!important;
+            background-color: var(--color-card-background-light);
+            border: 1px solid var(--color-border);
+            border-radius: 16px; /* Más redondeado */
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Sombra profesional */
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed), background-color var(--transition-speed);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        [data-theme="dark"] .card {
+            background-color: var(--color-card-background-dark);
+            border-color: #374151;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
+        .icon-lg {
+            font-size: 2.5rem;
+            color: var(--color-primary-accent);
+        }
+
+        /* Sección de Código */
         pre {
-            background-color: var(--bg-tertiary);
-            color: var(--text-primary);
+            background-color: var(--color-background-dark);
+            color: var(--color-text-dark);
+            border: 1px solid var(--color-border);
+            border-left: 5px solid var(--color-primary-accent); /* Barra de acento para código */
             border-radius: 8px;
-            padding: 1rem;
+            padding: 1.5rem;
+            font-size: 0.9rem;
             overflow-x: auto;
         }
+        [data-theme="dark"] pre {
+            background-color: #151515;
+            border-color: #374151;
+        }
 
+        /* Footer */
         footer {
-            background-color: var(--bg-tertiary) !important;
-            transition: background-color var(--transition-speed);
-        }
-
-        .theme-toggle, .language-selector {
-            cursor: pointer;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: background-color var(--transition-speed);
-        }
-
-        .theme-toggle:hover, .language-selector:hover {
-            background-color: var(--bg-tertiary);
-        }
-
-        .dropdown-menu {
-            background-color: var(--bg-primary);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--card-shadow);
-        }
-
-        .dropdown-item {
-            color: var(--text-primary);
-            transition: background-color var(--transition-speed);
-        }
-
-        .dropdown-item:hover {
-            background-color: var(--bg-tertiary);
-        }
-
-        /* Modern rounded elements */
-        .rounded-xl {
-            border-radius: 16px;
-        }
-
-        /* Smooth transitions */
-        a, button, .card, .feature-icon {
-            transition: all var(--transition-speed);
-        }
-
-        /* Glow effect for interactive elements */
-        .btn-quelora:focus, .btn-outline-primary:focus {
-            box-shadow: 0 0 0 0.25rem rgba(66, 133, 244, 0.3);
-        }
-
-        /* Dark mode specific adjustments */
-        [data-theme="dark"] .text-dark {
-            color: var(--text-primary) !important;
-        }
-
-        [data-theme="dark"] .bg-light {
-            background-color: var(--bg-secondary) !important;
-        }
-
-        /* Language selector styles */
-        .language-selector img {
-            width: 20px;
-            height: auto;
-            margin-right: 8px;
-        }
-
-        /* Theme toggle animation */
-        .theme-icon {
-            transition: transform 0.3s ease;
-        }
-
-        .theme-toggle:hover .theme-icon {
-            transform: rotate(15deg);
-        }
-
-        /* Modern typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 700;
-            letter-spacing: -0.02em;
-        }
-
-        .display-4 {
-            font-weight: 800;
-            letter-spacing: -0.03em;
-        }
-
-        /* Improved button group spacing */
-        .btn-group-actions .btn {
-            margin-right: 0.5rem;
-            margin-bottom: 0.5rem;
+            background-color: var(--color-background-dark) !important;
+            border-top: 1px solid var(--color-border);
         }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle">
-                <strong>Quelora</strong>
+                <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle" width="30" height="30">
+                <strong style="color: var(--color-text-dark);">Quelora</strong>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="#features" data-i18n="nav.features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#demos" data-i18n="nav.demos">Demos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#ai-performance" data-i18n="nav.performance">Performance</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#core-architecture" data-i18n="nav.architecture">Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#get-started" data-i18n="nav.get_started_short">Deployment</a></li>
                     <li class="nav-item"><a class="nav-link" href="#docs" data-i18n="nav.docs">Docs</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#community" data-i18n="nav.community">Community</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#repositories" data-i18n="nav.repositories">Repositories</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <!-- Language Selector -->
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://flagcdn.com/w20/us.png" alt="English" id="currentLanguageFlag">
+                             <img src="https://flagcdn.com/w20/us.png" alt="English" id="currentLanguageFlag">
                             <span id="currentLanguage" class="ms-1">EN</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="languageDropdown">
-                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="en">
-                                <img src="https://flagcdn.com/w20/us.png" alt="English" class="me-2"> English
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="es">
-                                <img src="https://flagcdn.com/w20/es.png" alt="Spanish" class="me-2"> Español
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="fr">
-                                <img src="https://flagcdn.com/w20/fr.png" alt="French" class="me-2"> Français
-                            </a></li>
-                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="de">
-                                <img src="https://flagcdn.com/w20/de.png" alt="German" class="me-2"> Deutsch
-                            </a></li>
+                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="en"><img src="https://flagcdn.com/w20/us.png" alt="English" class="me-2"> English</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="es"><img src="https://flagcdn.com/w20/es.png" alt="Spanish" class="me-2"> Español</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="fr"><img src="https://flagcdn.com/w20/fr.png" alt="French" class="me-2"> Français</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="de"><img src="https://flagcdn.com/w20/de.png" alt="German" class="me-2"> Deutsch</a></li>
                         </ul>
                     </div>
                     
-                    <!-- Theme Toggle -->
-                    <button class="btn btn-outline-secondary theme-toggle" id="themeToggle">
+                    <button class="btn btn-outline-secondary theme-toggle me-2" id="themeToggle">
                         <i class="bi bi-sun-fill theme-icon" id="themeIcon"></i>
                     </button>
                     
-                    <a href="https://github.com/Quelora" target="_blank" class="btn btn-outline-secondary ms-2">
-                        <i class="bi bi-github"></i>
-                    </a>
-                    <a href="#get-started" class="btn btn-quelora ms-2" data-i18n="nav.get_started">Get Started</a>
+                    <a href="https://github.com/Quelora/quelora-infra" target="_blank" class="btn btn-outline-primary ms-2" data-i18n="nav.view_infra">View Infra</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="container text-center">
-            <img src="https://quelora.github.io/media/image/quelora/quelora.blue.webp" alt="Quelora Logo" width="400" class="mb-4 img-fluid">
-            <h1 class="display-4 fw-bold mb-4" data-i18n="hero.title">Build Engaging Communities</h1>
-            <p class="lead mb-4" data-i18n="hero.subtitle">Free, open-source comment and community system to foster engagement and collaboration.</p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#get-started" class="btn btn-quelora btn-lg px-4" data-i18n="hero.try_demo">Try Demo</a>
-                <a href="https://github.com/Quelora" class="btn btn-outline-secondary btn-lg px-4" data-i18n="hero.github">GitHub</a>
-                <a href="#docs" class="btn btn-outline-primary btn-lg px-4" data-i18n="hero.documentation">Documentation</a>
+            <h1 class="display-4 fw-bold mb-3" data-i18n="hero.new_title">Quelora. The High-Performance Comment System with Augmented Intelligence.</h1>
+            <p class="lead mb-4 text-secondary" data-i18n="hero.new_subtitle">Advanced moderation, geolocation, and analytics powered by AI, natively integrated into your website.</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap pt-2">
+                <a href="/news.html" class="btn btn-quelora btn-lg px-5" data-i18n="hero.view_live_demo">View Live Demo</a>
+                <a href="https://github.com/Quelora/quelora-api" class="btn btn-outline-secondary btn-lg px-5" data-i18n="hero.explore_api">Explore API</a>
             </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section id="features" class="py-5">
+    <section id="ai-performance" class="py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 data-i18n="features.title">Why Quelora?</h2>
-                <p class="lead" data-i18n="features.subtitle">Everything you need to grow your community</p>
+                <h2 data-i18n="performance.title">AI-Powered Features & Max Speed</h2>
+                <p class="lead text-secondary" data-i18n="performance.subtitle">The robust engine needed to manage demanding social content with guaranteed speed and intelligence.</p>
             </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="feature-icon mx-auto">
-                        <i class="bi bi-chat-square-text"></i>
+            <div class="row g-5 align-items-center">
+                
+                <div class="col-lg-6">
+                     <h3 data-i18n="performance.demo_title" class="mb-3">Zero Latency Proof</h3>
+                    <p class="text-secondary mb-4" data-i18n="performance.demo_desc">Our live demo verifies Quelora's **speed and robustness** in processing, moderating, and visualizing thousands of dynamic comments with **minimal latency**. A performance feat only possible thanks to our caching architecture (**Redis**).</p>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-lightning-fill text-success fs-4 me-3"></i>
+                            <span data-i18n="performance.feature1">**Redis Caching:** Ultra-fast transactions for real-time data.</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-database-fill-check text-success fs-4 me-3"></i>
+                            <span data-i18n="performance.feature2">**Mongo Persistence:** Flexible, scalable database for high volumes.</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-robot text-success fs-4 me-3"></i>
+                            <span data-i18n="performance.feature3">**Web Scraping:** Versatile dynamic data ingestion via Puppeteer/Chrome.</span>
+                        </div>
                     </div>
-                    <h3 class="text-center" data-i18n="features.1.title">Comment System</h3>
-                    <p class="text-center" data-i18n="features.1.description">Foster engagement with open-source comments.</p>
+                    <a href="/news.html" class="btn btn-quelora mt-4 px-5" data-i18n="demos.view_live_demo_link">View Live Demo</a>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-icon mx-auto">
-                        <i class="bi bi-shield-lock"></i>
+
+                <div class="col-lg-6">
+                    <div class="card p-4 h-100">
+                        <h4 class="mb-3" data-i18n="performance.ai_title">AI-Augmented Content Management</h4>
+                        <p class="text-secondary" data-i18n="performance.ai_desc">We use the most advanced AI models (Gemini, OpenAI, Grok) to ensure a safe community environment and provide precise sentiment analysis, translation, and geolocation services.</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **LLM Moderation:** Multi-provider toxicity and sentiment filtering.</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **Translation Services:** Automatic content translation (`translateService`).</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **Geospatial Analytics:** Traffic and activity statistics by location (`GeoLite2`).</li>
+                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **Enterprise Security:** SSO, Rate Limiting, and Helmet implementation.</li>
+                        </ul>
                     </div>
-                    <h3 class="text-center" data-i18n="features.2.title">Community Tools</h3>
-                    <p class="text-center" data-i18n="features.2.description">Designed for collaboration.</p>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-icon mx-auto">
-                        <i class="bi bi-graph-up"></i>
-                    </div>
-                    <h3 class="text-center" data-i18n="features.3.title">Vanilla JS Widget</h3>
-                    <p class="text-center" data-i18n="features.3.description">Lightweight client integration.</p>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-icon mx-auto">
-                        <i class="bi bi-globe"></i>
-                    </div>
-                    <h3 class="text-center" data-i18n="features.4.title">NodeJS API</h3>
-                    <p class="text-center" data-i18n="features.4.description">Backend support with NodeJS.</p>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-icon mx-auto">
-                        <i class="bi bi-translate"></i>
-                    </div>
-                    <h3 class="text-center" data-i18n="features.5.title">Dashboard</h3>
-                    <p class="text-center" data-i18n="features.5.description">Management interface.</p>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-icon mx-auto">
-                        <i class="bi bi-lightning"></i>
-                    </div>
-                    <h3 class="text-center" data-i18n="features.6.title">Demo Page</h3>
-                    <p class="text-center" data-i18n="features.6.description">HTML demo for testing.</p>
-                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- Demos Section -->
-    <section id="demos" class="py-5 bg-light">
+    <section id="core-architecture" class="py-5 bg-primary-subtle" style="background-color: var(--color-background-dark) !important;">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 data-i18n="demos.title">Live Demos</h2>
-                <p class="lead" data-i18n="demos.subtitle">Explore Quelora in different contexts</p>
+                <h2 data-i18n="architecture.title">World-Class Architecture</h2>
+                <p class="lead text-secondary" data-i18n="architecture.subtitle">A robust, scalable microservices solution that guarantees reliability and performance.</p>
             </div>
             <div class="row g-4 justify-content-center">
-                <div class="col-lg-4 col-md-6">
-                    <div class="card demo-card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title" data-i18n="demos.1.title">News Article Demo</h3>
-                            <p class="card-text" data-i18n="demos.1.description">See how Quelora integrates with a news site, featuring threaded comments and real-time updates.</p>
-                            <a href="/news.html" class="btn btn-quelora" data-i18n="demos.view_demo">View Demo</a>
-                        </div>
+                 <div class="col-md-4">
+                    <div class="card h-100 p-4 text-center">
+                        <i class="bi bi-server icon-lg mx-auto mb-3"></i>
+                        <h3 data-i18n="architecture.api_title" class="h4">Quelora API (Node.js)</h3>
+                        <p class="text-secondary" data-i18n="architecture.api_description">The central engine managing business logic, AI moderation, notifications, and SSO.</p>
+                        <a href="https://github.com/Quelora/quelora-api" class="btn btn-outline-primary mt-auto" data-i18n="repositories.view_repo">View Repo</a>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card demo-card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title" data-i18n="demos.2.title">Image Gallery Demo</h3>
-                            <p class="card-text" data-i18n="demos.2.description">Interactive gallery with user-generated content, reactions, and moderation tools.</p>
-                            <a href="/gallery.html" class="btn btn-quelora" data-i18n="demos.view_demo">View Demo</a>
-                        </div>
+                 <div class="col-md-4">
+                    <div class="card h-100 p-4 text-center">
+                        <i class="bi bi-plug icon-lg mx-auto mb-3"></i>
+                        <h3 data-i18n="architecture.client_title" class="h4">Lightweight Integration Widget</h3>
+                        <p class="text-secondary" data-i18n="architecture.client_description">A Vanilla JS client embeddable in any website, optimized for speed and user experience (includes audio and push notifications).</p>
+                        <a href="https://github.com/Quelora/quelora-client" class="btn btn-outline-primary mt-auto" data-i18n="repositories.view_repo">View Repo</a>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6">
-                    <div class="card demo-card h-100">
-                        <div class="card-body">
-                            <h3 class="card-title" data-i18n="demos.3.title">KittyReels</h3>
-                            <p class="card-text" data-i18n="demos.3.description">An immersive video feed experience with lazy loading, mobile-first design, and optimized playback.</p>
-                            <a href="/kittyreels.html" class="btn btn-quelora" data-i18n="demos.view_demo">View Demo</a>
-                        </div>
+                <div class="col-md-4">
+                    <div class="card h-100 p-4 text-center">
+                        <i class="bi bi-speedometer2 icon-lg mx-auto mb-3"></i>
+                        <h3 data-i18n="architecture.dashboard_title" class="h4">Admin Control Panel (Dashboard)</h3>
+                        <p class="text-secondary" data-i18n="architecture.dashboard_description">Administrative interface for managing users, posts, geo-located data, and real-time analytics.</p>
+                        <a href="https://github.com/Quelora/quelora-dashboard" class="btn btn-outline-primary mt-auto" data-i18n="repositories.view_repo">View Repo</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-    <!-- Repositories Section -->
-    <section id="repositories" class="py-5">
+    
+    <section id="get-started" class="py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 data-i18n="repositories.title">Our Repositories</h2>
-                <p class="lead" data-i18n="repositories.subtitle">Core components of Quelora</p>
-            </div>
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="repositories.1.title">quelora-infra</h3>
-                            <p data-i18n="repositories.1.description">Free, open-source comment and community system. JavaScript. GPL v3.</p>
-                            <a href="https://github.com/Quelora/quelora-infra" class="btn btn-outline-primary" data-i18n="repositories.view_repo">View Repo</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="repositories.2.title">quelora-client</h3>
-                            <p data-i18n="repositories.2.description">Vanilla JS widget. JavaScript. GPL v3.</p>
-                            <a href="https://github.com/Quelora/quelora-client" class="btn btn-outline-primary" data-i18n="repositories.view_repo">View Repo</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="repositories.3.title">quelora-api</h3>
-                            <p data-i18n="repositories.3.description">NodeJS API. JavaScript. GPL v3.</p>
-                            <a href="https://github.com/Quelora/quelora-api" class="btn btn-outline-primary" data-i18n="repositories.view_repo">View Repo</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="repositories.4.title">quelora-dashboard</h3>
-                            <p data-i18n="repositories.4.description">Dashboard. JavaScript. GPL v3.</p>
-                            <a href="https://github.com/Quelora/quelora-dashboard" class="btn btn-outline-primary" data-i18n="repositories.view_repo">View Repo</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="repositories.5.title">quelora-demo</h3>
-                            <p data-i18n="repositories.5.description">HTML demo. GPL v3.</p>
-                            <a href="https://github.com/Quelora/quelora-demo" class="btn btn-outline-primary" data-i18n="repositories.view_repo">View Repo</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="repositories.6.title">quelora-docs</h3>
-                            <p data-i18n="repositories.6.description">Documentation and guides. GPL v3.</p>
-                            <a href="https://github.com/Quelora/quelora-docs" class="btn btn-outline-primary" data-i18n="repositories.view_repo">View Repo</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Get Started -->
-    <section id="get-started" class="py-5 bg-light">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 data-i18n="get_started.title">Get Started with Quelora</h2>
-                <p class="lead" data-i18n="get_started.subtitle">Deploy your own instance in minutes</p>
+                <h2 data-i18n="get_started.title">High-Level Deployment in Minutes</h2>
+                <p class="lead text-secondary" data-i18n="get_started.subtitle">Launch your self-hosted instance with our optimized Docker Compose.</p>
             </div>
             
             <div class="row justify-content-center">
                 <div class="col-lg-10">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.prerequisites">Prerequisites</h4>
-                            <ul>
-                                <li data-i18n="get_started.prereq1">Docker and Docker Compose installed</li>
-                                <li data-i18n="get_started.prereq2">Git for cloning repositories</li>
-                                <li data-i18n="get_started.prereq3">Basic knowledge of terminal/command line</li>
-                            </ul>
-                        </div>
-                    </div>
                     
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.clone_title">1. Clone the Infrastructure Repository</h4>
-                            <p data-i18n="get_started.clone_desc">Start by cloning the main infrastructure repository which includes all necessary components:</p>
+                            <h4 class="mb-3" data-i18n="get_started.clone_title">1. Clone Infrastructure and Components</h4>
+                            <p data-i18n="get_started.clone_desc_new">The Docker Compose infrastructure (`quelora-infra`) manages the orchestration of the API, Dashboard, Client, and databases (Redis/Mongo).</p>
                             <pre><code>git clone https://github.com/Quelora/quelora-infra.git
-cd quelora-infra</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.submodules_title">2. Update Submodules</h4>
-                            <p data-i18n="get_started.submodules_desc">Initialize and update all Git submodules to get the latest versions of all components:</p>
-                            <pre><code>git submodule init
+cd quelora-infra
 git submodule update --remote --recursive</code></pre>
                         </div>
                     </div>
                     
                     <div class="card mb-4">
                         <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.env_title">3. Configure Environment Variables</h4>
-                            <p data-i18n="get_started.env_desc">Create and configure your environment files. Copy the example files and edit them with your configuration:</p>
+                            <h4 class="mb-3" data-i18n="get_started.build_title">2. Configuration and Final Deployment</h4>
+                            <p data-i18n="get_started.build_desc_new">Define environment variables for databases and services, then build and launch the complete microservices stack.</p>
                             <pre><code>cp .env.example .env
-cp api/.env.example api/.env
-cp client/.env.example client/.env
-cp dashboard/.env.example dashboard/.env</code></pre>
-                            <p class="mt-3" data-i18n="get_started.env_note"><strong>Note:</strong> Edit each .env file with your specific configuration before proceeding.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.build_title">4. Build and Start Containers</h4>
-                            <p data-i18n="get_started.build_desc">Build and start all services using Docker Compose:</p>
-                            <pre><code>docker compose -f docker-compose-production.yml --env-file .env build
-docker compose -f docker-compose-production.yml --env-file .env up -d</code></pre>
-                        </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.access_title">5. Access Your Instance</h4>
-                            <p data-i18n="get_started.access_desc">After the containers are running, you can access:</p>
-                            <ul>
-                                <li data-i18n="get_started.access1">API: http://localhost:3000</li>
-                                <li data-i18n="get_started.access2">Client: http://localhost:8080</li>
-                                <li data-i18n="get_started.access3">Dashboard: http://localhost:4000</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.management_title">6. Management Commands</h4>
-                            <p data-i18n="get_started.management_desc">Useful commands for managing your instance:</p>
-                            <pre><code># Stop all services
-docker compose -f docker-compose-production.yml down
+# Edit .env with your configuration (Redis/Mongo/LLM Keys)
 
-# View logs
-docker compose -f docker-compose-production.yml logs -f
-
-# Restart a specific service
-docker compose -f docker-compose-production.yml restart api
-
-# Update to latest versions
-git pull origin main
-git submodule update --remote --recursive
-docker compose -f docker-compose-production.yml --env-file .env build
-docker compose -f docker-compose-production.yml --env-file .env up -d</code></pre>
+docker compose -f docker-compose-production.yml build
+docker compose -f docker-compose-production.yml up -d</code></pre>
                         </div>
                     </div>
                     
                     <div class="text-center mt-5">
-                        <a href="https://github.com/Quelora/quelora-infra#readme" class="btn btn-quelora btn-lg px-5" data-i18n="get_started.full_docs">Full Documentation</a>
+                        <a href="https://github.com/Quelora/quelora-infra#readme" class="btn btn-quelora btn-lg px-5" data-i18n="get_started.full_docs">Full Documentation (Infra)</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Documentation Section -->
-    <section id="docs" class="py-5">
+    <section id="docs" class="py-5 bg-primary-subtle" style="background-color: var(--color-background-dark) !important;">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 data-i18n="docs.title">Documentation</h2>
-                <p class="lead" data-i18n="docs.subtitle">Learn how to integrate and extend Quelora</p>
+                <h2 data-i18n="docs.title">Documentation for Developers</h2>
+                <p class="lead text-secondary" data-i18n="docs.subtitle">Learn how to integrate, extend, and optimize Quelora for your specific needs.</p>
             </div>
             <div class="row g-4">
                 <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="docs.1.title">API Reference</h3>
-                            <p data-i18n="docs.1.description">Complete documentation of all API endpoints, request/response formats, and authentication.</p>
-                            <a href="#" class="btn btn-outline-primary" data-i18n="docs.read_more">Read More</a>
-                        </div>
+                    <div class="card h-100 p-4">
+                        <h3 data-i18n="docs.1.title" class="h5">Core API Reference</h3>
+                        <p class="text-secondary" data-i18n="docs.1.description">Documentation of API endpoints (`authRoutes`, `statsRoutes`) and data model management (Mongo).</p>
+                        <a href="#" class="btn btn-outline-primary mt-auto" data-i18n="docs.read_more">Read More</a>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="docs.2.title">Widget Integration</h3>
-                            <p data-i18n="docs.2.description">Step-by-step guide for integrating the Quelora widget into your website or application.</p>
-                            <a href="#" class="btn btn-outline-primary" data-i18n="docs.read_more">Read More</a>
-                        </div>
+                    <div class="card h-100 p-4">
+                        <h3 data-i18n="docs.2.title" class="h5">Client Integration (Widget)</h3>
+                        <p class="text-secondary" data-i18n="docs.2.description">Step-by-step guide for integrating the Vanilla JS widget into any environment. CSS customization included.</p>
+                        <a href="#" class="btn btn-outline-primary mt-auto" data-i18n="docs.read_more">Read More</a>
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <h3 data-i18n="docs.3.title">Customization</h3>
-                            <p data-i18n="docs.3.description">How to customize themes, behaviors, and extend Quelora's functionality.</p>
-                            <a href="#" class="btn btn-outline-primary" data-i18n="docs.read_more">Read More</a>
-                        </div>
+                    <div class="card h-100 p-4">
+                        <h3 data-i18n="docs.3.title" class="h5">Provider Extension</h3>
+                        <p class="text-secondary" data-i18n="docs.3.description">Guides for adding new AI providers (`ModerationProviders`) or SSO providers (`ssoProviders`).</p>
+                        <a href="#" class="btn btn-outline-primary mt-auto" data-i18n="docs.read_more">Read More</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Community -->
-    <section id="community" class="py-5 bg-light">
-        <div class="container text-center">
-            <h2 class="mb-4" data-i18n="community.title">Join the Community</h2>
-            <p class="lead mb-5" data-i18n="community.subtitle">Quelora is open-source and thrives on contributions.</p>
-            <div class="row g-4 justify-content-center">
-                <div class="col-md-5">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <i class="bi bi-github fs-1 mb-3 text-dark"></i>
-                            <h3 data-i18n="community.1.title">GitHub</h3>
-                            <p data-i18n="community.1.description">Star, fork, or submit a PR. We welcome contributors!</p>
-                            <a href="https://github.com/Quelora" class="btn btn-outline-primary" data-i18n="community.visit">Visit Repo</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <i class="bi bi-file-earmark-text fs-1 mb-3 text-dark"></i>
-                            <h3 data-i18n="community.2.title">Roadmap</h3>
-                            <p data-i18n="community.2.description">Check out upcoming features and vote on ideas.</p>
-                            <a href="#" class="btn btn-outline-primary" data-i18n="community.view">View Roadmap</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-5">
+    <footer class="py-5" style="background-color: var(--color-background-dark) !important;">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-6 mb-4 mb-md-0">
-                    <a class="d-inline-flex align-items-center text-decoration-none" href="#" style="color: var(--text-primary);">
+                    <a class="d-inline-flex align-items-center text-decoration-none" href="#" style="color: var(--color-text-dark);">
                         <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" width="40" class="me-2 rounded-circle">
                         <span class="fs-5 fw-bold">Quelora</span>
                     </a>
-                    <p class="mt-2 mb-0" data-i18n="footer.description">Open-source engagement platform for modern websites.</p>
+                    <p class="mt-2 mb-0 text-secondary" data-i18n="footer.description">Open-source dynamic content and moderation platform for modern websites.</p>
                 </div>
                 <div class="col-md-6 text-md-end">
                     <div class="btn-group btn-group-actions">
@@ -663,29 +392,22 @@ docker compose -f docker-compose-production.yml --env-file .env up -d</code></pr
                     </div>
                 </div>
             </div>
-            <hr class="my-4">
-            <div class="text-center">
+            <hr class="my-4" style="border-color: var(--color-border);">
+            <div class="text-center text-secondary">
                 <p class="mb-0" data-i18n="footer.copyright">© 2025 Quelora. Open-source under GPL v3 License.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <!-- i18next Initialization -->
     <script>
-        // Theme toggle functionality
+        // Theme toggle functionality (Conservada y adaptada a nuevas variables)
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
         
-        // Check for saved theme preference or use preferred color scheme
-        const savedTheme = localStorage.getItem('theme') || 
-                         (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         
-        // Apply the saved theme
         if (savedTheme === 'dark') {
             htmlElement.setAttribute('data-theme', 'dark');
             themeIcon.classList.remove('bi-sun-fill');
@@ -696,7 +418,6 @@ docker compose -f docker-compose-production.yml --env-file .env up -d</code></pr
             themeIcon.classList.add('bi-sun-fill');
         }
         
-        // Toggle theme on button click
         themeToggle.addEventListener('click', () => {
             if (htmlElement.getAttribute('data-theme') === 'dark') {
                 htmlElement.removeAttribute('data-theme');
@@ -711,430 +432,117 @@ docker compose -f docker-compose-production.yml --env-file .env up -d</code></pr
             }
         });
         
-        // Language selector functionality
+        // Language selector functionality (Conservada)
         const languageOptions = document.querySelectorAll('.language-option');
         const currentLanguageFlag = document.getElementById('currentLanguageFlag');
         const currentLanguageText = document.getElementById('currentLanguage');
         
-        // Initialize i18next
-        i18next.init({
-            lng: localStorage.getItem('language') || 'en',
-            resources: {
-                en: {
-                    translation: {
-                        "nav.features": "Features",
-                        "nav.demos": "Demos",
-                        "nav.docs": "Docs",
-                        "nav.community": "Community",
-                        "nav.repositories": "Repositories",
-                        "nav.get_started": "Get Started",
-                        "hero.title": "Build Engaging Communities",
-                        "hero.subtitle": "Free, open-source comment and community system to foster engagement and collaboration.",
-                        "hero.try_demo": "Try Demo",
-                        "hero.github": "GitHub",
-                        "hero.documentation": "Documentation",
-                        "features.title": "Why Quelora?",
-                        "features.subtitle": "Everything you need to grow your community",
-                        "features.1.title": "Comment System",
-                        "features.1.description": "Foster engagement with open-source comments.",
-                        "features.2.title": "Community Tools",
-                        "features.2.description": "Designed for collaboration.",
-                        "features.3.title": "Vanilla JS Widget",
-                        "features.3.description": "Lightweight client integration.",
-                        "features.4.title": "NodeJS API",
-                        "features.4.description": "Backend support with NodeJS.",
-                        "features.5.title": "Dashboard",
-                        "features.5.description": "Management interface.",
-                        "features.6.title": "Demo Page",
-                        "features.6.description": "HTML demo for testing.",
-                        "demos.title": "Live Demos",
-                        "demos.subtitle": "Explore Quelora in different contexts",
-                        "demos.1.title": "News Article Demo",
-                        "demos.1.description": "See how Quelora integrates with a news site, featuring threaded comments and real-time updates.",
-                        "demos.2.title": "Image Gallery Demo",
-                        "demos.2.description": "Interactive gallery with user-generated content, reactions, and moderation tools.",
-                        "demos.3.title": "KittyReels",
-                        "demos.3.description": "An immersive video feed experience with lazy loading, mobile-first design, and optimized playback.",
-                        "demos.view_demo": "View Demo",
-                        "repositories.title": "Our Repositories",
-                        "repositories.subtitle": "Core components of Quelora",
-                        "repositories.1.title": "quelora-infra",
-                        "repositories.1.description": "Free, open-source comment and community system. JavaScript. GPL v3.",
-                        "repositories.2.title": "quelora-client",
-                        "repositories.2.description": "Vanilla JS widget. JavaScript. GPL v3.",
-                        "repositories.3.title": "quelora-api",
-                        "repositories.3.description": "NodeJS API. JavaScript. GPL v3.",
-                        "repositories.4.title": "quelora-dashboard",
-                        "repositories.4.description": "Dashboard. JavaScript. GPL v3.",
-                        "repositories.5.title": "quelora-demo",
-                        "repositories.5.description": "HTML demo. GPL v3.",
-                        "repositories.6.title": "quelora-docs",
-                        "repositories.6.description": "Documentation and guides. GPL v3.",
-                        "repositories.view_repo": "View Repo",
-                        "get_started.title": "Get Started with Quelora",
-                        "get_started.subtitle": "Deploy your own instance in minutes",
-                        "get_started.prerequisites": "Prerequisites",
-                        "get_started.prereq1": "Docker and Docker Compose installed",
-                        "get_started.prereq2": "Git for cloning repositories",
-                        "get_started.prereq3": "Basic knowledge of terminal/command line",
-                        "get_started.clone_title": "1. Clone the Infrastructure Repository",
-                        "get_started.clone_desc": "Start by cloning the main infrastructure repository which includes all necessary components:",
-                        "get_started.submodules_title": "2. Update Submodules",
-                        "get_started.submodules_desc": "Initialize and update all Git submodules to get the latest versions of all components:",
-                        "get_started.env_title": "3. Configure Environment Variables",
-                        "get_started.env_desc": "Create and configure your environment files. Copy the example files and edit them with your configuration:",
-                        "get_started.env_note": "Note: Edit each .env file with your specific configuration before proceeding.",
-                        "get_started.build_title": "4. Build and Start Containers",
-                        "get_started.build_desc": "Build and start all services using Docker Compose:",
-                        "get_started.access_title": "5. Access Your Instance",
-                        "get_started.access_desc": "After the containers are running, you can access:",
-                        "get_started.access1": "API: http://localhost:3000",
-                        "get_started.access2": "Client: http://localhost:8080",
-                        "get_started.access3": "Dashboard: http://localhost:4000",
-                        "get_started.management_title": "6. Management Commands",
-                        "get_started.management_desc": "Useful commands for managing your instance:",
-                        "get_started.full_docs": "Full Documentation",
-                        "docs.title": "Documentation",
-                        "docs.subtitle": "Learn how to integrate and extend Quelora",
-                        "docs.1.title": "API Reference",
-                        "docs.1.description": "Complete documentation of all API endpoints, request/response formats, and authentication.",
-                        "docs.2.title": "Widget Integration",
-                        "docs.2.description": "Step-by-step guide for integrating the Quelora widget into your website or application.",
-                        "docs.3.title": "Customization",
-                        "docs.3.description": "How to customize themes, behaviors, and extend Quelora's functionality.",
-                        "docs.read_more": "Read More",
-                        "community.title": "Join the Community",
-                        "community.subtitle": "Quelora is open-source and thrives on contributions.",
-                        "community.1.title": "GitHub",
-                        "community.1.description": "Star, fork, or submit a PR. We welcome contributors!",
-                        "community.2.title": "Roadmap",
-                        "community.2.description": "Check out upcoming features and vote on ideas.",
-                        "community.visit": "Visit Repo",
-                        "community.view": "View Roadmap",
-                        "footer.description": "Open-source engagement platform for modern websites.",
-                        "footer.github": "GitHub",
-                        "footer.docs": "Docs",
-                        "footer.contact": "Contact",
-                        "footer.copyright": "© 2025 Quelora. Open-source under GPL v3 License."
-                    }
-                },
-                es: {
-                    translation: {
-                        "nav.features": "Características",
-                        "nav.demos": "Demostraciones",
-                        "nav.docs": "Documentación",
-                        "nav.community": "Comunidad",
-                        "nav.repositories": "Repositorios",
-                        "nav.get_started": "Empezar",
-                        "hero.title": "Construye Comunidades Atractivas",
-                        "hero.subtitle": "Sistema de comentarios y comunidad de código abierto para fomentar la participación y colaboración.",
-                        "hero.try_demo": "Probar Demo",
-                        "hero.github": "GitHub",
-                        "hero.documentation": "Documentación",
-                        "features.title": "¿Por qué Quelora?",
-                        "features.subtitle": "Todo lo que necesitas para hacer crecer tu comunidad",
-                        "features.1.title": "Sistema de Comentarios",
-                        "features.1.description": "Fomenta la participación con comentarios de código abierto.",
-                        "features.2.title": "Herramientas Comunitarias",
-                        "features.2.description": "Diseñado para colaboración.",
-                        "features.3.title": "Widget Vanilla JS",
-                        "features.3.description": "Integración ligera del cliente.",
-                        "features.4.title": "API NodeJS",
-                        "features.4.description": "Soporte backend con NodeJS.",
-                        "features.5.title": "Panel de Control",
-                        "features.5.description": "Interfaz de gestión.",
-                        "features.6.title": "Página de Demostración",
-                        "features.6.description": "Demo HTML para pruebas.",
-                        "demos.title": "Demostraciones en Vivo",
-                        "demos.subtitle": "Explora Quelora en diferentes contextos",
-                        "demos.1.title": "Demo de Artículo de Noticias",
-                        "demos.1.description": "Vea cómo Quelora se integra con un sitio de noticias, con comentarios en hilo y actualizaciones en tiempo real.",
-                        "demos.2.title": "Demo de Galería de Imágenes",
-                        "demos.2.description": "Galería interactiva con contenido generado por usuarios, reacciones y herramientas de moderación.",
-                        "demos.3.title": "KittyReels",
-                        "demos.3.description": "Una experiencia inmersiva de feed de videos con carga diferida, diseño mobile-first y reproducción optimizada.",
-                        "demos.view_demo": "Ver Demo",
-                        "repositories.title": "Nuestros Repositorios",
-                        "repositories.subtitle": "Componentes principales de Quelora",
-                        "repositories.1.title": "quelora-infra",
-                        "repositories.1.description": "Sistema de comentarios y comunidad de código abierto. JavaScript. GPL v3.",
-                        "repositories.2.title": "quelora-client",
-                        "repositories.2.description": "Widget Vanilla JS. JavaScript. GPL v3.",
-                        "repositories.3.title": "quelora-api",
-                        "repositories.3.description": "API NodeJS. JavaScript. GPL v3.",
-                        "repositories.4.title": "quelora-dashboard",
-                        "repositories.4.description": "Panel de control. JavaScript. GPL v3.",
-                        "repositories.5.title": "quelora-demo",
-                        "repositories.5.description": "Demo HTML. GPL v3.",
-                        "repositories.6.title": "quelora-docs",
-                        "repositories.6.description": "Documentación y guías. GPL v3.",
-                        "repositories.view_repo": "Ver Repo",
-                        "get_started.title": "Empezar con Quelora",
-                        "get_started.subtitle": "Implementa tu propia instancia en minutos",
-                        "get_started.prerequisites": "Requisitos Previos",
-                        "get_started.prereq1": "Docker y Docker Compose instalados",
-                        "get_started.prereq2": "Git para clonar repositorios",
-                        "get_started.prereq3": "Conocimientos básicos de terminal/línea de comandos",
-                        "get_started.clone_title": "1. Clona el Repositorio de Infraestructura",
-                        "get_started.clone_desc": "Comienza clonando el repositorio principal de infraestructura que incluye todos los componentes necesarios:",
-                        "get_started.submodules_title": "2. Actualiza los Submódulos",
-                        "get_started.submodules_desc": "Inicializa y actualiza todos los submódulos Git para obtener las últimas versiones de todos los componentes:",
-                        "get_started.env_title": "3. Configura las Variables de Entorno",
-                        "get_started.env_desc": "Crea y configura tus archivos de entorno. Copia los archivos de ejemplo y edítalos con tu configuración:",
-                        "get_started.env_note": "Nota: Edita cada archivo .env con tu configuración específica antes de continuar.",
-                        "get_started.build_title": "4. Construye e Inicia los Contenedores",
-                        "get_started.build_desc": "Construye e inicia todos los servicios usando Docker Compose:",
-                        "get_started.access_title": "5. Accede a tu Instancia",
-                        "get_started.access_desc": "Después de que los contenedores estén en ejecución, puedes acceder a:",
-                        "get_started.access1": "API: http://localhost:3000",
-                        "get_started.access2": "Cliente: http://localhost:8080",
-                        "get_started.access3": "Panel de Control: http://localhost:4000",
-                        "get_started.management_title": "6. Comandos de Gestión",
-                        "get_started.management_desc": "Comandos útiles para gestionar tu instancia:",
-                        "get_started.full_docs": "Documentación Completa",
-                        "docs.title": "Documentación",
-                        "docs.subtitle": "Aprende a integrar y extender Quelora",
-                        "docs.1.title": "Referencia de la API",
-                        "docs.1.description": "Documentación completa de todos los endpoints de la API, formatos de solicitud/respuesta y autenticación.",
-                        "docs.2.title": "Integración del Widget",
-                        "docs.2.description": "Guía paso a paso para integrar el widget Quelora en tu sitio web o aplicación.",
-                        "docs.3.title": "Personalización",
-                        "docs.3.description": "Cómo personalizar temas, comportamientos y extender la funcionalidad de Quelora.",
-                        "docs.read_more": "Leer Más",
-                        "community.title": "Únete a la Comunidad",
-                        "community.subtitle": "Quelora es de código abierto y prospera con las contribuciones.",
-                        "community.1.title": "GitHub",
-                        "community.1.description": "Dale estrella, haz fork o envía un PR. ¡Bienvenidos los contribuidores!",
-                        "community.2.title": "Hoja de Ruta",
-                        "community.2.description": "Consulta las próximas características y vota por ideas.",
-                        "community.visit": "Visitar Repo",
-                        "community.view": "Ver Hoja de Ruta",
-                        "footer.description": "Plataforma de participación de código abierto para sitios web modernos.",
-                        "footer.github": "GitHub",
-                        "footer.docs": "Documentación",
-                        "footer.contact": "Contacto",
-                        "footer.copyright": "© 2025 Quelora. Código abierto bajo licencia GPL v3."
-                    }
-                },
-                fr: {
-                    translation: {
-                        "nav.features": "Fonctionnalités",
-                        "nav.demos": "Démonstrations",
-                        "nav.docs": "Documentation",
-                        "nav.community": "Communauté",
-                        "nav.repositories": "Dépôts",
-                        "nav.get_started": "Commencer",
-                        "hero.title": "Construisez des Communautés Engagées",
-                        "hero.subtitle": "Système de commentaires et communauté open source pour favoriser l'engagement et la collaboration.",
-                        "hero.try_demo": "Essayer la Démo",
-                        "hero.github": "GitHub",
-                        "hero.documentation": "Documentation",
-                        "features.title": "Pourquoi Quelora?",
-                        "features.subtitle": "Tout ce dont vous avez besoin pour développer votre communauté",
-                        "features.1.title": "Système de Commentaires",
-                        "features.1.description": "Favorisez l'engagement avec des commentaires open source.",
-                        "features.2.title": "Outils Communautaires",
-                        "features.2.description": "Conçu pour la collaboration.",
-                        "features.3.title": "Widget Vanilla JS",
-                        "features.3.description": "Intégration légère du client.",
-                        "features.4.title": "API NodeJS",
-                        "features.4.description": "Support backend avec NodeJS.",
-                        "features.5.title": "Tableau de Bord",
-                        "features.5.description": "Interface de gestion.",
-                        "features.6.title": "Page de Démonstration",
-                        "features.6.description": "Démo HTML pour les tests.",
-                        "demos.title": "Démonstrations en Direct",
-                        "demos.subtitle": "Explorez Quelora dans différents contextes",
-                        "demos.1.title": "Démo d'Article d'Actualité",
-                        "demos.1.description": "Voyez comment Quelora s'intègre à un site d'actualités, avec des commentaires en fil et des mises à jour en temps réel.",
-                        "demos.2.title": "Démo de Galerie d'Images",
-                        "demos.2.description": "Galerie interactive avec du contenu généré par les utilisateurs, des réactions et des outils de modération.",
-                        "demos.3.title": "KittyReels",
-                        "demos.3.description": "Une expérience immersive de flux vidéo avec chargement différé, conception mobile-first et lecture optimisée.",
-                        "demos.view_demo": "Voir la Démo",
-                        "repositories.title": "Nos Dépôts",
-                        "repositories.subtitle": "Composants principaux de Quelora",
-                        "repositories.1.title": "quelora-infra",
-                        "repositories.1.description": "Système de commentaires et communauté open source. JavaScript. GPL v3.",
-                        "repositories.2.title": "quelora-client",
-                        "repositories.2.description": "Widget Vanilla JS. JavaScript. GPL v3.",
-                        "repositories.3.title": "quelora-api",
-                        "repositories.3.description": "API NodeJS. JavaScript. GPL v3.",
-                        "repositories.4.title": "quelora-dashboard",
-                        "repositories.4.description": "Tableau de bord. JavaScript. GPL v3.",
-                        "repositories.5.title": "quelora-demo",
-                        "repositories.5.description": "Démo HTML. GPL v3.",
-                        "repositories.6.title": "quelora-docs",
-                        "repositories.6.description": "Documentation et guides. GPL v3.",
-                        "repositories.view_repo": "Voir le Dépôt",
-                        "get_started.title": "Commencez avec Quelora",
-                        "get_started.subtitle": "Déployez votre propre instance en quelques minutes",
-                        "get_started.prerequisites": "Prérequis",
-                        "get_started.prereq1": "Docker et Docker Compose installés",
-                        "get_started.prereq2": "Git pour cloner les dépôts",
-                        "get_started.prereq3": "Connaissances de base du terminal/ligne de commande",
-                        "get_started.clone_title": "1. Clonez le Dépôt d'Infrastructure",
-                        "get_started.clone_desc": "Commencez par cloner le dépôt d'infrastructure principal qui inclut tous les composants nécessaires:",
-                        "get_started.submodules_title": "2. Mettez à jour les Sous-modules",
-                        "get_started.submodules_desc": "Initialisez et mettez à jour tous les sous-modules Git pour obtenir les dernières versions de tous les composants:",
-                        "get_started.env_title": "3. Configurez les Variables d'Environnement",
-                        "get_started.env_desc": "Créez et configurez vos fichiers d'environnement. Copiez les fichiers d'exemple et modifiez-les avec votre configuration:",
-                        "get_started.env_note": "Note: Modifiez chaque fichier .env avec votre configuration spécifique avant de continuer.",
-                        "get_started.build_title": "4. Construisez et Lancez les Conteneurs",
-                        "get_started.build_desc": "Construisez et lancez tous les services en utilisant Docker Compose:",
-                        "get_started.access_title": "5. Accédez à Votre Instance",
-                        "get_started.access_desc": "Une fois les conteneurs en cours d'exécution, vous pouvez accéder à:",
-                        "get_started.access1": "API: http://localhost:3000",
-                        "get_started.access2": "Client: http://localhost:8080",
-                        "get_started.access3": "Tableau de Bord: http://localhost:4000",
-                        "get_started.management_title": "6. Commandes de Gestion",
-                        "get_started.management_desc": "Commandes utiles pour gérer votre instance:",
-                        "get_started.full_docs": "Documentation Complète",
-                        "docs.title": "Documentation",
-                        "docs.subtitle": "Apprenez à intégrer et étendre Quelora",
-                        "docs.1.title": "Référence API",
-                        "docs.1.description": "Documentation complète de tous les endpoints API, formats de requête/réponse et authentification.",
-                        "docs.2.title": "Intégration du Widget",
-                        "docs.2.description": "Guide étape par étape pour intégrer le widget Quelora dans votre site web ou application.",
-                        "docs.3.title": "Personnalisation",
-                        "docs.3.description": "Comment personnaliser les thèmes, comportements et étendre les fonctionnalités de Quelora.",
-                        "docs.read_more": "Lire Plus",
-                        "community.title": "Rejoignez la Communauté",
-                        "community.subtitle": "Quelora est open source et prospère grâce aux contributions.",
-                        "community.1.title": "GitHub",
-                        "community.1.description": "Star, fork ou soumettez une PR. Nous accueillons les contributeurs!",
-                        "community.2.title": "Feuille de Route",
-                        "community.2.description": "Consultez les fonctionnalités à venir et votez pour des idées.",
-                        "community.visit": "Visiter le Dépôt",
-                        "community.view": "Voir la Feuille de Route",
-                        "footer.description": "Plateforme d'engagement open source pour les sites web modernes.",
-                        "footer.github": "GitHub",
-                        "footer.docs": "Documentation",
-                        "footer.contact": "Contact",
-                        "footer.copyright": "© 2025 Quelora. Open source sous licence GPL v3."
-                    }
-                },
-                de: {
-                    translation: {
-                        "nav.features": "Funktionen",
-                        "nav.demos": "Demos",
-                        "nav.docs": "Dokumentation",
-                        "nav.community": "Community",
-                        "nav.repositories": "Repositories",
-                        "nav.get_started": "Loslegen",
-                        "hero.title": "Engagierte Gemeinschaften aufbauen",
-                        "hero.subtitle": "Kostenloses, Open-Source-Kommentar- und Community-System zur Förderung von Engagement und Zusammenarbeit.",
-                        "hero.try_demo": "Demo testen",
-                        "hero.github": "GitHub",
-                        "hero.documentation": "Dokumentation",
-                        "features.title": "Warum Quelora?",
-                        "features.subtitle": "Alles, was Sie brauchen, um Ihre Community zu vergrößern",
-                        "features.1.title": "Kommentarsystem",
-                        "features.1.description": "Fördern Sie Engagement mit Open-Source-Kommentaren.",
-                        "features.2.title": "Community-Tools",
-                        "features.2.description": "Für Zusammenarbeit entwickelt.",
-                        "features.3.title": "Vanilla JS Widget",
-                        "features.3.description": "Leichte Client-Integration.",
-                        "features.4.title": "NodeJS API",
-                        "features.4.description": "Backend-Unterstützung mit NodeJS.",
-                        "features.5.title": "Dashboard",
-                        "features.5.description": "Verwaltungsoberfläche.",
-                        "features.6.title": "Demo-Seite",
-                        "features.6.description": "HTML-Demo zum Testen.",
-                        "demos.title": "Live-Demos",
-                        "demos.subtitle": "Entdecken Sie Quelora in verschiedenen Kontexten",
-                        "demos.1.title": "Nachrichtenartikel-Demo",
-                        "demos.1.description": "Sehen Sie, wie Quelora in eine Nachrichtenseite integriert wird, mit Thread-Kommentaren und Echtzeit-Updates.",
-                        "demos.2.title": "Bildergalerie-Demo",
-                        "demos.2.description": "Interaktive Galerie mit nutzergenerierten Inhalten, Reaktionen und Moderationswerkzeugen.",
-                        "demos.3.title": "KittyReels",
-                        "demos.3.description": "Ein immersives Video-Feed-Erlebnis mit Lazy Loading, Mobile-First-Design und optimierter Wiedergabe.",
-                        "demos.view_demo": "Demo ansehen",
-                        "repositories.title": "Unsere Repositories",
-                        "repositories.subtitle": "Kernkomponenten von Quelora",
-                        "repositories.1.title": "quelora-infra",
-                        "repositories.1.description": "Kostenloses, Open-Source-Kommentar- und Community-System. JavaScript. GPL v3.",
-                        "repositories.2.title": "quelora-client",
-                        "repositories.2.description": "Vanilla JS Widget. JavaScript. GPL v3.",
-                        "repositories.3.title": "quelora-api",
-                        "repositories.3.description": "NodeJS API. JavaScript. GPL v3.",
-                        "repositories.4.title": "quelora-dashboard",
-                        "repositories.4.description": "Dashboard. JavaScript. GPL v3.",
-                        "repositories.5.title": "quelora-demo",
-                        "repositories.5.description": "HTML-Demo. GPL v3.",
-                        "repositories.6.title": "quelora-docs",
-                        "repositories.6.description": "Dokumentation und Anleitungen. GPL v3.",
-                        "repositories.view_repo": "Repository ansehen",
-                        "get_started.title": "Mit Quelora beginnen",
-                        "get_started.subtitle": "Stellen Sie Ihre eigene Instanz in Minuten bereit",
-                        "get_started.prerequisites": "Voraussetzungen",
-                        "get_started.prereq1": "Docker und Docker Compose installiert",
-                        "get_started.prereq2": "Git zum Klonen von Repositories",
-                        "get_started.prereq3": "Grundkenntnisse der Terminal/Kommandozeile",
-                        "get_started.clone_title": "1. Klonen Sie das Infrastruktur-Repository",
-                        "get_started.clone_desc": "Beginnen Sie mit dem Klonen des Haupt-Infrastruktur-Repositorys, das alle notwendigen Komponenten enthält:",
-                        "get_started.submodules_title": "2. Aktualisieren Sie die Submodule",
-                        "get_started.submodules_desc": "Initialisieren und aktualisieren Sie alle Git-Submodule, um die neuesten Versionen aller Komponenten zu erhalten:",
-                        "get_started.env_title": "3. Konfigurieren Sie die Umgebungsvariablen",
-                        "get_started.env_desc": "Erstellen und konfigurieren Sie Ihre Umgebungsdateien. Kopieren Sie die Beispiel-Dateien und bearbeiten Sie sie mit Ihrer Konfiguration:",
-                        "get_started.env_note": "Hinweis: Bearbeiten Sie jede .env-Datei mit Ihrer spezifischen Konfiguration, bevor Sie fortfahren.",
-                        "get_started.build_title": "4. Erstellen und Starten Sie die Container",
-                        "get_started.build_desc": "Erstellen und starten Sie alle Dienste mit Docker Compose:",
-                        "get_started.access_title": "5. Greifen Sie auf Ihre Instanz zu",
-                        "get_started.access_desc": "Nachdem die Container ausgeführt werden, können Sie auf Folgendes zugreifen:",
-                        "get_started.access1": "API: http://localhost:3000",
-                        "get_started.access2": "Client: http://localhost:8080",
-                        "get_started.access3": "Dashboard: http://localhost:4000",
-                        "get_started.management_title": "6. Verwaltungsbefehle",
-                        "get_started.management_desc": "Nützliche Befehle zur Verwaltung Ihrer Instanz:",
-                        "get_started.full_docs": "Vollständige Dokumentation",
-                        "docs.title": "Dokumentation",
-                        "docs.subtitle": "Erfahren Sie, wie Sie Quelora integrieren und erweitern können",
-                        "docs.1.title": "API-Referenz",
-                        "docs.1.description": "Vollständige Dokumentation aller API-Endpunkte, Anfrage-/Antwortformate und Authentifizierung.",
-                        "docs.2.title": "Widget-Integration",
-                        "docs.2.description": "Schritt-für-Schritt-Anleitung zur Integration des Quelora-Widgets in Ihre Website oder Anwendung.",
-                        "docs.3.title": "Anpassung",
-                        "docs.3.description": "Wie Sie Designs, Verhalten anpassen und die Funktionalität von Quelora erweitern können.",
-                        "docs.read_more": "Mehr lesen",
-                        "community.title": "Werden Sie Teil der Community",
-                        "community.subtitle": "Quelora ist Open Source und lebt von Beiträgen.",
-                        "community.1.title": "GitHub",
-                        "community.1.description": "Starren Sie, forken Sie oder reichen Sie einen PR ein. Wir freuen uns auf Beiträge!",
-                        "community.2.title": "Roadmap",
-                        "community.2.description": "Sehen Sie sich kommende Funktionen an und stimmen Sie über Ideen ab.",
-                        "community.visit": "Repository besuchen",
-                        "community.view": "Roadmap ansehen",
-                        "footer.description": "Open-Source-Engagement-Plattform für moderne Websites.",
-                        "footer.github": "GitHub",
-                        "footer.docs": "Dokumentation",
-                        "footer.contact": "Kontakt",
-                        "footer.copyright": "© 2025 Quelora. Open Source unter GPL v3 Lizenz."
-                    }
-                }
-            }
-        }, function(err, t) {
-            // Update all elements with data-i18n attributes
-            document.querySelectorAll('[data-i18n]').forEach(element => {
+        // Custom translations to integrate the new content
+        const newTranslations = {
+            "page_title": {
+                "en": "Quelora | High-Performance Comment System with Augmented Intelligence",
+                "es": "Quelora | Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada"
+            },
+            "nav.architecture": { "en": "Architecture", "es": "Arquitectura" },
+            "nav.performance": { "en": "Performance", "es": "Rendimiento" },
+            "nav.get_started_short": { "en": "Deployment", "es": "Despliegue" },
+            "nav.view_infra": { "en": "View Infra", "es": "Ver Infra" },
+            "hero.new_title": {
+                "en": "Quelora. The High-Performance Comment System with Augmented Intelligence.",
+                "es": "Quelora. El Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada."
+            },
+            "hero.new_subtitle": {
+                "en": "Advanced moderation, geolocation, and analytics powered by AI, natively integrated into your website.",
+                "es": "Moderación avanzada, geolocalización y analíticas impulsadas por IA, integradas en su sitio web de forma nativa."
+            },
+            "hero.view_live_demo": { "en": "View Live Demo", "es": "Ver Demo en Vivo" },
+            "hero.explore_api": { "en": "Explore API", "es": "Explorar API" },
+            "architecture.title": { "en": "World-Class Architecture", "es": "Arquitectura de Clase Mundial" },
+            "architecture.subtitle": { "en": "A robust, scalable microservices solution that guarantees reliability and performance.", "es": "Una solución de microservicios robusta y escalable que garantiza confiabilidad y rendimiento." },
+            "architecture.api_title": { "en": "Quelora API (Node.js)", "es": "Quelora API (Node.js)" },
+            "architecture.api_description": { "en": "The central engine managing business logic, AI moderation, notifications, and SSO.", "es": "El motor central que gestiona la lógica de negocio, la moderación por IA, las notificaciones y el SSO." },
+            "architecture.client_title": { "en": "Lightweight Integration Widget", "es": "Widget de Integración Ligera" },
+            "architecture.client_description": { "en": "A Vanilla JS client embeddable in any website, optimized for speed and user experience (includes audio and push notifications).", "es": "Un cliente Vanilla JS integrable en cualquier web, optimizado para la velocidad y la experiencia de usuario (incluye audio y notificaciones push)." },
+            "architecture.dashboard_title": { "en": "Admin Control Panel (Dashboard)", "es": "Panel de Control (Dashboard)" },
+            "architecture.dashboard_description": { "en": "Administrative interface for managing users, posts, geo-located data, and real-time analytics.", "es": "Interfaz administrativa para la gestión de usuarios, posts, datos geolocalizados y analíticas en tiempo real." },
+            "performance.title": { "en": "AI-Powered Features & Max Speed", "es": "Características Impulsadas por IA y Velocidad Máxima" },
+            "performance.subtitle": { "en": "The robust engine needed to manage demanding social content with guaranteed speed and intelligence.", "es": "El motor robusto que se necesita para gestionar contenido social exigente con velocidad e inteligencia garantizadas." },
+            "performance.demo_title": { "en": "Zero Latency Proof", "es": "Prueba de Latencia Cero" },
+            "performance.demo_desc": { "en": "Our live demo verifies Quelora's **speed and robustness** in processing, moderating, and visualizing thousands of dynamic comments with **minimal latency**. A performance feat only possible thanks to our caching architecture (**Redis**).", "es": "La demo en vivo comprueba la **velocidad y robustez** de Quelora para procesar, moderar y visualizar miles de comentarios dinámicos con una **latencia mínima**. Una proeza de rendimiento solo posible gracias a nuestra arquitectura de caching (**Redis**)." },
+            "performance.feature1": { "en": "**Redis Caching:** Ultra-fast transactions for real-time data.", "es": "**Caching Redis:** Transacciones ultra-rápidas para tiempo real." },
+            "performance.feature2": { "en": "**Mongo Persistence:** Flexible, scalable database for high volumes.", "es": "**Persistencia Mongo:** Base de datos flexible y escalable para grandes volúmenes." },
+            "performance.feature3": { "en": "**Web Scraping:** Versatile dynamic data ingestion via Puppeteer/Chrome.", "es": "**Web Scraping:** Ingesta versátil de datos dinámicos mediante Puppeteer/Chrome." },
+            "demos.view_live_demo_link": { "en": "View Live Demo", "es": "Ver Demo en Vivo" },
+            "performance.ai_title": { "en": "AI-Augmented Content Management", "es": "Gestión de Contenido Aumentada por IA" },
+            "performance.ai_desc": { "en": "We use the most advanced AI models (Gemini, OpenAI, Grok) to ensure a safe community environment and provide precise sentiment analysis, translation, and geolocation services.", "es": "Utilizamos los modelos de IA más avanzados (Gemini, OpenAI, Grok) para asegurar un entorno comunitario seguro y ofrecer servicios de análisis de sentimiento, traducción y geolocalización precisos." },
+            "get_started.title": { "en": "High-Level Deployment in Minutes", "es": "Despliegue de Alto Nivel en Minutos" },
+            "get_started.subtitle": { "en": "Launch your self-hosted instance with our optimized Docker Compose.", "es": "Inicia tu instancia auto-alojada con nuestro Docker Compose optimizado." },
+            "get_started.clone_title": { "en": "1. Clone Infrastructure and Components", "es": "1. Clona la Infraestructura y Componentes" },
+            "get_started.clone_desc_new": { "en": "The Docker Compose infrastructure (`quelora-infra`) manages the orchestration of the API, Dashboard, Client, and databases (Redis/Mongo).", "es": "La infraestructura Docker Compose (`quelora-infra`) gestiona la orquestación de la API, Dashboard, Cliente y las bases de datos (Redis/Mongo)." },
+            "get_started.build_title": { "en": "2. Configuration and Final Deployment", "es": "2. Configuración y Despliegue Final" },
+            "get_started.build_desc_new": { "en": "Define environment variables for databases and services, then build and launch the complete microservices stack.", "es": "Define las variables de entorno para las bases de datos y servicios, luego construye y lanza la pila completa de microservicios." },
+            "get_started.full_docs": { "en": "Full Documentation (Infra)", "es": "Documentación Completa (Infra)" },
+            "docs.title": { "en": "Documentation for Developers", "es": "Documentación para Desarrolladores" },
+            "docs.subtitle": { "en": "Learn how to integrate, extend, and optimize Quelora for your specific needs.", "es": "Aprende a integrar, extender y optimizar Quelora para tus necesidades específicas." },
+            "docs.1.title": { "en": "Core API Reference", "es": "Referencia API Core" },
+            "docs.1.description": { "en": "Documentation of API endpoints (`authRoutes`, `statsRoutes`) and data model management (Mongo).", "es": "Documentación de endpoints (`authRoutes`, `statsRoutes`) y gestión de modelos de datos (Mongo)." },
+            "docs.2.title": { "en": "Client Integration (Widget)", "es": "Integración del Cliente (Widget)" },
+            "docs.2.description": { "en": "Step-by-step guide for integrating the Vanilla JS widget into any environment. CSS customization included.", "es": "Guía paso a paso para integrar el widget Vanilla JS en cualquier entorno. Personalización CSS incluida." },
+            "docs.3.title": { "en": "Provider Extension", "es": "Extensión de Proveedores" },
+            "docs.3.description": { "en": "Guides for adding new AI providers (`ModerationProviders`) or SSO providers (`ssoProviders`).", "es": "Guías para añadir nuevos proveedores de IA (`ModerationProviders`) o de SSO (`ssoProviders`)." },
+            "docs.read_more": { "en": "Read More", "es": "Leer Más" },
+            "footer.description": { "en": "Open-source dynamic content and moderation platform for modern websites.", "es": "Plataforma de contenido dinámico y moderación de código abierto para sitios web modernos." },
+            "footer.github": { "en": "GitHub", "es": "GitHub" },
+            "footer.docs": { "en": "Docs", "es": "Docs" },
+            "footer.contact": { "en": "Contact", "es": "Contacto" },
+            "footer.copyright": { "en": "© 2025 Quelora. Open-source under GPL v3 License.", "es": "© 2025 Quelora. Código abierto bajo licencia GPL v3." },
+
+            // Conservar las traducciones originales para compatibilidad con otros idiomas (fr, de)
+            "nav.features": { "en": "Features", "es": "Características", "fr": "Fonctionnalités", "de": "Funktionen" },
+            "nav.demos": { "en": "Demos", "es": "Demostraciones", "fr": "Démonstrations", "de": "Demos" },
+            "nav.docs": { "en": "Docs", "es": "Documentación", "fr": "Documentation", "de": "Dokumentation" },
+            "nav.community": { "en": "Community", "es": "Comunidad", "fr": "Communauté", "de": "Community" },
+            "nav.repositories": { "en": "Repositories", "es": "Repositorios", "fr": "Dépôts", "de": "Repositories" },
+            "features.1.title": { "en": "Comment System", "es": "Sistema de Comentarios", "fr": "Système de Commentaires", "de": "Kommentarsystem" },
+            "features.2.title": { "en": "Community Tools", "es": "Herramientas Comunitarias", "fr": "Outils Communautaires", "de": "Community-Tools" },
+            "features.3.title": { "en": "Vanilla JS Widget", "es": "Widget Vanilla JS", "fr": "Widget Vanilla JS", "de": "Vanilla JS Widget" },
+            "features.4.title": { "en": "NodeJS API", "es": "API NodeJS", "fr": "API NodeJS", "de": "NodeJS API" },
+            "features.5.title": { "en": "Dashboard", "es": "Panel de Control", "fr": "Tableau de Bord", "de": "Dashboard" },
+            "features.6.title": { "en": "Demo Page", "es": "Página de Demostración", "fr": "Page de Démonstration", "de": "Demo-Seite" },
+            "repositories.view_repo": { "en": "View Repo", "es": "Ver Repo", "fr": "Voir le Dépôt", "de": "Repository ansehen" }
+        };
+
+        // Helper function to check if item is a plain object
+        function isObject(item) {
+            return (item && typeof item === 'object' && !Array.isArray(item));
+        }
+        
+        // Function to apply translations using the new structure
+        function applyTranslations(lang) {
+             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                element.textContent = t(key);
+                
+                // Get translation from new structure, or fallback to default i18next behavior
+                let translation = newTranslations[key] && newTranslations[key][lang] ? newTranslations[key][lang] : i18next.t(key);
+
+                if (translation) {
+                    element.textContent = translation;
+                }
             });
-
-            // Update flag and language text based on current language
-            updateLanguageDisplay(i18next.language);
-        });
-
+            // Update page title separately
+            if(newTranslations['page_title'] && newTranslations['page_title'][lang]) {
+                document.title = newTranslations['page_title'][lang];
+            }
+        }
+        
         // Language selection handler
         languageOptions.forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
                 const lang = option.getAttribute('data-lang');
-                i18next.changeLanguage(lang, () => {
+                i18next.changeLanguage(lang, (err) => {
                     localStorage.setItem('language', lang);
-                    document.querySelectorAll('[data-i18n]').forEach(element => {
-                        const key = element.getAttribute('data-i18n');
-                        element.textContent = i18next.t(key);
-                    });
+                    applyTranslations(lang);
                     updateLanguageDisplay(lang);
                 });
             });
@@ -1166,6 +574,21 @@ docker compose -f docker-compose-production.yml --env-file .env up -d</code></pr
             currentLanguageFlag.alt = languageText;
             currentLanguageText.textContent = languageText;
         }
+
+        // Initialize i18next
+        i18next.init({
+            lng: localStorage.getItem('language') || 'en', // DEFAULT TO ENGLISH
+            debug: false,
+            resources: {
+                // We leave the resource object empty here and rely on the manual translation lookup for the new keys.
+            }
+        }, function(err, t) {
+            applyTranslations(i18next.language);
+            // Re-bind the initialization process in case of slow loading
+            i18next.on('languageChanged', (lng) => {
+                applyTranslations(lng);
+            });
+        });
     </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
     <title>Quelora - Content Hub Demo</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./quelora/css/quelora.css">
     <style>
         :root {
@@ -18,9 +18,10 @@
             --on-surface-secondary: #65676b;
             --border-color: #dddfe2;
             --card-border-radius: 8px;
-            --header-height: 70px;
+            --header-height: 60px;
             --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
+            --header-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
         *, *::before, *::after {
@@ -28,19 +29,20 @@
         }
 
         html, body {
-            height: 100%;
+            /* FIX: Ensure min-height to enable scrolling on body/window */
+            min-height: 100vh;
             margin: 0;
             padding: 0;
         }
-
+        
         body {
             background-color: var(--background-color);
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Roboto', sans-serif;
             color: var(--on-surface-primary);
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
             line-height: 1.5;
+            overflow-x: hidden; /* Prevent horizontal scroll on body */
         }
 
         .app-header {
@@ -55,19 +57,30 @@
             height: var(--header-height);
             padding: 0 40px;
             background-color: var(--surface-color);
-            border-bottom: 3px solid var(--primary-color);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-bottom: none;
+            box-shadow: var(--header-shadow);
         }
 
         .header-logo {
             display: flex;
             align-items: center;
             cursor: pointer;
+            text-decoration: none;
+            color: var(--on-surface-primary);
+            font-size: 24px;
+            font-weight: 800;
+            font-family: 'Roboto', sans-serif;
+            transition: color 0.2s;
+        }
+
+        .header-logo:hover {
+            color: var(--primary-color);
         }
 
         .header-logo img {
-            height: 40px;
+            height: 50px;
             width: auto;
+            margin-right: 10px;
         }
 
         .header-nav {
@@ -92,29 +105,70 @@
 
         main {
             flex-grow: 1;
-            padding: 0 0 40px 0;
-            margin-top: var(--header-height);
+            padding: 0 0 0 0;
         }
 
         #heroCarousel {
+            position: relative;
+            width: 100vw; 
+            margin: 0 0 40px 0;
+            overflow: hidden; 
+        }
+
+        .hero-scroll-container {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .hero-card-container {
+            flex-shrink: 0;
+            width: 100vw; 
+            height: 500px; 
+            position: relative;
+        }
+        
+        .news-card.hero-card {
             width: 100%;
-            max-width: 1400px;
-            margin: 0 auto 40px auto;
-            padding: 0 24px;
-            display: grid;
-            grid-template-columns: 2fr 1fr;
-            gap: 20px;
+            height: 100%;
+            border-radius: 0;
         }
 
-        .hero-card-main {
-            grid-column: 1 / 2;
+        .carousel-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 15px 10px;
+            cursor: pointer;
+            font-size: 20px;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .hero-card-secondary-grid {
-            grid-column: 2 / 3;
-            display: grid;
-            grid-template-rows: repeat(2, 1fr);
-            gap: 20px;
+        .carousel-control svg {
+            fill: white;
+            width: 20px;
+            height: 20px;
+        }
+
+        .carousel-control:hover {
+            opacity: 1;
+        }
+
+        #prevControl {
+            left: 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        #nextControl {
+            right: 0;
+            border-radius: 5px 0 0 5px;
         }
 
         .news-container {
@@ -153,18 +207,6 @@
             pointer-events: all;
         }
 
-        .news-card.hero-card, .news-card.hero-card-small {
-            height: 100%;
-            min-height: 250px;
-            box-shadow: var(--shadow-light);
-            background-color: transparent;
-            padding: 0;
-        }
-
-        .news-card.hero-card-main {
-            min-height: 500px;
-        }
-        
         .news-card.hero-card .card-info {
             display: none !important;
         }
@@ -178,7 +220,7 @@
             background: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
             color: white;
             z-index: 2;
-            border-radius: 0 0 var(--card-border-radius) var(--card-border-radius);
+            border-radius: 0;
         }
 
         .news-card.hero-card .community-interaction-bar,
@@ -203,7 +245,7 @@
             background-size: cover;
             background-position: center;
             transition: transform 0.3s ease;
-            border-radius: var(--card-border-radius);
+            border-radius: 0;
         }
         
         .news-card:hover .hero-image-bg {
@@ -215,6 +257,7 @@
             height: 200px;
             object-fit: cover;
             transition: transform 0.3s ease;
+            border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
         }
 
         .news-card:hover .news-image {
@@ -237,6 +280,7 @@
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            font-family: 'Roboto', sans-serif; 
         }
 
         .card-info p {
@@ -326,34 +370,45 @@
         }
 
         @media (max-width: 900px) {
-            #heroCarousel {
-                grid-template-columns: 1fr;
-                padding: 0 16px;
-            }
-            .news-card.hero-card-main {
-                min-height: 350px;
-            }
-            .news-card.hero-card-main .hero-overlay .title {
-                font-size: 28px;
-            }
-            .hero-card-secondary-grid {
-                grid-template-rows: repeat(2, 1fr);
-                gap: 16px;
-            }
-            .news-container {
-                padding: 0 16px;
+            :root {
+                --header-height: 70px;
             }
             .app-header {
                 padding: 0 20px;
             }
+            .header-logo img {
+                height: 40px;
+            }
+            .header-logo {
+                font-size: 20px;
+            }
+            #heroCarousel {
+                margin-bottom: 20px;
+            }
+            .hero-card-container {
+                height: 350px;
+                padding: 0 0;
+            }
+            .news-card.hero-card-main .hero-overlay .title {
+                font-size: 24px; 
+            }
+            .news-container {
+                padding: 0 16px;
+            }
+            .carousel-control {
+                padding: 10px 5px;
+            }
         }
 
         @media (max-width: 600px) {
-            .app-header {
-                height: 60px;
+            :root {
+                --header-height: 60px;
             }
             .header-logo img {
-                height: 30px;
+                height: 35px;
+            }
+            .header-logo {
+                font-size: 18px;
             }
             .header-nav {
                 display: none;
@@ -361,6 +416,12 @@
             .news-container {
                 grid-template-columns: 1fr;
                 gap: 20px;
+            }
+            .hero-overlay {
+                padding: 16px;
+            }
+            .news-card.hero-card-main .hero-overlay .title {
+                font-size: 20px; 
             }
         }
     </style>
@@ -370,9 +431,10 @@
         <div class="spinner"></div>
     </div>
     <header class="app-header">
-        <div class="header-logo">
+        <a href="#" class="header-logo">
             <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle">
-        </div>
+            Quelora
+        </a>
         <nav class="header-nav">
             <a href="#">Home</a>
             <a href="#">News</a>
@@ -381,7 +443,17 @@
     </header>
 
     <main>
-        <div id="heroCarousel"></div>
+        <div id="heroCarousel">
+            <div class="hero-scroll-container" id="heroScrollContainer">
+                
+            </div>
+            <button id="prevControl" class="carousel-control" aria-label="Previous Slide">
+                <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
+            </button>
+            <button id="nextControl" class="carousel-control" aria-label="Next Slide">
+                <svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg>
+            </button>
+        </div>
         <div class="grid-container">
             <div class="news-container" id="newsContainer"></div>
             <div id="statusContainer"></div>
