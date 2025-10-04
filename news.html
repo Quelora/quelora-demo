@@ -29,7 +29,6 @@
         }
 
         html, body {
-            /* FIX: Ensure min-height to enable scrolling on body/window */
             min-height: 100vh;
             margin: 0;
             padding: 0;
@@ -42,7 +41,7 @@
             display: flex;
             flex-direction: column;
             line-height: 1.5;
-            overflow-x: hidden; /* Prevent horizontal scroll on body */
+            overflow-x: hidden;
         }
 
         .app-header {
@@ -411,7 +410,8 @@
                 font-size: 18px;
             }
             .header-nav {
-                display: none;
+                gap: 10px;
+                font-size: 12px;
             }
             .news-container {
                 grid-template-columns: 1fr;
@@ -436,9 +436,10 @@
             Quelora
         </a>
         <nav class="header-nav">
-            <a href="#">Home</a>
-            <a href="#">News</a>
-            <a href="#">Gallery</a>
+            <a href="index.html">Principal</a>
+            <a href="https://www.quelora.org/news.html">News</a>
+            <a href="https://www.quelora.org/reels.html">Reels</a>
+            <a href="https://www.quelora.org/gallery.html">Gallery</a>
         </nav>
     </header>
 

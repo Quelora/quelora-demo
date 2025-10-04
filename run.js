@@ -1,11 +1,9 @@
-// run.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
-//import mongoSanitize from "express-mongo-sanitize";
 import path from "path";
 import { fileURLToPath } from "url";
 
@@ -15,9 +13,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// ✅ Seguridad
 app.use(helmet());
-//app.use(mongoSanitize());
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
@@ -26,14 +22,13 @@ app.use(
   })
 );
 
-// ✅ CORS (ajustar según tu dominio real)
 const allowedOrigins = [
   "https://quelora.org",
   "https://www.quelora.org",
   "https://api.quelora.org",
   "https://dashboard.quelora.org",
   "https://quelora.localhost.ar",
-  "https://quelora.localhost.ar:444", // para dev
+  "https://quelora.localhost.ar:444",
 ];
 
 app.use(
@@ -52,10 +47,7 @@ app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
-        // Fuentes por defecto
         defaultSrc: ["'self'"],
-        
-        // Scripts
         scriptSrc: [
           "'self'",
           "'unsafe-inline'",
@@ -69,12 +61,10 @@ app.use(
           "https://apis.google.com",
           "https://connect.facebook.net",
           "https://connect.facebook.com",
-          "https://cdnjs.cloudflare.com", // Para i18next
-          "https://unpkg.com", // Para bootstrap
-          "https://cdn.jsdelivr.net" // Para npm packages
+          "https://cdnjs.cloudflare.com",
+          "https://unpkg.com",
+          "https://cdn.jsdelivr.net"
         ],
-        
-        // Estilos
         styleSrc: [
           "'self'",
           "'unsafe-inline'",
@@ -82,28 +72,24 @@ app.use(
           "https://accounts.google.com",
           "https://www.gstatic.com",
           "https://fonts.googleapis.com/css2",
-          "https://cdn.jsdelivr.net", // Para bootstrap
-          "https://unpkg.com", // Para bootstrap-icons
-          "https://cdnjs.cloudflare.com" // Para otros CDNs
+          "https://cdn.jsdelivr.net",
+          "https://unpkg.com",
+          "https://cdnjs.cloudflare.com"
         ],
-        
-        // Fuentes
         fontSrc: [
           "'self'",
-          "data:", // Para data URIs
+          "data:",
           "https://fonts.gstatic.com",
           "https://fonts.googleapis.com",
           "https://www.gstatic.com",
-          "https://cdn.jsdelivr.net" // Para bootstrap-icons
+          "https://cdn.jsdelivr.net"
         ],
-        
-        // Imágenes
         imgSrc: [
           "'self'",
           "data:",
           "blob:",
           "https:",
-          "http:", // Permitir todas las imágenes HTTP/HTTPS temporalmente
+          "http:",
           "https://external-preview.redd.it",
           "https://i.redd.it/",
           "https://picsum.photos",
@@ -114,11 +100,9 @@ app.use(
           "https://*.googleusercontent.com",
           "https://www.gstatic.com",
           "https://graph.facebook.com",
-          "https://avatars.githubusercontent.com", // Para GitHub avatars
-          "https://flagcdn.com" // Para las banderas
+          "https://avatars.githubusercontent.com",
+          "https://flagcdn.com"
         ],
-        
-        // Conexiones
         connectSrc: [
           "'self'",
           "https://quelora.localhost.ar:444",
@@ -131,10 +115,9 @@ app.use(
           "https://graph.facebook.com",
           "https://api.twitter.com",
           "wss://quelora.localhost.ar:445",
-          "https://cdnjs.cloudflare.com" // Para i18next
+          "https://cdnjs.cloudflare.com",
+          "https://ipapi.co"
         ],
-        
-        // Frames
         frameSrc: [
           "'self'",
           "https://challenges.cloudflare.com",
@@ -147,66 +130,45 @@ app.use(
           "https://www.facebook.com",
           "https://staticxx.facebook.com"
         ],
-        
-        // Objetos multimedia
         mediaSrc: [
           "'self'",
           "https://www.youtube.com",
           "blob:",
-          "data:"
+          "data:",
+          "https://quelora.github.io"
         ],
-        
-        // Objetos
         objectSrc: ["'none'"],
-        
-        // Base URI
         baseUri: ["'self'"],
-        
-        // Form actions
         formAction: [
           "'self'",
           "https://accounts.google.com"
         ],
-        
-        // Worker sources
         workerSrc: [
           "'self'",
           "blob:"
         ],
-        
-        // Manifest sources
         manifestSrc: ["'self'"]
       },
     },
-    
-    // Otras configuraciones
     crossOriginEmbedderPolicy: false,
     crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
     crossOriginResourcePolicy: { policy: "cross-origin" },
-    
-    // HSTS
     hsts: process.env.NODE_ENV === 'production' ? {
       maxAge: 31536000,
       includeSubDomains: true,
       preload: true
     } : false,
-    
-    // Upgrade insecure requests
-    upgradeInsecureRequests: null, // O eliminar esta línea
-    
-    // No cache
+    upgradeInsecureRequests: null,
     noCache: process.env.NODE_ENV === 'development',
-    
-    // Referrer policy
-    referrerPolicy: { 
-      policy: "strict-origin-when-cross-origin" 
+    referrerPolicy: {
+      policy: "strict-origin-when-cross-origin"
     }
   })
 );
 
 app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'ALLOW-FROM https://accounts.google.com');
-  res.setHeader('Permissions-Policy', 'interest-cohort=()'); // Evita FLoC
+  res.setHeader('Permissions-Policy', 'interest-cohort=()');
   next();
 });
 
@@ -219,7 +181,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// 🔹 Mongo
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
 
@@ -231,7 +192,6 @@ mongoose
     process.exit(1);
   });
 
-// 🔹 Schema
 const postSchema = new mongoose.Schema({
   cid: String,
   entity: mongoose.Schema.Types.ObjectId,
@@ -254,13 +214,12 @@ const postSchema = new mongoose.Schema({
 });
 const Post = mongoose.model("Post", postSchema);
 
-// 🔹 API
 app.get("/api/posts", async (req, res) => {
   try {
     const page = parseInt(req.query.page) || 0;
     const limit = Math.min(parseInt(req.query.limit) || 10, 20);
 
-    const posts = await Post.find({ "deletion.status": "active" })
+    const posts = await Post.find({ "deletion.status": "active" , "cid":"QU-ME7MZ3WI-3CUPR" })
       .sort({ created_at: -1 })
       .skip(page * limit)
       .limit(limit)
@@ -273,15 +232,12 @@ app.get("/api/posts", async (req, res) => {
   }
 });
 
-// 🔹 Servir todos los archivos estáticos
 app.use(express.static(__dirname));
 
-// 🔹 Root -> index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// 🔹 Iniciar servidor
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Demo API running at http://localhost:${PORT}`);
 });
