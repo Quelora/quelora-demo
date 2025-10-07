@@ -22,6 +22,7 @@
             --shadow-light: 0 1px 3px rgba(0, 0, 0, 0.1);
             --shadow-hover: 0 4px 12px rgba(0, 0, 0, 0.15);
             --header-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --quelora-comments-width: 500px; /* Ancho ajustado a 500px */
         }
 
         *, *::before, *::after {
@@ -42,6 +43,10 @@
             flex-direction: column;
             line-height: 1.5;
             overflow-x: hidden;
+        }
+        
+        body.iframe-open {
+            overflow: hidden;
         }
 
         .app-header {
@@ -188,24 +193,28 @@
             box-shadow: var(--shadow-light);
             overflow: hidden;
             transition: box-shadow 0.3s, transform 0.3s;
-            cursor: pointer;
             text-decoration: none;
             color: inherit;
             position: relative;
         }
-
+        
         .news-card:hover {
             box-shadow: var(--shadow-hover);
             transform: translateY(-4px);
         }
-
-        .news-card > a {
-            text-decoration: none;
-            color: inherit;
-            display: contents;
-            pointer-events: all;
+        
+        .news-card .card-content-area {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
         }
 
+        .news-card .card-info-link {
+            text-decoration: none;
+            color: inherit;
+            display: contents; 
+        }
+        
         .news-card.hero-card .card-info {
             display: none !important;
         }
@@ -220,19 +229,14 @@
             color: white;
             z-index: 2;
             border-radius: 0;
-        }
-
-        .news-card.hero-card .community-interaction-bar,
-        .news-card.hero-card .community-interaction-bar * {
-            color: white !important;
-        }
-
-        .news-card.hero-card .community-interaction-bar a {
-            text-decoration: none !important;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
         .news-card.hero-card-main .hero-overlay .title {
             font-size: 36px;
+            margin-top: auto;
         }
 
         .hero-image-bg {
@@ -251,23 +255,113 @@
             transform: scale(1.05);
         }
         
-        .news-card .news-image {
+        .news-card .card-image-wrapper {
+            position: relative; 
             width: 100%;
             height: 200px;
+            overflow: hidden; 
+            border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+        }
+
+        .news-card .news-image {
+            width: 100%;
+            height: 100%; 
             object-fit: cover;
             transition: transform 0.3s ease;
-            border-radius: var(--card-border-radius) var(--card-border-radius) 0 0;
+            border-radius: inherit; 
         }
 
         .news-card:hover .news-image {
             transform: scale(1.05);
         }
+        
+        .news-buttons {
+            position: absolute;
+            bottom: 10px; 
+            left: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px; 
+            z-index: 5; 
+        }
+        
+        .news-card.hero-card .news-buttons {
+            position: absolute; 
+            bottom: 20px; 
+            left: 24px;
+            right: 24px;
+        }
 
+        .news-btn {
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 13px; 
+            font-weight: 500;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s, opacity 0.2s, border-color 0.2s;
+            border: 1px solid transparent; 
+            background-color: rgba(0, 0, 0, 0.6); 
+            color: white;
+            white-space: nowrap; 
+            opacity: 0.85; 
+            align-self: flex-start;
+        }
+        
+        .news-buttons .link-btn {
+            margin-left: auto;
+            align-self: flex-end;
+        }
+        
+        .news-btn:hover {
+            opacity: 1;
+        }
+
+        .reddit-btn {
+            border-color: #FF4500; 
+        }
+        
+        .reddit-btn:hover {
+            background-color: #FF4500; 
+            border-color: #FF4500;
+        }
+        
+        .link-btn {
+            border-color: var(--primary-color); 
+        }
+        
+        .link-btn:hover:not(:disabled) {
+            background-color: var(--primary-color); 
+            border-color: var(--primary-color);
+        }
+        
+        .link-btn:disabled {
+            background-color: rgba(101, 103, 107, 0.6); 
+            cursor: not-allowed;
+            opacity: 0.8;
+            border-color: var(--on-surface-secondary);
+        }
+        
+        .news-card.hero-card .news-buttons a,
+        .news-card.hero-card .news-buttons button {
+            background-color: rgba(255, 255, 255, 0.2); 
+            border-color: white; 
+            opacity: 0.85;
+        }
+        
+        .news-card.hero-card .news-buttons a:hover,
+        .news-card.hero-card .news-buttons button:hover:not(:disabled) {
+            background-color: rgba(255, 255, 255, 0.4);
+            opacity: 1;
+        }
+        
         .card-info {
             display: flex;
             flex-direction: column;
             padding: 16px;
             flex-grow: 1;
+            cursor: pointer; 
         }
 
         .card-info .news-title {
@@ -303,15 +397,11 @@
             margin-top: auto;
             color: var(--on-surface-secondary);
         }
-
+        
         .news-card.hero-card .news-meta {
-            display: flex;
-            justify-content:flex-end;
-            align-items: left;
-            margin-top: auto;
-            color: #fff;
+            display: none; 
         }
-
+        
         .watermark {
             position: absolute;
             top: 10px;
@@ -323,7 +413,7 @@
             font-size: 11px;
             font-weight: 700;
             border-radius: 4px;
-            z-index: 3;
+            z-index: 6; 
             pointer-events: none;
             text-transform: uppercase;
         }
@@ -367,7 +457,186 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* --- ESTILOS DEL IFRAME VIEWER --- */
+        
+        #iframeViewer {
+            position: fixed;
+            top: var(--header-height); 
+            left: 0;
+            width: 100%; 
+            height: calc(100vh - var(--header-height));
+            background-color: var(--background-color);
+            z-index: 1500;
+            display: flex;
+            flex-direction: column;
+            transition: opacity 0.3s ease;
+        }
 
+        #iframeViewer.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Header del Iframe */
+        #iframeHeader {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 15px;
+            background-color: var(--surface-color);
+            box-shadow: var(--shadow-light);
+            flex-shrink: 0;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        #iframeLinkText {
+            flex-grow: 1;
+            margin-right: 15px;
+            color: var(--on-surface-secondary);
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        /* Contenedor de botones en línea */
+        #iframeHeader .button-group {
+             display: flex;
+             gap: 8px; 
+        }
+
+        #iframeHeader .action-btn {
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            border: none;
+        }
+        
+        #iframeCommentButton {
+            background-color: #888;
+            color: white;
+        }
+        #iframeCommentButton:hover {
+             background-color: #666;
+        }
+
+        #iframeNewTabButton {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        #iframeNewTabButton:hover {
+            background-color: #0044b3;
+        }
+
+        #iframeCloseButton {
+            background-color: #ccc;
+            color: var(--on-surface-primary);
+        }
+        
+        #iframeCloseButton:hover {
+            background-color: #bbb;
+        }
+
+        /* Contenedor del Iframe */
+        .iframe-wrapper {
+            flex-grow: 1;
+            position: relative;
+        }
+
+        #externalIframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* Estilos para el mensaje de bloqueo */
+        #iframeMessage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--surface-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding: 20px;
+            z-index: 10; 
+        }
+        
+        #iframeMessage.hidden {
+            display: none;
+        }
+
+        .block-message-content h3 {
+            color: #d32f2f; 
+            margin-bottom: 10px;
+        }
+
+        .block-message-content p {
+            color: var(--on-surface-secondary);
+            max-width: 400px;
+            margin: 0 auto 20px auto;
+        }
+        
+        .primary-btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 500;
+            display: inline-block;
+            transition: background-color 0.2s;
+        }
+        
+        .primary-btn:hover {
+             background-color: #0044b3;
+        }
+        
+        /* Botón Flotante para Comentarios (Mobile) */
+        #mobileCommentButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: var(--shadow-hover);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1501;
+            transition: transform 0.3s ease;
+        }
+        
+        #mobileCommentButton.hidden {
+            display: none;
+        }
+        
+        #mobileCommentButton svg {
+             fill: white;
+             width: 24px;
+             height: 24px;
+        }
+        
+        /* --- Media Queries --- */
         @media (max-width: 900px) {
             :root {
                 --header-height: 70px;
@@ -381,47 +650,21 @@
             .header-logo {
                 font-size: 20px;
             }
-            #heroCarousel {
-                margin-bottom: 20px;
+            
+            /* Mobile Iframe Styles */
+            #iframeViewer {
+                top: var(--header-height);
+                height: calc(100vh - var(--header-height));
+                width: 100%; 
             }
-            .hero-card-container {
-                height: 350px;
-                padding: 0 0;
+            #iframeHeader {
+                 font-size: 12px;
+                 padding: 8px 10px;
             }
-            .news-card.hero-card-main .hero-overlay .title {
-                font-size: 24px; 
-            }
-            .news-container {
-                padding: 0 16px;
-            }
-            .carousel-control {
-                padding: 10px 5px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            :root {
-                --header-height: 60px;
-            }
-            .header-logo img {
-                height: 35px;
-            }
-            .header-logo {
-                font-size: 18px;
-            }
-            .header-nav {
-                gap: 10px;
-                font-size: 12px;
-            }
-            .news-container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-            }
-            .hero-overlay {
-                padding: 16px;
-            }
-            .news-card.hero-card-main .hero-overlay .title {
-                font-size: 20px; 
+            
+            #iframeHeader .action-btn {
+                 font-size: 11px;
+                 padding: 4px 8px;
             }
         }
 
@@ -437,28 +680,17 @@
                 height: 500px;
             }
             
-         
+            /* Desktop Iframe Styles (Integration with Quelora Comments) */
+            body.iframe-open #iframeViewer {
+                width: calc(100% - var(--quelora-comments-width)); 
+            }
             
-            #prevControl {
-                left: 24px; 
-                border-radius: 0;
+            body.iframe-open.quelora-open #iframeViewer {
+                width: calc(100% - var(--quelora-comments-width)); 
             }
-
-            #nextControl {
-                right: 24px;
-                border-radius: 0;
-            }
-
-            .carousel-control {
-                padding: 20px 15px;
-                font-size: 24px;
-                opacity: 0.8;
-                border-radius: 4px; 
-            }
-
-            .carousel-control svg {
-                width: 28px;
-                height: 28px;
+            
+            #mobileCommentButton {
+                display: none !important; 
             }
         }
     </style>
@@ -467,6 +699,35 @@
     <div id="loader-overlay">
         <div class="spinner"></div>
     </div>
+    
+    <div id="iframeViewer" class="hidden">
+        <div id="iframeHeader">
+            <span id="iframeLinkText">Loading link...</span>
+            <div class="button-group">
+                <button id="iframeCommentButton" class="action-btn" title="Open/Close Comments">
+                     <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+                </button>
+                <a id="iframeNewTabButton" href="#" target="_blank" class="action-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="currentColor"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                    Open in New Tab
+                </a>
+                <button id="iframeCloseButton" class="action-btn" title="Close Viewer">
+                    <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                </button>
+            </div>
+        </div>
+        <div class="iframe-wrapper" style="position: relative; flex-grow: 1;">
+            <iframe id="externalIframe" src="about:blank" title="External Web Page Viewer" style="width: 100%; height: 100%; border: none;"></iframe>
+            
+            <div id="iframeMessage" class="hidden">
+                 </div>
+        </div>
+    </div>
+    
+    <button id="mobileCommentButton" class="hidden" aria-label="Open Comments">
+         <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 0 24 24" width="24px" fill="currentColor"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/></svg>
+    </button>
+    
     <header class="app-header">
         <a href="#" class="header-logo">
             <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle">
