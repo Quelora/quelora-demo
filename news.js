@@ -126,7 +126,7 @@ async function openIframeViewer(link, entityId) {
         let timeout = setTimeout(() => {
             if (!iframeViewer.classList.contains('hidden') && 
                 (!iframeContainer.contentWindow || iframeContainer.contentWindow.document.body.childNodes.length === 0)) {
-                 
+                   
                 showBlockMessage(link);
                 iframeContainer.src = 'about:blank'; 
             }
@@ -200,15 +200,14 @@ function closeIframeViewer() {
         iframeViewer.classList.add('hidden');
         document.body.classList.remove('iframe-open');
         
-        // Lógica para cerrar el quelora-comments si estaba abierto
+        // Lógica de Cierre Garantizado para quelora-comments (SOLUCIÓN APLICADA)
         const commentsBox = document.getElementById('quelora-comments');
-        if (commentsBox && !commentsBox.classList.contains('hidden')) {
-            const entityId = iframeViewer.dataset.entity;
-            const targetCard = document.querySelector(`.news-card[data-entity="${entityId}"]`);
-            const commentIcon = targetCard ? targetCard.querySelector('.interaction-icon.comment-icon') : null;
-            if (commentIcon) {
-                commentIcon.click();
-            }
+        // Buscar el botón de cierre dentro del panel de comentarios
+        const closeBtn = commentsBox ? commentsBox.querySelector('.drawer-close-btn') : null;
+
+        // Si el panel de comentarios existe y NO está oculto, haz clic en su botón de cierre interno.
+        if (commentsBox && !commentsBox.classList.contains('hidden') && closeBtn) {
+            closeBtn.click(); 
         }
         
         document.body.classList.remove('quelora-open');
@@ -235,10 +234,10 @@ function setupIframeViewer() {
 
     if (iframeViewer) {
          iframeViewer.addEventListener('click', (e) => {
-            if (e.target === iframeViewer) {
-                e.stopPropagation();
-            }
-         });
+             if (e.target === iframeViewer) {
+                 e.stopPropagation();
+             }
+           });
     }
 }
 
