@@ -13,17 +13,6 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Seguridad general
-app.use(helmet());
-app.use(
-    rateLimit({
-        windowMs: 15 * 60 * 1000,
-        max: 1000,
-        message: { error: "Too many requests, try again later." },
-    })
-);
-
-// Orígenes permitidos
 const allowedOrigins = [
     "https://quelora.org",
     "https://www.quelora.org",
@@ -33,7 +22,15 @@ const allowedOrigins = [
     "https://quelora.localhost.ar:444",
 ];
 
-// CORS
+app.use(helmet());
+app.use(
+    rateLimit({
+        windowMs: 15 * 60 * 1000,
+        max: 1000,
+        message: { error: "Too many requests, try again later." },
+    })
+);
+
 app.use(
     cors({
         origin: function (origin, callback) {
@@ -46,7 +43,6 @@ app.use(
     })
 );
 
-// Helmet configurado correctamente para permitir la incrustación de contenido externo (frameSrc: https: http:)
 app.use(
     helmet({
         contentSecurityPolicy: {
@@ -110,6 +106,7 @@ app.use(
                 ],
                 connectSrc: [
                     "'self'",
+                    "https:", 
                     "https://*.cloudflare.com",
                     "https://challenges.cloudflare.com",
                     "https://quelora.localhost.ar:444",
@@ -125,11 +122,9 @@ app.use(
                     "https://cdnjs.cloudflare.com",
                     "https://ipapi.co"
                 ],
-                // AJUSTE CLAVE: Permitir la incrustación de cualquier sitio HTTPS o HTTP en el iframe.
                 frameSrc: [
                     "'self'",
-                    "https:", // Permite cualquier URL HTTPS
-                    "http:",  // Permite cualquier URL HTTP
+                    "https:",
                     "https://*.cloudflare.com",
                     "https://challenges.cloudflare.com",
                     "https://www.youtube.com",
@@ -166,22 +161,18 @@ app.use(
                     preload: true,
                 }
                 : false,
-        upgradeInsecureRequests: null,
         referrerPolicy: {
             policy: "strict-origin-when-cross-origin",
         },
     })
 );
 
-// Headers adicionales
 app.use((req, res, next) => {
-    // X-Frame-Options es redundante si CSP está activo, pero se deja por compatibilidad.
     res.setHeader("X-Frame-Options", "SAMEORIGIN");
     res.setHeader("Permissions-Policy", "interest-cohort=()");
     next();
 });
 
-// Demo mode: bloquea escritura
 app.use((req, res, next) => {
     if (["POST", "PUT", "DELETE", "PATCH"].includes(req.method)) {
         return res
@@ -191,7 +182,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// MongoDB
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
 const CID = process.env.CID;
@@ -203,7 +193,6 @@ mongoose
         process.exit(1);
     });
 
-// Esquema
 const postSchema = new mongoose.Schema({
     cid: String,
     entity: mongoose.Schema.Types.ObjectId,
@@ -226,7 +215,6 @@ const postSchema = new mongoose.Schema({
 });
 const Post = mongoose.model("Post", postSchema);
 
-// Endpoint de posts
 app.get("/api/posts", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 0;
@@ -248,14 +236,12 @@ app.get("/api/posts", async (req, res) => {
     }
 });
 
-// Archivos estáticos
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));
 });
 
-// Servidor
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`🚀 Demo API running at http://localhost:${PORT}`);
 });
