@@ -310,10 +310,17 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                 <div class="hero-overlay">
                     <div class="watermark">${watermarkText}</div>
                     <h2 class="title">${item.title}</h2>
-                    <div class="news-meta"></div>
+
                 </div>
-                ${buttonsHTML} 
-           `;
+                <div class="news-buttons">
+                    <a href="${item?.reference || '#'}" target="_blank" class="news-btn reddit-btn" ${item?.reference ? '' : 'style="pointer-events: none; opacity: 0.5;"'}>
+                        Reddit Post
+                    </a>
+                    <div class="news-meta"></div>
+                    <button class="news-btn link-btn" data-link="${item?.link || '#'}" data-entity="${item.entity}" ${item?.link ? '' : 'disabled'}>
+                        Original Link
+                    </button>
+                </div>`;
     } else {
         const mediaHTML = `<img src="${imageSrc}" alt="${item.title}" class="news-image">`;
         card.innerHTML = `
