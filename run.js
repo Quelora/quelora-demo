@@ -13,6 +13,7 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// --- CONFIGURACIÓN DE SEGURIDAD ---
 const allowedOrigins = [
     "https://quelora.org",
     "https://www.quelora.org",
@@ -173,6 +174,7 @@ app.use((req, res, next) => {
     next();
 });
 
+// Middleware de Modo Demo (Deshabilita operaciones de escritura)
 app.use((req, res, next) => {
     if (["POST", "PUT", "DELETE", "PATCH"].includes(req.method)) {
         return res
@@ -182,9 +184,12 @@ app.use((req, res, next) => {
     next();
 });
 
+// --- CONEXIÓN A MONGODB Y DEFINICIÓN DE ESQUEMAS ---
+
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
-const CID = process.env.CID;
+const CID = process.env.CID || 'DEFAULT_CID'; // Asegurar un valor por defecto
+
 mongoose
     .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log("✅ Connected to MongoDB"))
@@ -193,6 +198,7 @@ mongoose
         process.exit(1);
     });
 
+// 1. Esquema Post (ya existente)
 const postSchema = new mongoose.Schema({
     cid: String,
     entity: mongoose.Schema.Types.ObjectId,
@@ -215,6 +221,39 @@ const postSchema = new mongoose.Schema({
 });
 const Post = mongoose.model("Post", postSchema);
 
+// 2. Nuevo Esquema Comment (simplificado)
+const commentSchema = new mongoose.Schema({
+    cid: String,
+    postId: mongoose.Schema.Types.ObjectId,
+    userId: mongoose.Schema.Types.ObjectId,
+    text: String,
+    created_at: Date,
+});
+const Comment = mongoose.model("Comment", commentSchema);
+
+// 3. Nuevo Esquema ProfileLike (simplificado)
+const profileLikeSchema = new mongoose.Schema({
+    cid: String,
+    entityId: mongoose.Schema.Types.ObjectId, // ID del post o comentario
+    userId: mongoose.Schema.Types.ObjectId,
+    type: String, // 'post' o 'comment'
+    created_at: Date,
+});
+const ProfileLike = mongoose.model("ProfileLike", profileLikeSchema);
+
+// 4. Nuevo Esquema Profile (simplificado)
+const profileSchema = new mongoose.Schema({
+    cid: String,
+    username: String,
+    email: String,
+    created_at: Date,
+});
+const Profile = mongoose.model("Profile", profileSchema);
+
+
+// --- RUTAS API ---
+
+// Ruta existente para Posts
 app.get("/api/posts", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 0;
@@ -235,6 +274,34 @@ app.get("/api/posts", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
+// NUEVA RUTA: Obtener todas las estadísticas
+app.get("/api/stats", async (req, res) => {
+    try {
+        const filters = { cid: CID };
+
+        const [postsCount, commentsCount, likesCount, profilesCount] = await Promise.all([
+            Post.countDocuments({ "deletion.status": "active", ...filters }),
+            Comment.countDocuments(),
+            ProfileLike.countDocuments(),
+            Profile.countDocuments(filters), 
+        ]);
+
+        res.json({
+            posts: postsCount,
+            comments: commentsCount,
+            likes: likesCount,
+            profiles: profilesCount,
+        });
+
+    } catch (error) {
+        console.error("Error fetching stats:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
+// --- SERVICIO ESTÁTICO Y PUERTO ---
 
 app.use(express.static(__dirname));
 

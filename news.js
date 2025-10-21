@@ -6,6 +6,12 @@ const prevControl = document.getElementById("prevControl");
 const nextControl = document.getElementById("nextControl");
 const heroCarousel = document.getElementById("heroCarousel");
 
+// Referencias para los elementos de estadísticas (NUEVO)
+const statPosts = document.getElementById('statPosts');
+const statComments = document.getElementById('statComments');
+const statLikes = document.getElementById('statLikes');
+const statProfiles = document.getElementById('statProfiles');
+
 // Nuevo contenedor principal para el iframe y el header
 const iframeViewer = document.getElementById('iframeViewer');
 const iframeContainer = document.getElementById('externalIframe');
@@ -75,11 +81,6 @@ async function checkIfFramingAllowed(link) {
         // Usamos HEAD para ser eficientes, pero algunos sitios necesitan GET.
         const response = await fetch(link, { method: 'HEAD', mode: 'no-cors' });
         
-        // Si el fetch en modo 'no-cors' es exitoso pero resulta en un "Opaque Response", 
-        // no podemos leer las cabeceras, pero la incrustación directa podría ser bloqueada
-        // si el sitio no devuelve un Content-Type válido para incrustación. 
-        // Sin embargo, si la respuesta es tipo 'opaque' es un buen signo para intentarlo.
-        
         // Más simple y más seguro: si la solicitud HEAD tiene éxito (incluso si es opaca), 
         // intentamos el iframe para no bloquear contenido válido.
         return false; 
@@ -126,7 +127,7 @@ async function openIframeViewer(link, entityId) {
         let timeout = setTimeout(() => {
             if (!iframeViewer.classList.contains('hidden') && 
                 (!iframeContainer.contentWindow || iframeContainer.contentWindow.document.body.childNodes.length === 0)) {
-                   
+                    
                 showBlockMessage(link);
                 iframeContainer.src = 'about:blank'; 
             }
@@ -151,10 +152,10 @@ async function openIframeViewer(link, entityId) {
 
         setTimeout(() => {
              if (!commentsBox.classList.contains('hidden')) {
-                document.body.classList.add('quelora-open');
-            } else {
-                document.body.classList.remove('quelora-open');
-            }
+                 document.body.classList.add('quelora-open');
+             } else {
+                 document.body.classList.remove('quelora-open');
+             }
         }, 50);
 
         const commentButtonClickHandler = (e) => {
@@ -200,7 +201,7 @@ function closeIframeViewer() {
         iframeViewer.classList.add('hidden');
         document.body.classList.remove('iframe-open');
         
-        // Lógica de Cierre Garantizado para quelora-comments (SOLUCIÓN APLICADA)
+        // Lógica de Cierre Garantizado para quelora-comments
         const commentsBox = document.getElementById('quelora-comments');
         // Buscar el botón de cierre dentro del panel de comentarios
         const closeBtn = commentsBox ? commentsBox.querySelector('.drawer-close-btn') : null;
@@ -241,7 +242,7 @@ function setupIframeViewer() {
     }
 }
 
-// --- Resto de las funciones (sin cambios) ---
+// --- Funciones de Utilidad y Carga de Noticias (sin cambios relevantes) ---
 
 function showLoader(show) {
     if (show) {
@@ -330,14 +331,14 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                 ${buttonsHTML} 
             </div>
             <div class="card-content-area">
-                    <div class="card-info">
-                        <h3 class="news-title">${item.title}</h3>
-                        <p>${item.description || item.metadata?.subreddit || ""}</p>
-                        <div class="news-meta">
-                            <span>${item.metadata?.author || "Unknown"}</span>
-                            <span>${new Date(item.created_at).toLocaleDateString("en-US")}</span>
-                            </div>
-                    </div>
+                <div class="card-info">
+                    <h3 class="news-title">${item.title}</h3>
+                    <p>${item.description || item.metadata?.subreddit || ""}</p>
+                    <div class="news-meta">
+                        <span>${item.metadata?.author || "Unknown"}</span>
+                        <span>${new Date(item.created_at).toLocaleDateString("en-US")}</span>
+                        </div>
+                </div>
             </div>`;
     }
     
@@ -536,6 +537,74 @@ function debounce(func, wait) {
     };
 }
 
+// --- NUEVOS MÉTODOS PARA CONTADORES ANIMADOS ---
+
+/**
+ * Función que anima el contador de forma rápida.
+ * @param {HTMLElement} element - El elemento <span> que contiene el número.
+ * @param {number} targetValue - El valor final que debe alcanzar el contador.
+ * @param {number} duration - Duración total de la animación en milisegundos.
+ */
+function animateCounter(element, targetValue, duration = 1500) {
+    const startValue = 0;
+    let startTime = null;
+
+    if (targetValue < 100) {
+        // Para números pequeños, la animación es casi instantánea
+        element.textContent = targetValue.toLocaleString();
+        return;
+    }
+
+    const step = (timestamp) => {
+        if (!startTime) startTime = timestamp;
+        
+        const progress = timestamp - startTime;
+        const percentage = Math.min(progress / duration, 1);
+        
+        // Usar una curva de easing para que sea más rápido al inicio y más lento al final (easeOutCubic)
+        const easedPercentage = 1 - Math.pow(1 - percentage, 3); 
+        
+        const currentValue = Math.floor(easedPercentage * targetValue);
+
+        element.textContent = currentValue.toLocaleString();
+
+        if (percentage < 1) {
+            requestAnimationFrame(step);
+        } else {
+            // Asegurar que el valor final es exacto
+            element.textContent = targetValue.toLocaleString();
+        }
+    };
+
+    requestAnimationFrame(step);
+}
+
+/**
+ * Obtiene las estadísticas de la API y las anima en el header.
+ */
+async function fetchStatsAndAnimate() {
+    try {
+        const res = await fetch('/api/stats');
+        if (!res.ok) throw new Error("Failed to fetch statistics");
+        
+        const stats = await res.json();
+        
+        if (statPosts) animateCounter(statPosts, stats.posts || 0);
+        if (statComments) animateCounter(statComments, stats.comments || 0);
+        if (statLikes) animateCounter(statLikes, stats.likes || 0);
+        if (statProfiles) animateCounter(statProfiles, stats.profiles || 0);
+
+    } catch (e) {
+        console.error("Error fetching and animating stats:", e);
+        // Opcional: Mostrar un error o valores estáticos por defecto
+        if (statPosts) statPosts.textContent = 'N/A';
+        if (statComments) statComments.textContent = 'N/A';
+        if (statLikes) statLikes.textContent = 'N/A';
+        if (statProfiles) statProfiles.textContent = 'N/A';
+    }
+}
+
+
 // --- Event Listeners and Initial Load ---
 
 window.addEventListener('resize', debounce(() => {
@@ -570,6 +639,10 @@ window.addEventListener("scroll", debounce(() => {
 }, 100));
 
 (async () => {
+    // 1. Cargar y animar las estadísticas primero
+    await fetchStatsAndAnimate(); 
+    
+    // 2. Luego cargar las noticias (mantiene el flujo original)
     showLoader(true);
     await loadMoreNews(true);
 })();
