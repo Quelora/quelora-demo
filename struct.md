@@ -1,8 +1,9 @@
+├── .env
 ├── .gitignore
 ├── LICENSE
-├── article.html
 ├── favicon.ico
 ├── gallery.html
+├── gallery.js
 ├── gulpfile.js
 ├── icon.png
 ├── index.html
@@ -11,8 +12,8 @@
 │   ├── quelora.gallery.conf.js
 │   ├── quelora.index.conf.js
 │   └── quelora.kitty.conf.js
-├── kittyreels.html
 ├── news.html
+├── news.js
 ├── nodemon.json
 ├── package-lock.json
 ├── package.json
@@ -41,10 +42,12 @@
 │       ├── ai.js
 │       ├── anchor.js
 │       ├── audioRecorder.js
+│       ├── captcha.js
 │       ├── comments.js
 │       ├── conf.js
 │       ├── core.js
 │       ├── cropper.js
+│       ├── development.js
 │       ├── dist
 │       │   ├── locales
 │       │   │   ├── ar.json
@@ -83,6 +86,7 @@
 │       ├── progressInput.js
 │       ├── quelora.js
 │       ├── queloraWorker.js
+│       ├── quote.js
 │       ├── rollup.config.js
 │       ├── rollup.config.light.js
 │       ├── session.js
@@ -91,4 +95,7 @@
 │       ├── toast.js
 │       ├── ui.js
 │       └── utils.js
-└── run.js
+├── reels.html
+├── reels.js
+├── run.js
+└── struct.md

@@ -39,6 +39,11 @@ let heroData = [];
 const SCROLL_THRESHOLD = 800;
 let isPausedByUser = false;
 
+// Variables globales para el manejo del intervalo de estadísticas (NUEVO)
+const STATS_INTERVAL = 15000; // 15 segundos
+let statsIntervalId = null;
+let statsAbortController = null;
+
 // --- Funciones del Visor de Iframe ---
 
 /**
@@ -537,7 +542,7 @@ function debounce(func, wait) {
     };
 }
 
-// --- NUEVOS MÉTODOS PARA CONTADORES ANIMADOS ---
+// --- MÉTODOS PARA CONTADORES ANIMADOS (ACTUALIZADOS) ---
 
 /**
  * Función que anima el contador de forma rápida.
@@ -580,21 +585,32 @@ function animateCounter(element, targetValue, duration = 1500) {
 }
 
 /**
- * Obtiene las estadísticas de la API y las anima en el header.
+ * Obtiene las estadísticas de la API, las anima y maneja el aborto de solicitudes pendientes.
+ * @param {AbortSignal} signal - Señal para abortar la petición.
  */
-async function fetchStatsAndAnimate() {
+async function fetchStats(signal) {
     try {
-        const res = await fetch('/api/stats');
-        if (!res.ok) throw new Error("Failed to fetch statistics");
+        const res = await fetch('/api/stats', { signal });
+        if (!res.ok) {
+            // Si el error es por aborto, simplemente ignoramos
+            if (signal.aborted) return;
+            throw new Error("Failed to fetch statistics");
+        }
         
         const stats = await res.json();
         
-        if (statPosts) animateCounter(statPosts, stats.posts || 0);
-        if (statComments) animateCounter(statComments, stats.comments || 0);
-        if (statLikes) animateCounter(statLikes, stats.likes || 0);
-        if (statProfiles) animateCounter(statProfiles, stats.profiles || 0);
+        // Aplicar animación solo si la petición no fue abortada
+        if (!signal.aborted) {
+            if (statPosts) animateCounter(statPosts, stats.posts || 0);
+            if (statComments) animateCounter(statComments, stats.comments || 0);
+            if (statLikes) animateCounter(statLikes, stats.likes || 0);
+            if (statProfiles) animateCounter(statProfiles, stats.profiles || 0);
+        }
 
     } catch (e) {
+        // Ignorar el error si fue un aborto
+        if (e.name === 'AbortError') return; 
+
         console.error("Error fetching and animating stats:", e);
         // Opcional: Mostrar un error o valores estáticos por defecto
         if (statPosts) statPosts.textContent = 'N/A';
@@ -604,8 +620,41 @@ async function fetchStatsAndAnimate() {
     }
 }
 
+/**
+ * Ejecuta una sola solicitud de estadísticas, abortando la anterior si existe.
+ */
+async function executeStatsFetch() {
+    // 1. Abortar cualquier solicitud anterior pendiente
+    if (statsAbortController) {
+        statsAbortController.abort();
+    }
+    
+    // 2. Crear un nuevo controlador para esta solicitud
+    statsAbortController = new AbortController();
+    const signal = statsAbortController.signal;
 
-// --- Event Listeners and Initial Load ---
+    // 3. Ejecutar la nueva solicitud
+    await fetchStats(signal);
+    
+    // 4. Limpiar el controlador si la solicitud se completó con éxito o con un error no abortado.
+    if (!signal.aborted) {
+        statsAbortController = null;
+    }
+}
+
+/**
+ * Inicia el proceso de actualización periódica de las estadísticas.
+ */
+function startStatsUpdate() {
+    // Ejecutar inmediatamente al inicio
+    executeStatsFetch();
+    
+    // Configurar el intervalo
+    statsIntervalId = setInterval(executeStatsFetch, STATS_INTERVAL);
+}
+
+
+// --- Event Listeners and Initial Load (Actualizado para usar startStatsUpdate) ---
 
 window.addEventListener('resize', debounce(() => {
     updateCarouselPosition(false); 
@@ -639,8 +688,8 @@ window.addEventListener("scroll", debounce(() => {
 }, 100));
 
 (async () => {
-    // 1. Cargar y animar las estadísticas primero
-    await fetchStatsAndAnimate(); 
+    // 1. Cargar y animar las estadísticas primero e iniciar el intervalo
+    startStatsUpdate(); 
     
     // 2. Luego cargar las noticias (mantiene el flujo original)
     showLoader(true);
