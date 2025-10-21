@@ -6,25 +6,21 @@ const prevControl = document.getElementById("prevControl");
 const nextControl = document.getElementById("nextControl");
 const heroCarousel = document.getElementById("heroCarousel");
 
-// Referencias para los elementos de estadísticas (NUEVO)
 const statPosts = document.getElementById('statPosts');
 const statComments = document.getElementById('statComments');
 const statLikes = document.getElementById('statLikes');
 const statProfiles = document.getElementById('statProfiles');
 
-// Nuevo contenedor principal para el iframe y el header
 const iframeViewer = document.getElementById('iframeViewer');
 const iframeContainer = document.getElementById('externalIframe');
 const iframeHeader = document.getElementById('iframeHeader');
 const iframeLinkText = document.getElementById('iframeLinkText');
-const iframeMessage = document.getElementById('iframeMessage'); // Elemento para el mensaje de error
+const iframeMessage = document.getElementById('iframeMessage');
 
-// REFERENCIAS A LOS BOTONES DENTRO DEL HEADER (USANDO IDs):
 const iframeNewTabButton = document.getElementById('iframeNewTabButton'); 
 const iframeCloseButton = document.getElementById('iframeCloseButton');
 const iframeCommentButton = document.getElementById('iframeCommentButton');
 
-// Nuevo botón flotante para móvil (Comentarios)
 const mobileCommentButton = document.getElementById('mobileCommentButton');
 
 let page = 0;
@@ -39,16 +35,10 @@ let heroData = [];
 const SCROLL_THRESHOLD = 800;
 let isPausedByUser = false;
 
-// Variables globales para el manejo del intervalo de estadísticas (NUEVO)
-const STATS_INTERVAL = 15000; // 15 segundos
+const STATS_INTERVAL = 5000;
 let statsIntervalId = null;
 let statsAbortController = null;
 
-// --- Funciones del Visor de Iframe ---
-
-/**
- * Muestra el mensaje de error de bloqueo en el visor.
- */
 function showBlockMessage(link) {
     if (iframeMessage) {
         iframeMessage.innerHTML = `
@@ -64,9 +54,6 @@ function showBlockMessage(link) {
     }
 }
 
-/**
- * Oculta el mensaje de bloqueo.
- */
 function hideBlockMessage() {
     if (iframeMessage) {
         iframeMessage.classList.add('hidden');
@@ -74,39 +61,20 @@ function hideBlockMessage() {
     }
 }
 
-/**
- * Heurística: Intenta hacer una petición HEAD en modo no-cors.
- * Si falla debido a que el modo no-cors fuerza un "Opaque Response", 
- * es una fuerte indicación de que el sitio está protegido contra X-Frame-Options/CSP.
- * @param {string} link - URL a verificar.
- * @returns {Promise<boolean>} Resuelve a true si la incrustación probablemente fallará.
- */
 async function checkIfFramingAllowed(link) {
     try {
-        // Usamos HEAD para ser eficientes, pero algunos sitios necesitan GET.
         const response = await fetch(link, { method: 'HEAD', mode: 'no-cors' });
-        
-        // Más simple y más seguro: si la solicitud HEAD tiene éxito (incluso si es opaca), 
-        // intentamos el iframe para no bloquear contenido válido.
         return false; 
-
     } catch (error) {
-        // Si hay un error de red o timeout, asumimos que fallará.
         return true;
     }
 }
 
-/**
- * Abre el visor de iframe y carga el enlace.
- * @param {string} link - URL del enlace externo.
- * @param {string} entityId - ID de la entidad para encontrar el icono de comentarios.
- */
 async function openIframeViewer(link, entityId) {
     if (!iframeViewer || !iframeContainer || !iframeHeader) return;
 
     hideBlockMessage(); 
 
-    // 1. Mostrar el visor y guardar la entidad
     iframeViewer.classList.remove('hidden');
     document.body.classList.add('iframe-open');
     iframeViewer.dataset.entity = entityId; 
@@ -114,21 +82,14 @@ async function openIframeViewer(link, entityId) {
     iframeLinkText.textContent = link.length > 80 ? link.substring(0, 77) + '...' : link;
     iframeNewTabButton.href = link;
     
-    // =================================================================
-    // 2. VERIFICACIÓN PREDICTIVA (Antes de cargar el iframe)
-    // =================================================================
     const likelyBlocked = await checkIfFramingAllowed(link);
 
     if (likelyBlocked) {
-        // Bloqueo detectado o error de red: Mostramos el mensaje elegante al instante.
         showBlockMessage(link);
-        iframeContainer.src = 'about:blank'; // Aseguramos que no se intente cargar el iframe
+        iframeContainer.src = 'about:blank';
     } else {
-        // La verificación pasó o no es concluyente: Intentamos la carga directa.
         iframeContainer.src = link; 
         
-        // 3. Monitoreo de carga (Fallback al método de Timeout)
-        // Usamos el timeout como una red de seguridad contra bloqueos silenciosos (CSP)
         let timeout = setTimeout(() => {
             if (!iframeViewer.classList.contains('hidden') && 
                 (!iframeContainer.contentWindow || iframeContainer.contentWindow.document.body.childNodes.length === 0)) {
@@ -138,21 +99,17 @@ async function openIframeViewer(link, entityId) {
             }
         }, 1500); 
 
-        // Limpiar el timeout si la carga es exitosa
         iframeContainer.onload = () => {
             clearTimeout(timeout);
             hideBlockMessage();
         };
     }
-    // =================================================================
 
-    // 4. Lógica para abrir/conectar el panel de comentarios
     const targetCard = document.querySelector(`.news-card[data-entity="${entityId}"]`);
     const commentsBox = document.getElementById('quelora-comments'); 
     const commentIcon = targetCard ? targetCard.querySelector('.interaction-icon.comment-icon') : null;
 
     if (commentsBox && commentIcon) {
-        // Ejecutar el clic en el ícono de comentarios de la tarjeta para abrirlo inicialmente
         commentIcon.click();
 
         setTimeout(() => {
@@ -198,27 +155,21 @@ async function openIframeViewer(link, entityId) {
     }
 }
 
-/**
- * Cierra el visor de iframe.
- */
 function closeIframeViewer() {
     if (iframeViewer) {
         iframeViewer.classList.add('hidden');
         document.body.classList.remove('iframe-open');
         
-        // Lógica de Cierre Garantizado para quelora-comments
         const commentsBox = document.getElementById('quelora-comments');
-        // Buscar el botón de cierre dentro del panel de comentarios
         const closeBtn = commentsBox ? commentsBox.querySelector('.drawer-close-btn') : null;
 
-        // Si el panel de comentarios existe y NO está oculto, haz clic en su botón de cierre interno.
         if (commentsBox && !commentsBox.classList.contains('hidden') && closeBtn) {
             closeBtn.click(); 
         }
         
         document.body.classList.remove('quelora-open');
-        iframeContainer.src = 'about:blank'; // Detener carga
-        hideBlockMessage(); // Asegurar que el mensaje de bloqueo se oculte
+        iframeContainer.src = 'about:blank';
+        hideBlockMessage();
         if(mobileCommentButton) mobileCommentButton.classList.add('hidden');
     }
 }
@@ -246,8 +197,6 @@ function setupIframeViewer() {
            });
     }
 }
-
-// --- Funciones de Utilidad y Carga de Noticias (sin cambios relevantes) ---
 
 function showLoader(show) {
     if (show) {
@@ -310,7 +259,6 @@ function createCardElement(item, extraClasses = '', isHero = false) {
     `;
 
     if (isHero) {
-        // Hero card retiene el <a> wrapper para el click principal
         card.innerHTML = `
                 <div class="hero-image-bg" style="background-image: url('${imageSrc}');"></div>
                 <div class="hero-overlay">
@@ -347,7 +295,6 @@ function createCardElement(item, extraClasses = '', isHero = false) {
             </div>`;
     }
     
-    // Event listener para el botón "Original Link" para abrir el iframe
     const linkButton = card.querySelector('.link-btn');
     if (linkButton && item?.link) {
         linkButton.addEventListener('click', (event) => {
@@ -376,7 +323,6 @@ function renderHeroCarousel(items) {
 
     heroScrollContainer.innerHTML = '';
 
-    // El ancho de la diapositiva es el ancho del carrusel padre.
     const slideWidth = heroCarousel.offsetWidth;
 
     itemsToRender.forEach((item) => {
@@ -401,24 +347,19 @@ function renderHeroCarousel(items) {
 function updateCarouselPosition(animated = true) {
     if (!heroScrollContainer || !heroCarousel) return;
     
-    // Obtener el ancho de la diapositiva. heroCarousel.offsetWidth ahora es el ancho correcto de la diapositiva.
     const slideWidth = heroCarousel.offsetWidth;
     
-    // 1. Asegurar que cada diapositiva tiene el ancho correcto (importante para el resize)
     Array.from(heroScrollContainer.children).forEach(slide => {
         if (slide.classList.contains('hero-card-container')) {
             slide.style.width = `${slideWidth}px`;
         }
     });
     
-    // 2. Aplicar la transición y el desplazamiento
     heroScrollContainer.style.transition = animated ? 'transform 0.5s ease-in-out' : 'none';
     
-    // Calcular el desplazamiento en píxeles.
     const offset = -slideIndex * slideWidth;
     heroScrollContainer.style.transform = `translateX(${offset}px)`;
 
-    // 3. Lógica para el bucle infinito
     if (slideIndex === heroData.length + 1 || slideIndex === 0) {
         setTimeout(() => {
             heroScrollContainer.style.transition = 'none';
@@ -542,23 +483,21 @@ function debounce(func, wait) {
     };
 }
 
-// --- MÉTODOS PARA CONTADORES ANIMADOS (ACTUALIZADOS) ---
-
-/**
- * Función que anima el contador de forma rápida.
- * @param {HTMLElement} element - El elemento <span> que contiene el número.
- * @param {number} targetValue - El valor final que debe alcanzar el contador.
- * @param {number} duration - Duración total de la animación en milisegundos.
- */
 function animateCounter(element, targetValue, duration = 1500) {
-    const startValue = 0;
-    let startTime = null;
-
-    if (targetValue < 100) {
-        // Para números pequeños, la animación es casi instantánea
+    const startText = element.textContent.replace(/[^0-9.]/g, '');
+    const startValue = parseFloat(startText) || 0; 
+    
+    if (targetValue <= startValue) {
         element.textContent = targetValue.toLocaleString();
         return;
     }
+
+    if (targetValue - startValue < 100) {
+        element.textContent = targetValue.toLocaleString();
+        return;
+    }
+
+    let startTime = null;
 
     const step = (timestamp) => {
         if (!startTime) startTime = timestamp;
@@ -566,17 +505,15 @@ function animateCounter(element, targetValue, duration = 1500) {
         const progress = timestamp - startTime;
         const percentage = Math.min(progress / duration, 1);
         
-        // Usar una curva de easing para que sea más rápido al inicio y más lento al final (easeOutCubic)
         const easedPercentage = 1 - Math.pow(1 - percentage, 3); 
         
-        const currentValue = Math.floor(easedPercentage * targetValue);
+        const currentValue = Math.floor(startValue + (targetValue - startValue) * easedPercentage);
 
         element.textContent = currentValue.toLocaleString();
 
         if (percentage < 1) {
             requestAnimationFrame(step);
         } else {
-            // Asegurar que el valor final es exacto
             element.textContent = targetValue.toLocaleString();
         }
     };
@@ -584,22 +521,16 @@ function animateCounter(element, targetValue, duration = 1500) {
     requestAnimationFrame(step);
 }
 
-/**
- * Obtiene las estadísticas de la API, las anima y maneja el aborto de solicitudes pendientes.
- * @param {AbortSignal} signal - Señal para abortar la petición.
- */
 async function fetchStats(signal) {
     try {
         const res = await fetch('/api/stats', { signal });
         if (!res.ok) {
-            // Si el error es por aborto, simplemente ignoramos
             if (signal.aborted) return;
             throw new Error("Failed to fetch statistics");
         }
         
         const stats = await res.json();
         
-        // Aplicar animación solo si la petición no fue abortada
         if (!signal.aborted) {
             if (statPosts) animateCounter(statPosts, stats.posts || 0);
             if (statComments) animateCounter(statComments, stats.comments || 0);
@@ -608,11 +539,9 @@ async function fetchStats(signal) {
         }
 
     } catch (e) {
-        // Ignorar el error si fue un aborto
         if (e.name === 'AbortError') return; 
 
         console.error("Error fetching and animating stats:", e);
-        // Opcional: Mostrar un error o valores estáticos por defecto
         if (statPosts) statPosts.textContent = 'N/A';
         if (statComments) statComments.textContent = 'N/A';
         if (statLikes) statLikes.textContent = 'N/A';
@@ -620,41 +549,27 @@ async function fetchStats(signal) {
     }
 }
 
-/**
- * Ejecuta una sola solicitud de estadísticas, abortando la anterior si existe.
- */
 async function executeStatsFetch() {
-    // 1. Abortar cualquier solicitud anterior pendiente
     if (statsAbortController) {
         statsAbortController.abort();
     }
     
-    // 2. Crear un nuevo controlador para esta solicitud
     statsAbortController = new AbortController();
     const signal = statsAbortController.signal;
 
-    // 3. Ejecutar la nueva solicitud
     await fetchStats(signal);
     
-    // 4. Limpiar el controlador si la solicitud se completó con éxito o con un error no abortado.
     if (!signal.aborted) {
         statsAbortController = null;
     }
 }
 
-/**
- * Inicia el proceso de actualización periódica de las estadísticas.
- */
 function startStatsUpdate() {
-    // Ejecutar inmediatamente al inicio
     executeStatsFetch();
     
-    // Configurar el intervalo
     statsIntervalId = setInterval(executeStatsFetch, STATS_INTERVAL);
 }
 
-
-// --- Event Listeners and Initial Load (Actualizado para usar startStatsUpdate) ---
 
 window.addEventListener('resize', debounce(() => {
     updateCarouselPosition(false); 
@@ -672,7 +587,6 @@ if (heroCarousel) {
     heroCarousel.addEventListener('click', handleCarouselClick);
 }
 
-// Setup Iframe Viewer Listeners
 setupIframeViewer(); 
 
 window.addEventListener("scroll", debounce(() => {
@@ -688,10 +602,8 @@ window.addEventListener("scroll", debounce(() => {
 }, 100));
 
 (async () => {
-    // 1. Cargar y animar las estadísticas primero e iniciar el intervalo
     startStatsUpdate(); 
     
-    // 2. Luego cargar las noticias (mantiene el flujo original)
     showLoader(true);
     await loadMoreNews(true);
 })();
