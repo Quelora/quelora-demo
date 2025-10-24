@@ -27,12 +27,14 @@
 │   │   ├── cropper.css
 │   │   ├── emoji.css
 │   │   ├── icons.css
+│   │   ├── interaction.css
 │   │   ├── misc.css
 │   │   ├── modal.css
 │   │   ├── notifications.css
 │   │   ├── player.css
 │   │   ├── profile.css
 │   │   ├── quelora.css
+│   │   ├── registration.css
 │   │   ├── responsive.css
 │   │   ├── session.css
 │   │   ├── settings.css
@@ -87,8 +89,10 @@
 │       ├── quelora.js
 │       ├── queloraWorker.js
 │       ├── quote.js
+│       ├── registration.js
 │       ├── rollup.config.js
 │       ├── rollup.config.light.js
+│       ├── scaffold.js
 │       ├── session.js
 │       ├── storage.js
 │       ├── sw.js

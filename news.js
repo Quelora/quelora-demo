@@ -35,7 +35,7 @@ let heroData = [];
 const SCROLL_THRESHOLD = 800;
 let isPausedByUser = false;
 
-const STATS_INTERVAL = 5000;
+const STATS_INTERVAL = 50000;
 let statsIntervalId = null;
 let statsAbortController = null;
 
