@@ -1,3 +1,4 @@
+// filepath: news.js
 const heroScrollContainer = document.getElementById("heroScrollContainer");
 const newsContainer = document.getElementById("newsContainer");
 const statusContainer = document.getElementById("statusContainer");
@@ -5,6 +6,7 @@ const loaderOverlay = document.getElementById("loader-overlay");
 const prevControl = document.getElementById("prevControl");
 const nextControl = document.getElementById("nextControl");
 const heroCarousel = document.getElementById("heroCarousel");
+const inliveSection = document.getElementById("inliveSection");
 
 const statPosts = document.getElementById('statPosts');
 const statComments = document.getElementById('statComments');
@@ -17,7 +19,7 @@ const iframeHeader = document.getElementById('iframeHeader');
 const iframeLinkText = document.getElementById('iframeLinkText');
 const iframeMessage = document.getElementById('iframeMessage');
 
-const iframeNewTabButton = document.getElementById('iframeNewTabButton'); 
+const iframeNewTabButton = document.getElementById('iframeNewTabButton');
 const iframeCloseButton = document.getElementById('iframeCloseButton');
 const iframeCommentButton = document.getElementById('iframeCommentButton');
 
@@ -35,7 +37,7 @@ let heroData = [];
 const SCROLL_THRESHOLD = 800;
 let isPausedByUser = false;
 
-const STATS_INTERVAL = 50000;
+const STATS_INTERVAL = 10000;
 let statsIntervalId = null;
 let statsAbortController = null;
 
@@ -64,7 +66,7 @@ function hideBlockMessage() {
 async function checkIfFramingAllowed(link) {
     try {
         const response = await fetch(link, { method: 'HEAD', mode: 'no-cors' });
-        return false; 
+        return false;
     } catch (error) {
         return true;
     }
@@ -73,31 +75,31 @@ async function checkIfFramingAllowed(link) {
 async function openIframeViewer(link, entityId) {
     if (!iframeViewer || !iframeContainer || !iframeHeader) return;
 
-    hideBlockMessage(); 
+    hideBlockMessage();
 
     iframeViewer.classList.remove('hidden');
     document.body.classList.add('iframe-open');
-    iframeViewer.dataset.entity = entityId; 
+    iframeViewer.dataset.entity = entityId;
 
     iframeLinkText.textContent = link.length > 80 ? link.substring(0, 77) + '...' : link;
     iframeNewTabButton.href = link;
-    
+
     const likelyBlocked = await checkIfFramingAllowed(link);
 
     if (likelyBlocked) {
         showBlockMessage(link);
         iframeContainer.src = 'about:blank';
     } else {
-        iframeContainer.src = link; 
-        
+        iframeContainer.src = link;
+
         let timeout = setTimeout(() => {
-            if (!iframeViewer.classList.contains('hidden') && 
+            if (!iframeViewer.classList.contains('hidden') &&
                 (!iframeContainer.contentWindow || iframeContainer.contentWindow.document.body.childNodes.length === 0)) {
-                    
+
                 showBlockMessage(link);
-                iframeContainer.src = 'about:blank'; 
+                iframeContainer.src = 'about:blank';
             }
-        }, 1500); 
+        }, 1500);
 
         iframeContainer.onload = () => {
             clearTimeout(timeout);
@@ -106,32 +108,32 @@ async function openIframeViewer(link, entityId) {
     }
 
     const targetCard = document.querySelector(`.news-card[data-entity="${entityId}"]`);
-    const commentsBox = document.getElementById('quelora-comments'); 
+    const commentsBox = document.getElementById('quelora-comments');
     const commentIcon = targetCard ? targetCard.querySelector('.interaction-icon.comment-icon') : null;
 
     if (commentsBox && commentIcon) {
         commentIcon.click();
 
         setTimeout(() => {
-             if (!commentsBox.classList.contains('hidden')) {
-                 document.body.classList.add('quelora-open');
-             } else {
-                 document.body.classList.remove('quelora-open');
-             }
+            if (!commentsBox.classList.contains('hidden')) {
+                document.body.classList.add('quelora-open');
+            } else {
+                document.body.classList.remove('quelora-open');
+            }
         }, 50);
 
         const commentButtonClickHandler = (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
             e.stopPropagation();
             commentIcon.click();
-            
+
             setTimeout(() => {
                 if (commentsBox.classList.contains('hidden')) {
-                     document.body.classList.remove('quelora-open');
+                    document.body.classList.remove('quelora-open');
                 } else {
-                     document.body.classList.add('quelora-open');
+                    document.body.classList.add('quelora-open');
                 }
-            }, 100); 
+            }, 100);
         };
 
         const replaceAndAssign = (element, handler) => {
@@ -150,8 +152,8 @@ async function openIframeViewer(link, entityId) {
 
     } else {
         document.body.classList.remove('quelora-open');
-        if(iframeCommentButton) iframeCommentButton.classList.add('hidden');
-        if(mobileCommentButton) mobileCommentButton.classList.add('hidden');
+        if (iframeCommentButton) iframeCommentButton.classList.add('hidden');
+        if (mobileCommentButton) mobileCommentButton.classList.add('hidden');
     }
 }
 
@@ -159,27 +161,27 @@ function closeIframeViewer() {
     if (iframeViewer) {
         iframeViewer.classList.add('hidden');
         document.body.classList.remove('iframe-open');
-        
+
         const commentsBox = document.getElementById('quelora-comments');
         const closeBtn = commentsBox ? commentsBox.querySelector('.drawer-close-btn') : null;
 
         if (commentsBox && !commentsBox.classList.contains('hidden') && closeBtn) {
-            closeBtn.click(); 
+            closeBtn.click();
         }
-        
+
         document.body.classList.remove('quelora-open');
         iframeContainer.src = 'about:blank';
         hideBlockMessage();
-        if(mobileCommentButton) mobileCommentButton.classList.add('hidden');
+        if (mobileCommentButton) mobileCommentButton.classList.add('hidden');
     }
 }
 
 function setupIframeViewer() {
     if (iframeCloseButton) {
         iframeCloseButton.addEventListener('click', (e) => {
-             e.preventDefault(); 
-             e.stopPropagation(); 
-             closeIframeViewer();
+            e.preventDefault();
+            e.stopPropagation();
+            closeIframeViewer();
         });
     }
 
@@ -190,11 +192,11 @@ function setupIframeViewer() {
     });
 
     if (iframeViewer) {
-         iframeViewer.addEventListener('click', (e) => {
-             if (e.target === iframeViewer) {
-                 e.stopPropagation();
-             }
-           });
+        iframeViewer.addEventListener('click', (e) => {
+            if (e.target === iframeViewer) {
+                e.stopPropagation();
+            }
+        });
     }
 }
 
@@ -216,6 +218,17 @@ async function fetchNews(page, limit) {
     return await res.json();
 }
 
+async function fetchInlivePosts() {
+    try {
+        const res = await fetch(`/api/posts/inlive`);
+        if (!res.ok) throw new Error("Failed to fetch inlive posts");
+        return await res.json();
+    } catch (e) {
+        console.error(e);
+        return [];
+    }
+}
+
 function createCardElement(item, extraClasses = '', isHero = false) {
     if (!item || !item.title || !item.image || !item.entity) {
         return null;
@@ -227,7 +240,7 @@ function createCardElement(item, extraClasses = '', isHero = false) {
     card.dataset.entity = item.entity;
 
     let watermarkText = item.metadata?.subreddit || "SOURCE";
-    
+
     const isVideo = item.image && (item.image.includes("youtube.com") || item.image.includes("youtu.be"));
 
     let imageSrc = item.image;
@@ -242,11 +255,16 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                 videoId = item.image.split("/").pop();
             }
             if (videoId) {
+                const queryIndex = videoId.indexOf('?');
+                if (queryIndex !== -1) {
+                    videoId = videoId.substring(0, queryIndex);
+                }
+                videoId = videoId.trim();
                 imageSrc = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             }
-        } catch (e) {}
+        } catch (e) { }
     }
-    
+
     const buttonsHTML = `
         <div class="news-buttons">
             <a href="${item?.reference || '#'}" target="_blank" class="news-btn reddit-btn" ${item?.reference ? '' : 'style="pointer-events: none; opacity: 0.5;"'}>
@@ -276,10 +294,14 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                     </button>
                 </div>`;
     } else {
+        const isLive = item.config?.liveMode?.isLiveActive === true;
+        const liveBadgeHTML = isLive ? '<div class="live-badge"><span></span>LIVE</div>' : '';
+
         const mediaHTML = `<img src="${imageSrc}" alt="${item.title}" class="news-image">`;
         card.innerHTML = `
             <div class="card-image-wrapper"> 
                 ${mediaHTML}
+                ${liveBadgeHTML}
                 <div class="watermark">${watermarkText}</div>
                 ${buttonsHTML} 
             </div>
@@ -290,23 +312,22 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                     <div class="news-meta">
                         <span>${item.metadata?.author || "Unknown"}</span>
                         <span>${new Date(item.created_at).toLocaleDateString("en-US")}</span>
-                        </div>
+                    </div>
                 </div>
             </div>`;
     }
-    
+
     const linkButton = card.querySelector('.link-btn');
     if (linkButton && item?.link) {
         linkButton.addEventListener('click', (event) => {
-            event.preventDefault(); 
-            event.stopPropagation(); 
+            event.preventDefault();
+            event.stopPropagation();
             openIframeViewer(item.link, item.entity);
         });
     }
 
     return card;
 }
-
 
 function renderHeroCarousel(items) {
     const validItems = items.filter(item => {
@@ -327,11 +348,11 @@ function renderHeroCarousel(items) {
 
     itemsToRender.forEach((item) => {
         const wrapper = document.createElement('div');
-        wrapper.className = 'hero-card-container'; 
-        wrapper.style.width = `${slideWidth}px`; 
-        
+        wrapper.className = 'hero-card-container';
+        wrapper.style.width = `${slideWidth}px`;
+
         const card = createCardElement(item, 'hero-card hero-card-main', true);
-        
+
         if (card) {
             wrapper.appendChild(card);
             heroScrollContainer.appendChild(wrapper);
@@ -340,23 +361,23 @@ function renderHeroCarousel(items) {
 
     heroData = validItems;
     slideIndex = 1;
-    updateCarouselPosition(false); 
+    updateCarouselPosition(false);
     startAutoSlide();
 }
 
 function updateCarouselPosition(animated = true) {
     if (!heroScrollContainer || !heroCarousel) return;
-    
+
     const slideWidth = heroCarousel.offsetWidth;
-    
+
     Array.from(heroScrollContainer.children).forEach(slide => {
         if (slide.classList.contains('hero-card-container')) {
             slide.style.width = `${slideWidth}px`;
         }
     });
-    
+
     heroScrollContainer.style.transition = animated ? 'transform 0.5s ease-in-out' : 'none';
-    
+
     const offset = -slideIndex * slideWidth;
     heroScrollContainer.style.transform = `translateX(${offset}px)`;
 
@@ -376,14 +397,14 @@ function updateCarouselPosition(animated = true) {
 
 function moveSlide(direction) {
     stopAutoSlide();
-    isPausedByUser = true; 
+    isPausedByUser = true;
     slideIndex += direction;
     updateCarouselPosition();
 }
 
 function startAutoSlide() {
-    if (heroData.length > 0 && !isPausedByUser) { 
-        stopAutoSlide(); 
+    if (heroData.length > 0 && !isPausedByUser) {
+        stopAutoSlide();
         slideInterval = setInterval(() => {
             slideIndex++;
             updateCarouselPosition();
@@ -401,6 +422,26 @@ function handleCarouselClick() {
     isPausedByUser = true;
 }
 
+function renderInlivePosts(items) {
+    if (!inliveSection || !items || items.length === 0) {
+        if (inliveSection) inliveSection.classList.add('hidden');
+        return;
+    }
+
+    const cardWrapper = document.createElement('div');
+    cardWrapper.className = 'inlive-card-wrapper';
+
+    items.forEach((item) => {
+        const card = createCardElement(item, 'inlive-card', false);
+        if (card) {
+            cardWrapper.appendChild(card);
+        }
+    });
+
+    inliveSection.appendChild(cardWrapper);
+    inliveSection.classList.remove('hidden');
+}
+
 function renderNewsGrid(newsItems) {
     newsItems.forEach((item) => {
         const card = createCardElement(item, '', false);
@@ -414,15 +455,15 @@ async function loadMoreNews(isInitialLoad = false) {
     if (isLoading || !hasMore) {
         return;
     }
-    
+
     isLoading = true;
     if (!isInitialLoad) {
         updateStatus('Loading more stories...');
     }
-    
+
     try {
         const fetchedNews = await fetchNews(page, limit);
-        
+
         if (fetchedNews.length === 0) {
             hasMore = false;
             if (!isInitialLoad) {
@@ -436,15 +477,14 @@ async function loadMoreNews(isInitialLoad = false) {
         });
 
         if (validNews.length === 0 && page === 0) {
-             heroCarousel.style.display = 'none';
+            heroCarousel.style.display = 'none';
         }
-        
+
         if (validNews.length === 0 && !isInitialLoad) {
             hasMore = false;
             updateStatus('No more valid stories found.');
             return;
         }
-
 
         let heroItems = [];
         let gridItems = validNews;
@@ -452,7 +492,7 @@ async function loadMoreNews(isInitialLoad = false) {
         if (isInitialLoad) {
             heroItems = validNews.slice(0, HERO_COUNT);
             gridItems = validNews.slice(HERO_COUNT);
-            
+
             renderHeroCarousel(heroItems);
         }
 
@@ -464,7 +504,7 @@ async function loadMoreNews(isInitialLoad = false) {
         } else {
             statusContainer.innerHTML = '';
         }
-        
+
         page++;
     } catch (e) {
         console.error("Error loading news:", e);
@@ -485,8 +525,8 @@ function debounce(func, wait) {
 
 function animateCounter(element, targetValue, duration = 1500) {
     const startText = element.textContent.replace(/[^0-9.]/g, '');
-    const startValue = parseFloat(startText) || 0; 
-    
+    const startValue = parseFloat(startText) || 0;
+
     if (targetValue <= startValue) {
         element.textContent = targetValue.toLocaleString();
         return;
@@ -501,12 +541,12 @@ function animateCounter(element, targetValue, duration = 1500) {
 
     const step = (timestamp) => {
         if (!startTime) startTime = timestamp;
-        
+
         const progress = timestamp - startTime;
         const percentage = Math.min(progress / duration, 1);
-        
-        const easedPercentage = 1 - Math.pow(1 - percentage, 3); 
-        
+
+        const easedPercentage = 1 - Math.pow(1 - percentage, 3);
+
         const currentValue = Math.floor(startValue + (targetValue - startValue) * easedPercentage);
 
         element.textContent = currentValue.toLocaleString();
@@ -528,9 +568,9 @@ async function fetchStats(signal) {
             if (signal.aborted) return;
             throw new Error("Failed to fetch statistics");
         }
-        
+
         const stats = await res.json();
-        
+
         if (!signal.aborted) {
             if (statPosts) animateCounter(statPosts, stats.posts || 0);
             if (statComments) animateCounter(statComments, stats.comments || 0);
@@ -539,7 +579,7 @@ async function fetchStats(signal) {
         }
 
     } catch (e) {
-        if (e.name === 'AbortError') return; 
+        if (e.name === 'AbortError') return;
 
         console.error("Error fetching and animating stats:", e);
         if (statPosts) statPosts.textContent = 'N/A';
@@ -553,12 +593,12 @@ async function executeStatsFetch() {
     if (statsAbortController) {
         statsAbortController.abort();
     }
-    
+
     statsAbortController = new AbortController();
     const signal = statsAbortController.signal;
 
     await fetchStats(signal);
-    
+
     if (!signal.aborted) {
         statsAbortController = null;
     }
@@ -566,15 +606,13 @@ async function executeStatsFetch() {
 
 function startStatsUpdate() {
     executeStatsFetch();
-    
+
     statsIntervalId = setInterval(executeStatsFetch, STATS_INTERVAL);
 }
 
-
 window.addEventListener('resize', debounce(() => {
-    updateCarouselPosition(false); 
-}, 250)); 
-
+    updateCarouselPosition(false);
+}, 250));
 
 if (prevControl && nextControl) {
     prevControl.addEventListener('click', () => moveSlide(-1));
@@ -587,23 +625,31 @@ if (heroCarousel) {
     heroCarousel.addEventListener('click', handleCarouselClick);
 }
 
-setupIframeViewer(); 
+setupIframeViewer();
 
 window.addEventListener("scroll", debounce(() => {
     const documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
-    
+
     const scrollPosition = window.scrollY + window.innerHeight;
-    
+
     const distanceToBottom = documentHeight - scrollPosition;
-    
+
     if (distanceToBottom <= SCROLL_THRESHOLD) {
         loadMoreNews();
     }
 }, 100));
 
 (async () => {
-    startStatsUpdate(); 
-    
+    startStatsUpdate();
     showLoader(true);
+
+    try {
+        const inlivePosts = await fetchInlivePosts();
+        renderInlivePosts(inlivePosts);
+    } catch (e) {
+        console.error("Failed to load inlive posts:", e);
+        if (inliveSection) inliveSection.classList.add('hidden');
+    }
+
     await loadMoreNews(true);
 })();

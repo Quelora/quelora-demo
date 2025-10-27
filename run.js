@@ -1,3 +1,4 @@
+// filepath: run.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -13,7 +14,6 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// --- CONFIGURACIÓN DE SEGURIDAD ---
 const allowedOrigins = [
     "https://quelora.org",
     "https://www.quelora.org",
@@ -107,7 +107,7 @@ app.use(
                 ],
                 connectSrc: [
                     "'self'",
-                    "https:", 
+                    "https:",
                     "https://*.cloudflare.com",
                     "https://challenges.cloudflare.com",
                     "https://quelora.localhost.ar:444",
@@ -119,9 +119,9 @@ app.use(
                     "https://*.quelora.org",
                     "https://graph.facebook.com",
                     "https://api.twitter.com",
-                    "wss://quelora.localhost.ar:445",
                     "https://cdnjs.cloudflare.com",
-                    "https://ipapi.co"
+                    "https://ipapi.co",
+                    "wss://*.quelora.org",
                 ],
                 frameSrc: [
                     "'self'",
@@ -174,7 +174,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Middleware de Modo Demo (Deshabilita operaciones de escritura)
 app.use((req, res, next) => {
     if (["POST", "PUT", "DELETE", "PATCH"].includes(req.method)) {
         return res
@@ -184,11 +183,9 @@ app.use((req, res, next) => {
     next();
 });
 
-// --- CONEXIÓN A MONGODB Y DEFINICIÓN DE ESQUEMAS ---
-
 const PORT = process.env.PORT || 3001;
 const MONGO_URI = process.env.MONGO_URI;
-const CID = process.env.CID || 'DEFAULT_CID'; // Asegurar un valor por defecto
+const CID = process.env.CID || 'DEFAULT_CID';
 
 mongoose
     .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -198,7 +195,6 @@ mongoose
         process.exit(1);
     });
 
-// 1. Esquema Post (ya existente)
 const postSchema = new mongoose.Schema({
     cid: String,
     entity: mongoose.Schema.Types.ObjectId,
@@ -221,7 +217,6 @@ const postSchema = new mongoose.Schema({
 });
 const Post = mongoose.model("Post", postSchema);
 
-// 2. Nuevo Esquema Comment (simplificado)
 const commentSchema = new mongoose.Schema({
     cid: String,
     postId: mongoose.Schema.Types.ObjectId,
@@ -231,17 +226,15 @@ const commentSchema = new mongoose.Schema({
 });
 const Comment = mongoose.model("Comment", commentSchema);
 
-// 3. Nuevo Esquema ProfileLike (simplificado)
 const profileLikeSchema = new mongoose.Schema({
     cid: String,
-    entityId: mongoose.Schema.Types.ObjectId, // ID del post o comentario
+    entityId: mongoose.Schema.Types.ObjectId,
     userId: mongoose.Schema.Types.ObjectId,
-    type: String, // 'post' o 'comment'
+    type: String,
     created_at: Date,
 });
 const ProfileLike = mongoose.model("ProfileLike", profileLikeSchema);
 
-// 4. Nuevo Esquema Profile (simplificado)
 const profileSchema = new mongoose.Schema({
     cid: String,
     username: String,
@@ -250,10 +243,6 @@ const profileSchema = new mongoose.Schema({
 });
 const Profile = mongoose.model("Profile", profileSchema);
 
-
-// --- RUTAS API ---
-
-// Ruta existente para Posts
 app.get("/api/posts", async (req, res) => {
     try {
         const page = parseInt(req.query.page) || 0;
@@ -262,10 +251,12 @@ app.get("/api/posts", async (req, res) => {
         const posts = await Post.find({
             "deletion.status": "active",
             cid: CID,
+            'config.liveMode.isLiveActive': { $ne: true }
         })
             .sort({ created_at: -1 })
             .skip(page * limit)
             .limit(limit)
+            .select('-likes')
             .lean();
 
         res.json(posts);
@@ -275,7 +266,25 @@ app.get("/api/posts", async (req, res) => {
     }
 });
 
-// NUEVA RUTA: Obtener todas las estadísticas
+app.get("/api/posts/inlive", async (req, res) => {
+    try {
+        const posts = await Post.find({
+            "deletion.status": "active",
+            cid: CID,
+            "config.liveMode.isLiveActive": true
+        })
+            .sort({ created_at: -1 })
+            .limit(2)
+            .select('-likes')
+            .lean();
+
+        res.json(posts);
+    } catch (error) {
+        console.error("Error fetching inlive posts:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
 app.get("/api/stats", async (req, res) => {
     try {
         const filters = { cid: CID };
@@ -284,7 +293,7 @@ app.get("/api/stats", async (req, res) => {
             Post.countDocuments({ "deletion.status": "active", ...filters }),
             Comment.countDocuments(),
             ProfileLike.countDocuments(),
-            Profile.countDocuments(filters), 
+            Profile.countDocuments(filters),
         ]);
 
         res.json({
@@ -299,9 +308,6 @@ app.get("/api/stats", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
-
-// --- SERVICIO ESTÁTICO Y PUERTO ---
 
 app.use(express.static(__dirname));
 
