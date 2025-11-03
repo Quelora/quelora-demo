@@ -1,3 +1,4 @@
+// news.js :
 const heroScrollContainer = document.getElementById("heroScrollContainer");
 const newsContainer = document.getElementById("newsContainer");
 const statusContainer = document.getElementById("statusContainer");
@@ -18,11 +19,15 @@ const iframeHeader = document.getElementById('iframeHeader');
 const iframeLinkText = document.getElementById('iframeLinkText');
 const iframeMessage = document.getElementById('iframeMessage');
 
-const iframeNewTabButton = document.getElementById('iframeNewTabButton');
+// Removido: const iframeNewTabButton = document.getElementById('iframeNewTabButton');
 const iframeCloseButton = document.getElementById('iframeCloseButton');
 const iframeCommentButton = document.getElementById('iframeCommentButton');
 
 const mobileCommentButton = document.getElementById('mobileCommentButton');
+
+const welcomeModalOverlay = document.getElementById('welcomeModalOverlay');
+const closeWelcomeModal = document.getElementById('closeWelcomeModal');
+const dismissWelcomeModal = document.getElementById('dismissWelcomeModal');
 
 let page = 0;
 let isLoading = false;
@@ -62,16 +67,9 @@ function hideBlockMessage() {
     }
 }
 
-async function checkIfFramingAllowed(link) {
-    try {
-        const response = await fetch(link, { method: 'HEAD', mode: 'no-cors' });
-        return false;
-    } catch (error) {
-        return true;
-    }
-}
+// Removida: async function checkIfFramingAllowed(link) {}
 
-async function openIframeViewer(link, entityId) {
+function openIframeViewer(link, entityId) {
     if (!iframeViewer || !iframeContainer || !iframeHeader) return;
 
     hideBlockMessage();
@@ -80,37 +78,23 @@ async function openIframeViewer(link, entityId) {
     document.body.classList.add('iframe-open');
     iframeViewer.dataset.entity = entityId;
 
-    iframeLinkText.textContent = link.length > 80 ? link.substring(0, 77) + '...' : link;
-    iframeNewTabButton.href = link;
+    // Solo mostramos el enlace para comentarios, el iframe ya no carga contenido externo real.
+    // iframeLinkText.textContent = link.length > 80 ? link.substring(0, 77) + '...' : link;
 
-    const likelyBlocked = await checkIfFramingAllowed(link);
-
-    if (likelyBlocked) {
-        showBlockMessage(link);
-        iframeContainer.src = 'about:blank';
-    } else {
-        iframeContainer.src = link;
-
-        let timeout = setTimeout(() => {
-            if (!iframeViewer.classList.contains('hidden') &&
-                (!iframeContainer.contentWindow || iframeContainer.contentWindow.document.body.childNodes.length === 0)) {
-
-                showBlockMessage(link);
-                iframeContainer.src = 'about:blank';
-            }
-        }, 1500);
-
-        iframeContainer.onload = () => {
-            clearTimeout(timeout);
-            hideBlockMessage();
-        };
-    }
+    // Ya no se usa para abrir en nueva pestaña, solo para saber qué post se abrió.
+    // iframeNewTabButton.href = link; 
+    
+    // Como eliminamos el contenido de iframeMessage que daba opciones de abrir en pestaña nueva, 
+    // y para simplificar la demo, solo mostramos el visor vacío.
+    iframeContainer.src = 'about:blank';
+    iframeLinkText.textContent = "Viewing Quelora Comments";
 
     const targetCard = document.querySelector(`.news-card[data-entity="${entityId}"]`);
     const commentsBox = document.getElementById('quelora-comments');
     const commentIcon = targetCard ? targetCard.querySelector('.interaction-icon.comment-icon') : null;
 
     if (commentsBox && commentIcon) {
+        // Forzamos la apertura de comentarios
         commentIcon.click();
 
         setTimeout(() => {
@@ -258,14 +242,12 @@ function createCardElement(item, extraClasses = '', isHero = false) {
         } catch (e) { }
     }
 
+    // Botones: Solo queda el enlace a Reddit
     const buttonsHTML = `
         <div class="news-buttons">
             <a href="${item?.reference || '#'}" target="_blank" class="news-btn reddit-btn" ${item?.reference ? '' : 'style="pointer-events: none; opacity: 0.5;"'}>
                 Reddit Post
             </a>
-            <button class="news-btn link-btn" data-link="${item?.link || '#'}" data-entity="${item.entity}" ${item?.link ? '' : 'disabled'}>
-                Original Link
-            </button>
         </div>
     `;
 
@@ -282,9 +264,6 @@ function createCardElement(item, extraClasses = '', isHero = false) {
                         Reddit Post
                     </a>
                     <div class="news-meta"></div>
-                    <button class="news-btn link-btn" data-link="${item?.link || '#'}" data-entity="${item.entity}" ${item?.link ? '' : 'disabled'}>
-                        Original Link
-                    </button>
                 </div>`;
     } else {
         const isLive = item.config?.liveMode?.isLiveActive === true;
@@ -310,14 +289,17 @@ function createCardElement(item, extraClasses = '', isHero = false) {
             </div>`;
     }
 
-    const linkButton = card.querySelector('.link-btn');
-    if (linkButton && item?.link) {
-        linkButton.addEventListener('click', (event) => {
+    // La tarjeta entera actúa como disparador para abrir el visor de comentarios
+    card.addEventListener('click', (event) => {
+        // Nos aseguramos de que solo la tarjeta, y no el botón de Reddit, abra el visor
+        if (!event.target.closest('.reddit-btn')) {
             event.preventDefault();
             event.stopPropagation();
-            openIframeViewer(item.link, item.entity);
-        });
-    }
+            // Abrimos el visor de comentarios usando el enlace del post como referencia de la entidad
+            // Notar que 'item.link' ya no se usa, pero 'item.reference' es la URL de Reddit
+            openIframeViewer(item.reference, item.entity); 
+        }
+    });
 
     return card;
 }
@@ -632,7 +614,48 @@ window.addEventListener("scroll", debounce(() => {
     }
 }, 100));
 
+// --- Lógica del Modal de Bienvenida ---
+function showWelcomeModal() {
+    const isDismissed = sessionStorage.getItem('queloraWelcomeDismissed');
+    if (!isDismissed && welcomeModalOverlay) {
+        welcomeModalOverlay.classList.remove('hidden');
+        document.body.classList.add('iframe-open');
+    } else if (welcomeModalOverlay) {
+        welcomeModalOverlay.classList.add('hidden');
+    }
+}
+
+function dismissWelcomeModalHandler() {
+    if (welcomeModalOverlay) {
+        welcomeModalOverlay.classList.add('hidden');
+        sessionStorage.setItem('queloraWelcomeDismissed', 'true');
+        // Solo quitamos la clase si no hay otro modal/iframe abierto
+        if (iframeViewer.classList.contains('hidden')) {
+            document.body.classList.remove('iframe-open');
+        }
+    }
+}
+
+if (closeWelcomeModal) {
+    closeWelcomeModal.addEventListener('click', dismissWelcomeModalHandler);
+}
+
+if (dismissWelcomeModal) {
+    dismissWelcomeModal.addEventListener('click', dismissWelcomeModalHandler);
+}
+
+if (welcomeModalOverlay) {
+    welcomeModalOverlay.addEventListener('click', (e) => {
+        if (e.target === welcomeModalOverlay) {
+            dismissWelcomeModalHandler();
+        }
+    });
+}
+// --- Fin Lógica Modal de Bienvenida ---
+
 (async () => {
+    showWelcomeModal(); // Muestra el modal al inicio
+
     startStatsUpdate();
     showLoader(true);
 
@@ -665,6 +688,7 @@ function openContactModal() {
 function closeContactModal() {
     if (contactModalOverlay) {
         contactModalOverlay.classList.add('hidden');
+        // Mantener la clase iframe-open si el visor está abierto
         if (iframeViewer.classList.contains('hidden')) {
             document.body.classList.remove('iframe-open');
         }
@@ -749,6 +773,9 @@ document.addEventListener('keydown', (e) => {
         } 
         else if (contactModalOverlay && !contactModalOverlay.classList.contains('hidden')) {
             closeContactModal();
+        }
+        else if (welcomeModalOverlay && !welcomeModalOverlay.classList.contains('hidden')) {
+            dismissWelcomeModalHandler();
         }
     }
 });

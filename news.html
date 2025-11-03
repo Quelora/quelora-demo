@@ -381,11 +381,16 @@
                 align-self: flex-start;
             }
             
-            .news-buttons .link-btn {
+            /* Eliminamos estilos de .news-buttons .link-btn */
+            /* Eliminamos estilos de .link-btn */
+            /* Eliminamos estilos de .link-btn:hover:not(:disabled) */
+            /* Eliminamos estilos de .link-btn:disabled */
+            
+            .news-buttons .reddit-btn {
                 margin-left: auto;
                 align-self: flex-end;
             }
-            
+
             .news-btn:hover {
                 opacity: 1;
             }
@@ -396,22 +401,6 @@
             .reddit-btn:hover {
                 background-color: #FF4500; 
                 border-color: #FF4500;
-            }
-            
-            .link-btn {
-                border-color: var(--primary-color); 
-            }
-            
-            .link-btn:hover:not(:disabled) {
-                background-color: var(--primary-color); 
-                border-color: var(--primary-color);
-            }
-            
-            .link-btn:disabled {
-                background-color: rgba(101, 103, 107, 0.6); 
-                cursor: not-allowed;
-                opacity: 0.8;
-                border-color: var(--on-surface-secondary);
             }
             
             .news-card.hero-card .news-buttons a,
@@ -589,13 +578,7 @@
             #iframeCommentButton:hover {
                 background-color: #666;
             }
-            #iframeNewTabButton {
-                background-color: var(--primary-color);
-                color: white;
-            }
-            #iframeNewTabButton:hover {
-                background-color: #0044b3;
-            }
+            /* Eliminamos #iframeNewTabButton */
             #iframeCloseButton {
                 background-color: #ccc;
                 color: var(--on-surface-primary);
@@ -652,6 +635,8 @@
                 font-weight: 500;
                 display: inline-block;
                 transition: background-color 0.2s;
+                border: none;
+                cursor: pointer;
             }
             
             .primary-btn:hover {
@@ -748,7 +733,7 @@
                 }
                 
                 body.iframe-open #iframeViewer {
-                    width: calc(100% - var(--quelora-comments-width)); 
+                    width: 100%; /* El viewer ocupa todo el espacio ya que no hay barra de comentarios */
                 }
                 
                 body.iframe-open.quelora-open #iframeViewer {
@@ -760,7 +745,8 @@
                 }
             }
 
-            .contact-modal-overlay {
+            /* --- Estilos para MODALES (Contact/Welcome) --- */
+            .modal-overlay {
                 position: fixed;
                 top: 0;
                 left: 0;
@@ -774,11 +760,11 @@
                 opacity: 1;
                 transition: opacity 0.3s ease;
             }
-            .contact-modal-overlay.hidden {
+            .modal-overlay.hidden {
                 opacity: 0;
                 pointer-events: none;
             }
-            .contact-modal {
+            .modal {
                 background: var(--surface-color);
                 padding: 24px 30px;
                 border-radius: var(--card-border-radius);
@@ -787,16 +773,17 @@
                 position: relative;
                 box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
             }
-            .contact-modal h3 {
+            .modal h3 {
                 margin: 0 0 8px 0;
                 font-size: 22px;
+                color: var(--primary-color);
             }
-            .contact-modal p {
+            .modal p {
                 margin: 0 0 20px 0;
                 font-size: 14px;
                 color: var(--on-surface-secondary);
             }
-            .contact-close-btn {
+            .modal-close-btn {
                 position: absolute;
                 top: 10px;
                 right: 10px;
@@ -811,96 +798,73 @@
                 justify-content: center;
                 color: var(--on-surface-secondary);
             }
-            .contact-close-btn:hover {
+            .modal-close-btn:hover {
                 background: #dddfe2;
                 color: var(--on-surface-primary);
             }
 
-            .contact-form .form-group {
-                margin-bottom: 16px;
+            /* Estilos del Modal de Bienvenida Específico */
+            #welcomeModal .welcome-content h3 {
+                font-size: 26px;
+                font-weight: 700;
+                margin-bottom: 15px;
             }
-            .contact-form .form-group label {
-                display: block;
-                font-size: 13px;
-                font-weight: 500;
-                margin-bottom: 6px;
-                color: var(--on-surface-secondary);
-            }
-            .contact-form .form-group input,
-            .contact-form .form-group textarea {
-                width: 100%;
-                padding: 10px 12px;
-                border: 1px solid var(--border-color);
-                border-radius: 6px;
-                font-size: 14px;
-                font-family: 'Roboto', sans-serif;
-            }
-            .contact-form .form-group textarea {
-                resize: vertical;
-                min-height: 80px;
-            }
-            .contact-form .form-actions {
-                margin-top: 20px;
-            }
-            .contact-form .primary-btn {
-                width: 100%;
-                padding: 12px;
+            #welcomeModal .welcome-content p {
                 font-size: 15px;
-                border: none;
-                cursor: pointer;
-            }
-            .contact-form .primary-btn:disabled {
-                background-color: #aaa;
-                cursor: not-allowed;
-            }
-            .contact-status {
-                margin-top: 15px;
-                font-size: 14px;
-                text-align: center;
-            }
-            .contact-status.success {
-                color: #2e7d32;
-            }
-            .contact-status.error {
-                color: #d32f2f;
-            }
-
-            .contact-modal .hidden {
-                display: none;
-            }
-            .contact-success-view {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-                padding: 40px 20px;
-            }
-            .contact-success-view h3 {
-                font-size: 24px;
-                color: var(--on-surface-primary);
-                margin-bottom: 10px;
-            }
-            .contact-success-view p {
-                font-size: 15px;
-                color: var(--on-surface-secondary);
+                line-height: 1.6;
                 margin-bottom: 25px;
             }
+            #welcomeModal .welcome-content strong {
+                font-weight: 700;
+                color: var(--on-surface-primary);
+            }
+            #welcomeModal .welcome-content .primary-btn {
+                padding: 12px 25px;
+                font-size: 16px;
+                width: auto;
+                margin-top: 10px;
+            }
+
+            /* Estilos del Contact Modal (manteniendo los nombres originales para no romper el JS) */
+            .contact-modal-overlay { z-index: 2001; }
+            .contact-modal { max-width: 450px; }
+            .contact-close-btn { background: none; border: none; }
+            .contact-modal .hidden { display: none; }
         </style>
     </head>
     <body>
-        <div id="contactModalOverlay" class="contact-modal-overlay hidden">
-            <div class="contact-modal">
-                
+        <div id="welcomeModalOverlay" class="modal-overlay">
+            <div id="welcomeModal" class="modal">
+                <button id="closeWelcomeModal" class="modal-close-btn" aria-label="Close Welcome">
+                    <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    </svg>
+                </button>
+                <div class="welcome-content">
+                    <h3>Welcome to the Quelora Demo! 👋</h3>
+                    <p>The information you are viewing is a **real, loaded content ecosystem**, replicating activity from posts imported from **Reddit** for demonstration purposes.</p>
+                    <ul>
+                        <li>Posts, comments, and likes are synchronized.</li>
+                        <li>Simulated user profiles with geographical data and activity.</li>
+                        <li>Counters and statistics update in real-time.</li>
+                    </ul>
+                    <p>We invite you to interact with the posts and the statistics panel to observe the platform's behavior in a high-traffic scenario.</p>
+                    <p>Content is imported from Reddit. You can visit the source: <a href="https://www.reddit.com" target="_blank" style="color: var(--primary-color); font-weight: 500;">Reddit.com</a></p>
+                    <button id="dismissWelcomeModal" class="primary-btn">Start Exploring</button>
+                </div>
+            </div>
+        </div>
+        
+        <div id="contactModalOverlay" class="modal-overlay hidden">
+            <div class="modal contact-modal">
                 <div id="contactFormWrapper">
-                    <button id="closeContactModal" class="contact-close-btn" aria-label="Close Modal">
+                    <button id="closeContactModal" class="modal-close-btn contact-close-btn" aria-label="Close Modal">
                         <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                         </svg>
                     </button>
-                    
                     <h3>Professional Contact</h3>
                     <p>Interested in collaborating? Send me a message.</p>
-                    
                     <form id="contactForm" class="contact-form">
                         <div class="form-group">
                             <label for="contactName">Full Name *</label>
@@ -928,13 +892,11 @@
                     </form>
                     <div id="contactStatus" class="contact-status"></div>
                 </div>
-
                 <div id="contactSuccessView" class="contact-success-view hidden">
                     <h3>Message Sent!</h3>
                     <p>Thank you for getting in touch. I will get back to you shortly.</p>
                     <button id="closeSuccessBtn" class="primary-btn">Close</button>
                 </div>
-
             </div>
         </div>
 
@@ -950,14 +912,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="currentColor">
                             <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z" />
                         </svg>
-                    </button>
-                    <a id="iframeNewTabButton" href="#" target="_blank" class="action-btn">
-                        <svg xmlns="http://www.w3.org/2000/svg" height="18px" viewBox="0 0 24 24" width="18px" fill="currentColor">
-                            <path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z" />
-                        </svg>
-                        Open in New Tab
-                    </a>
-                    <button id="iframeCloseButton" class="action-btn" title="Close Viewer">
+                    </button><button id="iframeCloseButton" class="action-btn" title="Close Viewer">
                         <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
                         </svg>
@@ -978,33 +933,23 @@
         </button>
         
         <header class="app-header">
-            <a href="#" class="header-logo">
-                <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle">
-                Quelora
+            <a href="index.html" class="header-logo">
+                <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle">Quelora
             </a>
             <div class="header-stats">
                 <div class="stat-item">
-                    <span id="statPosts" class="stat-number" data-target="posts">0</span>
-                    <span class="stat-label">Posts</span>
-                </div>
-                <div class="stat-item">
-                    <span id="statComments" class="stat-number" data-target="comments">0</span>
-                    <span class="stat-label">Comments</span>
-                </div>
-                <div class="stat-item">
-                    <span id="statLikes" class="stat-number" data-target="likes">0</span>
-                    <span class="stat-label">Likes</span>
-                </div>
-                <div class="stat-item">
-                    <span id="statProfiles" class="stat-number" data-target="profiles">0</span>
-                    <span class="stat-label">Users</span>
+                    <span id="statPosts" class="stat-number" data-target="posts">0</span><span class="stat-label">Posts</span>
+                </div><div class="stat-item">
+                    <span id="statComments" class="stat-number" data-target="comments">0</span><span class="stat-label">Comments</span>
+                </div><div class="stat-item">
+                    <span id="statLikes" class="stat-number" data-target="likes">0</span><span class="stat-label">Likes</span>
+                </div><div class="stat-item">
+                    <span id="statProfiles" class="stat-number" data-target="profiles">0</span><span class="stat-label">Users</span>
                 </div>
             </div>
             <nav class="header-nav">
                 <a href="index.html">Main</a>
-                <a href="https://www.quelora.org/news.html">News</a>
-                <a href="https://www.quelora.org/reels.html">Reels</a>
-                <a href="https://www.quelora.org/gallery.html">Gallery</a>
+                <a href="https://www.quelora.org/news.html">Demo</a>
                 <a href="#" id="contactLink">Contact</a>
             </nav>
         </header>
@@ -1017,8 +962,7 @@
                     <svg viewBox="0 0 24 24">
                         <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
                     </svg>
-                </button>
-                <button id="nextControl" class="carousel-control" aria-label="Next Slide">
+                </button><button id="nextControl" class="carousel-control" aria-label="Next Slide">
                     <svg viewBox="0 0 24 24">
                         <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z" />
                     </svg>
