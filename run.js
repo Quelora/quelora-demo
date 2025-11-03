@@ -14,6 +14,11 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+let statsCache = null;
+let cacheLastUpdated = 0;
+// 30 segundos en milisegundos
+const CACHE_DURATION_MS = 30 * 1000;
+
 const allowedOrigins = [
     "https://quelora.org",
     "https://www.quelora.org",
@@ -316,29 +321,39 @@ app.get("/api/posts/inlive", async (req, res) => {
 });
 
 app.get("/api/stats", async (req, res) => {
+    const now = Date.now();
+
+    if (statsCache && (now - cacheLastUpdated < CACHE_DURATION_MS)) {
+        return res.json(statsCache);
+    }
+
     try {
         const filters = { cid: CID };
-
         const [postsCount, commentsCount, likesCount, profilesCount] = await Promise.all([
             Post.countDocuments({ "deletion.status": "active", ...filters }),
-            Comment.countDocuments(),
-            ProfileLike.countDocuments(),
+            Comment.estimatedDocumentCount(), 
+            ProfileLike.estimatedDocumentCount(), 
             Profile.countDocuments(filters),
         ]);
 
-        res.json({
+        const newStats = {
             posts: postsCount,
             comments: commentsCount,
             likes: likesCount,
             profiles: profilesCount,
-        });
+        };
+        statsCache = newStats;
+        cacheLastUpdated = Date.now();
+        res.json(newStats);
 
     } catch (error) {
         console.error("Error fetching stats:", error);
+        if (statsCache) {
+            return res.json(statsCache);
+        }
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
-
 app.post("/api/contact", async (req, res) => {
     const { name, email, company, subject, message } = req.body;
 
