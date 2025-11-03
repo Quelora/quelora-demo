@@ -15,7 +15,7 @@ const statProfiles = document.getElementById('statProfiles');
 
 const iframeViewer = document.getElementById('iframeViewer');
 const iframeContainer = document.getElementById('externalIframe');
-const iframeHeader = document.getElementById('iframeHeader');
+
 const iframeLinkText = document.getElementById('iframeLinkText');
 const iframeMessage = document.getElementById('iframeMessage');
 
@@ -67,115 +67,6 @@ function hideBlockMessage() {
     }
 }
 
-// Removida: async function checkIfFramingAllowed(link) {}
-
-function openIframeViewer(link, entityId) {
-    if (!iframeViewer || !iframeContainer || !iframeHeader) return;
-
-    hideBlockMessage();
-
-    iframeViewer.classList.remove('hidden');
-    document.body.classList.add('iframe-open');
-    iframeViewer.dataset.entity = entityId;
-
-    // Solo mostramos el enlace para comentarios, el iframe ya no carga contenido externo real.
-    // iframeLinkText.textContent = link.length > 80 ? link.substring(0, 77) + '...' : link;
-
-    // Ya no se usa para abrir en nueva pestaña, solo para saber qué post se abrió.
-    // iframeNewTabButton.href = link; 
-    
-    // Como eliminamos el contenido de iframeMessage que daba opciones de abrir en pestaña nueva, 
-    // y para simplificar la demo, solo mostramos el visor vacío.
-    iframeContainer.src = 'about:blank';
-    iframeLinkText.textContent = "Viewing Quelora Comments";
-
-    const targetCard = document.querySelector(`.news-card[data-entity="${entityId}"]`);
-    const commentsBox = document.getElementById('quelora-comments');
-    const commentIcon = targetCard ? targetCard.querySelector('.interaction-icon.comment-icon') : null;
-
-    if (commentsBox && commentIcon) {
-        // Forzamos la apertura de comentarios
-        commentIcon.click();
-
-        setTimeout(() => {
-            if (!commentsBox.classList.contains('hidden')) {
-                document.body.classList.add('quelora-open');
-            } else {
-                document.body.classList.remove('quelora-open');
-            }
-        }, 50);
-
-        const commentButtonClickHandler = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            commentIcon.click();
-
-            setTimeout(() => {
-                if (commentsBox.classList.contains('hidden')) {
-                    document.body.classList.remove('quelora-open');
-                } else {
-                    document.body.classList.add('quelora-open');
-                }
-            }, 100);
-        };
-
-        const replaceAndAssign = (element, handler) => {
-            if (element) {
-                element.replaceWith(element.cloneNode(true));
-                const newElement = document.getElementById(element.id);
-                newElement.addEventListener('click', handler);
-                newElement.classList.remove('hidden');
-                return newElement;
-            }
-            return null;
-        };
-
-        replaceAndAssign(iframeCommentButton, commentButtonClickHandler);
-        replaceAndAssign(mobileCommentButton, commentButtonClickHandler);
-
-    } else {
-        document.body.classList.remove('quelora-open');
-        if (iframeCommentButton) iframeCommentButton.classList.add('hidden');
-        if (mobileCommentButton) mobileCommentButton.classList.add('hidden');
-    }
-}
-
-function closeIframeViewer() {
-    if (iframeViewer) {
-        iframeViewer.classList.add('hidden');
-        document.body.classList.remove('iframe-open');
-
-        const commentsBox = document.getElementById('quelora-comments');
-        const closeBtn = commentsBox ? commentsBox.querySelector('.drawer-close-btn') : null;
-
-        if (commentsBox && !commentsBox.classList.contains('hidden') && closeBtn) {
-            closeBtn.click();
-        }
-
-        document.body.classList.remove('quelora-open');
-        iframeContainer.src = 'about:blank';
-        hideBlockMessage();
-        if (mobileCommentButton) mobileCommentButton.classList.add('hidden');
-    }
-}
-
-function setupIframeViewer() {
-    if (iframeCloseButton) {
-        iframeCloseButton.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            closeIframeViewer();
-        });
-    }
-
-    if (iframeViewer) {
-        iframeViewer.addEventListener('click', (e) => {
-            if (e.target === iframeViewer) {
-                e.stopPropagation();
-            }
-        });
-    }
-}
 
 function showLoader(show) {
     if (show) {
@@ -295,9 +186,6 @@ function createCardElement(item, extraClasses = '', isHero = false) {
         if (!event.target.closest('.reddit-btn')) {
             event.preventDefault();
             event.stopPropagation();
-            // Abrimos el visor de comentarios usando el enlace del post como referencia de la entidad
-            // Notar que 'item.link' ya no se usa, pero 'item.reference' es la URL de Reddit
-            openIframeViewer(item.reference, item.entity); 
         }
     });
 
@@ -600,7 +488,6 @@ if (heroCarousel) {
     heroCarousel.addEventListener('click', handleCarouselClick);
 }
 
-setupIframeViewer();
 
 window.addEventListener("scroll", debounce(() => {
     const documentHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
