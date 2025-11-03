@@ -226,7 +226,7 @@ transporter.verify((error, success) => {
     if (error) {
         console.error("❌ Error al conectar con SMTP:", error);
     } else {
-        console.log("✅ Servidor SMTP listo para enviar correos.");
+        console.log("✅ SMTP server ready to send emails.");
     }
 });
 

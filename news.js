@@ -728,11 +728,11 @@ async function handleContactSubmit(event) {
         const result = await response.json();
 
         if (response.ok) {
-            contactStatus.textContent = '¡Mensaje enviado con éxito! Gracias.';
+            contactStatus.textContent = 'Message sent successfully! Thank you.';
             contactStatus.className = 'contact-status success';
             contactForm.reset();
         } else {
-            throw new Error(result.error || 'Error desconocido.');
+            throw new Error(result.error || 'Unknown error.');
         }
 
     } catch (error) {
