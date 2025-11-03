@@ -7,7 +7,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;800&display=swap" rel="stylesheet">
-        <link rel="stylesheet" href="./quelora/css/quelora.css">
+        <link rel="stylesheet" href="./quelora/css/dist/quelora.min.css">
         <style>
             :root {
                 --primary-color: #0055d4;
@@ -830,6 +830,84 @@
             .contact-modal { max-width: 450px; }
             .contact-close-btn { background: none; border: none; }
             .contact-modal .hidden { display: none; }
+            
+            /* --- NUEVOS ESTILOS PARA CONTACT FORM --- */
+            .contact-form {
+                display: flex;
+                flex-direction: column;
+                gap: 15px; /* Espacio entre grupos de formulario */
+            }
+
+            .form-group {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .form-group label {
+                margin-bottom: 5px;
+                font-size: 14px;
+                font-weight: 500;
+                color: var(--on-surface-primary);
+            }
+
+            .form-group input[type="text"],
+            .form-group input[type="email"],
+            .form-group textarea {
+                padding: 10px;
+                border: 1px solid var(--border-color);
+                border-radius: 4px;
+                font-size: 14px;
+                color: var(--on-surface-primary);
+                background-color: var(--background-color);
+                transition: border-color 0.2s, box-shadow 0.2s;
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .form-group input:focus,
+            .form-group textarea:focus {
+                border-color: var(--primary-color);
+                box-shadow: 0 0 0 2px rgba(0, 85, 212, 0.2); /* Sombra suave para el foco */
+                outline: none;
+                background-color: var(--surface-color);
+            }
+            
+            .form-group textarea {
+                resize: vertical; /* Permite redimensionar solo verticalmente */
+            }
+            
+            .form-actions {
+                margin-top: 10px;
+                display: flex;
+                justify-content: flex-end; /* Alinea el botón a la derecha */
+            }
+            
+            #contactSubmitButton {
+                padding: 10px 20px;
+                font-size: 16px;
+                font-weight: 700;
+            }
+
+            .contact-status {
+                margin-top: 15px;
+                font-size: 14px;
+                text-align: center;
+            }
+
+            .contact-success-view {
+                text-align: center;
+                padding: 30px 0;
+            }
+            
+            .contact-success-view h3 {
+                color: #2e7d32; /* Un verde de éxito */
+                font-size: 24px;
+                margin-bottom: 10px;
+            }
+            
+            .contact-success-view p {
+                font-size: 16px;
+                margin-bottom: 25px;
+            }
         </style>
     </head>
     <body>
@@ -979,6 +1057,6 @@
         </main>
         <script type="module" src="./news.js"></script>
         <script type="module" src="./js/quelora.index.conf.js"></script>
-        <script type="module" src="./quelora/js/quelora.js"></script>
+        <script type="module" src="./quelora/js/dist/quelora.min.js"></script>
     </body>
 </html>
