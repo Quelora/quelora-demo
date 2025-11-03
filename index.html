@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="page_title">Quelora | High-Performance Comment System with Augmented Intelligence</title>
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    
+
     <link rel="stylesheet" href="style.css">
-    
+
     <script src="https://unpkg.com/i18next@23.12.2/i18next.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle" width="30" height="30">
-                <strong style="color: var(--color-text-dark);">Quelora</strong>
+                <img src="https://avatars.githubusercontent.com/u/224778839?v=4" alt="Quelora Logo" class="me-2 rounded-circle" width="30" height="30"><strong style="color: var(--color-text-dark);">Quelora</strong>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -33,21 +32,22 @@
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="https://flagcdn.com/w20/us.png" alt="English" id="currentLanguageFlag">
-                            <span id="currentLanguage" class="ms-1">EN</span>
+                            <img src="https://flagcdn.com/w20/us.png" alt="English" id="currentLanguageFlag"><span id="currentLanguage" class="ms-1">EN</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                             <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="en"><img src="https://flagcdn.com/w20/us.png" alt="English" class="me-2"> English</a></li>
                             <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="es"><img src="https://flagcdn.com/w20/es.png" alt="Spanish" class="me-2"> Español</a></li>
                             <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="fr"><img src="https://flagcdn.com/w20/fr.png" alt="French" class="me-2"> Français</a></li>
                             <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="de"><img src="https://flagcdn.com/w20/de.png" alt="German" class="me-2"> Deutsch</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="zh"><img src="https://flagcdn.com/w20/cn.png" alt="Chinese" class="me-2"> 中文</a></li>
+                            <li><a class="dropdown-item d-flex align-items-center language-option" href="#" data-lang="ru"><img src="https://flagcdn.com/w20/ru.png" alt="Russian" class="me-2"> Русский</a></li>
                         </ul>
                     </div>
-                    
+
                     <button class="btn btn-outline-secondary theme-toggle me-2" id="themeToggle">
                         <i class="bi bi-sun-fill theme-icon" id="themeIcon"></i>
                     </button>
-                    
+
                     <a href="#" id="navContactLink" class="btn btn-outline-primary ms-2" data-i18n="footer.contact">Contact</a>
                 </div>
             </div>
@@ -72,10 +72,19 @@
                 <p class="lead text-secondary" data-i18n="demo.subtitle">From the multi-tenant control panel to the end-user widget.</p>
             </div>
             <div class="row g-4 align-items-center">
-                <div class="col-lg-7">
+                <div class="col-lg-6">
                     <div class="card p-3">
-                        <div class="img-placeholder">
-                            
+                        <div id="dashboardCarousel" class="carousel slide img-placeholder" data-bs-ride="carousel" data-bs-interval="3000">
+                            <div class="carousel-inner rounded-3">
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#dashboardCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#dashboardCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
                         <div class="card-body text-center">
                             <h4 data-i18n="demo.dashboard_title">Centralized Dashboard</h4>
@@ -83,10 +92,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-6">
                     <div class="card p-3">
-                        <div class="img-placeholder">
-                            
+                        <div id="widgetCarousel" class="carousel slide img-placeholder" data-bs-ride="carousel" data-bs-interval="3000">
+                            <div class="carousel-inner rounded-3">
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#widgetCarousel" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#widgetCarousel" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
                         </div>
                         <div class="card-body text-center">
                             <h4 data-i18n="demo.widget_title">Live Comment Widget</h4>
@@ -189,17 +207,17 @@
 
     <div id="contactModalOverlay" class="contact-modal-overlay hidden">
         <div class="contact-modal">
-            
+
             <div id="contactFormWrapper">
                 <button id="closeContactModal" class="contact-close-btn" aria-label="Close Modal">
                     <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor">
                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
                     </svg>
                 </button>
-                
+
                 <h3 data-i18n="contact.title">Professional Contact</h3>
                 <p data-i18n="contact.subtitle">Interested in collaborating? Send me a message.</p>
-                
+
                 <form id="contactForm" class="contact-form">
                     <div class="form-group">
                         <label for="contactName" data-i18n="contact.name">Full Name *</label>
@@ -234,6 +252,35 @@
                 <button id="closeSuccessBtn" class="primary-btn" data-i18n="contact.close">Close</button>
             </div>
 
+        </div>
+    </div>
+
+    <div class="modal fade" id="lightboxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-fullscreen">
+            <div class="modal-content">
+                
+                <div class="modal-header">
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body d-flex align-items-center justify-content-center">
+                    
+                    <div id="lightboxCarousel" class="carousel slide" data-bs-interval="false">
+                        <div class="carousel-inner">
+                        </div>
+                        
+                        <button class="carousel-control-prev" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#lightboxCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 
@@ -273,9 +320,9 @@
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
-        
+
         const savedTheme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        
+
         if (savedTheme === 'dark') {
             htmlElement.setAttribute('data-theme', 'dark');
             themeIcon.classList.remove('bi-sun-fill');
@@ -285,7 +332,7 @@
             themeIcon.classList.remove('bi-moon-fill');
             themeIcon.classList.add('bi-sun-fill');
         }
-        
+
         themeToggle.addEventListener('click', () => {
             if (htmlElement.getAttribute('data-theme') === 'dark') {
                 htmlElement.removeAttribute('data-theme');
@@ -299,94 +346,516 @@
                 themeIcon.classList.add('bi-moon-fill');
             }
         });
-        
+
         const languageOptions = document.querySelectorAll('.language-option');
         const currentLanguageFlag = document.getElementById('currentLanguageFlag');
         const currentLanguageText = document.getElementById('currentLanguage');
-        
+
         const newTranslations = {
-            "page_title": {
-                "en": "Quelora | High-Performance Comment System with Augmented Intelligence",
-                "es": "Quelora | Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada",
-                "fr": "Quelora | Système de Commentaires Haute Performance avec Intelligence Augmentée",
-                "de": "Quelora | Hochleistungs-Kommentarsystem mit Erweiterter Intelligenz"
-            },
-            "nav.demo": { "en": "Demo", "es": "Demo", "fr": "Démo", "de": "Demo" },
-            "nav.features": { "en": "Features", "es": "Funcionalidades", "fr": "Fonctionnalités", "de": "Funktionen" },
-            "nav.architecture": { "en": "Architecture", "es": "Arquitectura", "fr": "Architecture", "de": "Architektur" },
-            "nav.get_started_short": { "en": "Deployment", "es": "Despliegue", "fr": "Déploiement", "de": "Bereitstellung" },
-            "nav.docs": { "en": "Docs", "es": "Docs", "fr": "Docs", "de": "Doks" },
-            "nav.view_infra": { "en": "View Infra", "es": "Ver Infra", "fr": "Voir l'Infra", "de": "Infra ansehen" },
-            "hero.new_title": {
-                "en": "Quelora. The High-Performance Comment System with Augmented Intelligence.",
-                "es": "Quelora. El Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada."
-            },
-            "hero.new_subtitle": {
-                "en": "Advanced moderation, geolocation, and analytics powered by AI, natively integrated into your website.",
-                "es": "Moderación avanzada, geolocalización y analíticas impulsadas por IA, integradas en su sitio web de forma nativa."
-            },
-            "hero.view_live_demo": { "en": "View Live Demo", "es": "Ver Demo en Vivo" },
-            "hero.explore_api": { "en": "Explore API", "es": "Explorar API" },
-            "demo.title": { "en": "See it in Action", "es": "Verlo en Acción" },
-            "demo.subtitle": { "en": "From the multi-tenant control panel to the end-user widget.", "es": "Desde el panel de control multi-tenant hasta el widget del usuario final." },
-            "demo.dashboard_title": { "en": "Centralized Dashboard", "es": "Dashboard Centralizado" },
-            "demo.dashboard_text": { "en": "Manage sites, moderate content, view analytics, and configure AI settings from one place.", "es": "Gestiona sitios, modera contenido, ve analíticas y configura la IA desde un solo lugar." },
-            "demo.widget_title": { "en": "Live Comment Widget", "es": "Widget de Comentarios en Vivo" },
-            "demo.widget_text": { "en": "The fast, responsive, and feature-rich client that integrates into your site.", "es": "El cliente rápido, adaptable y rico en funciones que se integra en tu sitio." },
-            "features.title": { "en": "A Complete Engagement Platform", "es": "Una Plataforma de Interacción Completa" },
-            "features.subtitle": { "en": "More than just comments. A full suite of tools for your community.", "es": "Más que solo comentarios. Una suite completa de herramientas para tu comunidad." },
-            "features.live_chat_title": { "en": "Real-time Live Chat", "es": "Chat en Vivo" },
-            "features.live_chat_desc": { "en": "Engage your audience instantly with WebSocket-powered live chat, complete with typing indicators and viewer counts.", "es": "Interactúa al instante con tu audiencia mediante chat en vivo (WebSockets), con indicadores de escritura y conteo de espectadores." },
-            "features.ai_title": { "en": "AI-Powered Moderation", "es": "Moderación con IA" },
-            "features.ai_desc": { "en": "Automatically analyzes sentiment, summarizes debates, and filters toxicity using modern LLMs to keep your community safe.", "es": "Analiza sentimientos, resume debates y filtra toxicidad automáticamente usando LLMs modernos para mantener tu comunidad segura." },
-            "features.speed_title": { "en": "Blazing Fast Client", "es": "Cliente Ultra-Rápido" },
-            "features.speed_desc": { "en": "A lightweight Vanilla JS widget that never blocks your main thread, thanks to a Web Worker architecture and comment virtualization.", "es": "Un widget Vanilla JS ligero que nunca bloquea tu hilo principal, gracias a una arquitectura de Web Workers y virtualización de comentarios." },
-            "features.community_title": { "en": "Full Community System", "es": "Sistema de Comunidad Completo" },
-            "features.community_desc": { "en": "Users get rich profiles, follow/block capabilities, in-app notifications, and encrypted local session data for privacy.", "es": "Perfiles de usuario, capacidad de seguir/bloquear, notificaciones en-app y datos de sesión encriptados para mayor privacidad." },
-            "features.rich_title": { "en": "Rich Interactions", "es": "Interacciones Enriquecidas" },
-            "features.rich_desc": { "en": "Go beyond text with audio recording & transcription, user @mentions, text quoting, emoji reactions, and integrated surveys.", "es": "Más allá del texto: grabación de audio y transcripción, @menciones, citas de texto, emojis y encuestas integradas." },
-            "features.security_title": { "en": "Secure & Private", "es": "Seguro y Privado" },
-            "features.security_desc": { "en": "Built-in Captcha support (Turnstile/reCAPTCHA) and AES-GCM encryption for cached user profiles in the browser.", "es": "Soporte Captcha integrado (Turnstile/reCAPTCHA) y encriptación AES-GCM para los perfiles cacheados en el navegador." },
-            "architecture.title": { "en": "Built for Performance & Scale", "es": "Construido para Rendimiento y Escala" },
-            "architecture.subtitle": { "en": "A modern, decoupled microservice architecture.", "es": "Una arquitectura de microservicios moderna y desacoplada." },
-            "architecture.stack_title": { "en": "The Quelora Stack", "es": "El Stack de Quelora" },
-            "architecture.stack_desc": { "en": "Quelora runs on a robust backend API (Node.js, Express) that handles logic, authentication, and AI tasks. It uses Redis for high-speed caching and real-time operations, and MongoDB for persistent, scalable data storage.", "es": "Quelora corre sobre una API backend robusta (Node.js, Express) que maneja lógica, autenticación y tareas de IA. Usa Redis para caché de alta velocidad y MongoDB para almacenamiento persistente." },
-            "architecture.feature1": { "en": "**Client:** Vanilla JS, Web Workers, WebSocket", "es": "**Cliente:** Vanilla JS, Web Workers, WebSocket" },
-            "architecture.feature2": { "en": "**API:** Node.js, Express, Puppeteer, Socket.io", "es": "**API:** Node.js, Express, Puppeteer, Socket.io" },
-            "architecture.feature3": { "en": "**Databases:** Redis (Cache) & MongoDB (Storage)", "es": "**Bases de datos:** Redis (Caché) & MongoDB (Almacenamiento)" },
-            "get_started.title": { "en": "Deploy in Minutes", "es": "Despliegue en Minutos" },
-            "get_started.subtitle": { "en": "Launch your self-hosted instance with our optimized Docker Compose.", "es": "Inicia tu instancia auto-alojada con nuestro Docker Compose optimizado." },
-            "get_started.clone_title": { "en": "1. Clone Infrastructure and Components", "es": "1. Clona la Infraestructura y Componentes" },
-            "get_started.clone_desc_new": { "en": "The Docker Compose infrastructure (`quelora-infra`) manages the orchestration of the API, Dashboard, Client, and databases (Redis/Mongo).", "es": "La infraestructura Docker Compose (`quelora-infra`) gestiona la orquestación de la API, Dashboard, Cliente y las bases de datos (Redis/Mongo)." },
-            "get_started.build_title": { "en": "2. Configuration and Final Deployment", "es": "2. Configuración y Despliegue Final" },
-            "get_started.build_desc_new": { "en": "Define environment variables for databases and services, then build and launch the complete microservices stack.", "es": "Define las variables de entorno para las bases de datos y servicios, luego construye y lanza la pila completa de microservicios." },
-            "get_started.full_docs": { "en": "Full Documentation (Infra)", "es": "Documentación Completa (Infra)" },
-            "footer.description": { "en": "Open-source dynamic content and moderation platform for modern websites.", "es": "Plataforma de contenido dinámico y moderación de código abierto para sitios web modernos." },
-            "footer.github": { "en": "GitHub", "es": "GitHub" },
-            "footer.docs": { "en": "Docs", "es": "Docs" },
-            "footer.contact": { "en": "Contact", "es": "Contacto" },
-            "footer.copyright": { "en": "© 2025 Quelora. Open-source under GPL v3 License.", "es": "© 2025 Quelora. Código abierto bajo licencia GPL v3." },
-            
-            "contact.title": { "en": "Professional Contact", "es": "Contacto Profesional" },
-            "contact.subtitle": { "en": "Interested in collaborating? Send me a message.", "es": "¿Interesado en colaborar? Envíame un mensaje." },
-            "contact.name": { "en": "Full Name *", "es": "Nombre Completo *" },
-            "contact.email": { "en": "Email *", "es": "Email *" },
-            "contact.company": { "en": "Company (Optional)", "es": "Empresa (Opcional)" },
-            "contact.subject": { "en": "Subject *", "es": "Asunto *" },
-            "contact.message": { "en": "Message *", "es": "Mensaje *" },
-            "contact.send": { "en": "Send Message", "es": "Enviar Mensaje" },
-            "contact.sending": { "en": "Sending...", "es": "Enviando..." },
-            "contact.success_title": { "en": "Message Sent!", "es": "¡Mensaje Enviado!" },
-            "contact.success_desc": { "en": "Thank you for getting in touch. I will get back to you shortly.", "es": "Gracias por contactarte. Te responderé a la brevedad." },
-            "contact.close": { "en": "Close", "es": "Cerrar" }
-        };
+    "page_title": {
+        "en": "Quelora | High-Performance Comment System with Augmented Intelligence",
+        "es": "Quelora | Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada",
+        "fr": "Quelora | Système de Commentaires Haute Performance avec Intelligence Augmentée",
+        "de": "Quelora | Hochleistungs-Kommentarsystem mit Erweiterter Intelligenz",
+        "zh": "Quelora | 高性能评论系统与增强智能",
+        "ru": "Quelora | Высокопроизводительная система комментариев с дополненным интеллектом"
+    },
+    "nav.demo": { 
+        "en": "Demo", 
+        "es": "Demo", 
+        "fr": "Démo", 
+        "de": "Demo",
+        "zh": "演示",
+        "ru": "Демо"
+    },
+    "nav.features": { 
+        "en": "Features", 
+        "es": "Funcionalidades", 
+        "fr": "Fonctionnalités", 
+        "de": "Funktionen",
+        "zh": "功能",
+        "ru": "Возможности"
+    },
+    "nav.architecture": { 
+        "en": "Architecture", 
+        "es": "Arquitectura", 
+        "fr": "Architecture", 
+        "de": "Architektur",
+        "zh": "架构",
+        "ru": "Архитектура"
+    },
+    "nav.get_started_short": { 
+        "en": "Deployment", 
+        "es": "Despliegue", 
+        "fr": "Déploiement", 
+        "de": "Bereitstellung",
+        "zh": "部署",
+        "ru": "Развертывание"
+    },
+    "nav.docs": { 
+        "en": "Docs", 
+        "es": "Docs", 
+        "fr": "Docs", 
+        "de": "Doks",
+        "zh": "文档",
+        "ru": "Документация"
+    },
+    "nav.view_infra": { 
+        "en": "View Infra", 
+        "es": "Ver Infra", 
+        "fr": "Voir l'Infra", 
+        "de": "Infra ansehen",
+        "zh": "查看基础设施",
+        "ru": "Посмотреть Инфраструктуру"
+    },
+    "hero.new_title": {
+        "en": "Quelora. The High-Performance Comment System with Augmented Intelligence.",
+        "es": "Quelora. El Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada.",
+        "fr": "Quelora. Le Système de Commentaires Haute Performance avec Intelligence Augmentée.",
+        "de": "Quelora. Das Hochleistungs-Kommentarsystem mit Erweiterter Intelligenz.",
+        "zh": "Quelora。高性能评论系统与增强智能。",
+        "ru": "Quelora. Высокопроизводительная система комментариев с дополненным интеллектом."
+    },
+    "hero.new_subtitle": {
+        "en": "Advanced moderation, geolocation, and analytics powered by AI, natively integrated into your website.",
+        "es": "Moderación avanzada, geolocalización y analíticas impulsadas por IA, integradas en su sitio web de forma nativa.",
+        "fr": "Modération avancée, géolocalisation et analyses alimentées par l'IA, nativement intégrées à votre site web.",
+        "de": "Erweiterte Moderation, Geolokalisierung und KI-gesteuerte Analysen, nativ in Ihre Website integriert.",
+        "zh": "由人工智能驱动的高级审核、地理定位和分析，原生集成到您的网站中。",
+        "ru": "Расширенная модерация, геолокация и аналитика на базе ИИ, нативно интегрированные в ваш веб-сайт."
+    },
+    "hero.view_live_demo": { 
+        "en": "View Live Demo", 
+        "es": "Ver Demo en Vivo",
+        "fr": "Voir la Démo en Direct",
+        "de": "Live-Demo ansehen",
+        "zh": "查看实时演示",
+        "ru": "Посмотреть живое демо"
+    },
+    "hero.explore_api": { 
+        "en": "Explore API", 
+        "es": "Explorar API",
+        "fr": "Explorer l'API",
+        "de": "API erkunden",
+        "zh": "探索 API",
+        "ru": "Изучить API"
+    },
+    "demo.title": { 
+        "en": "See it in Action", 
+        "es": "Verlo en Acción",
+        "fr": "Voir en Action",
+        "de": "In Aktion sehen",
+        "zh": "查看实际效果",
+        "ru": "Увидеть в действии"
+    },
+    "demo.subtitle": { 
+        "en": "From the multi-tenant control panel to the end-user widget.", 
+        "es": "Desde el panel de control multi-tenant hasta el widget del usuario final.",
+        "fr": "Du panneau de contrôle multi-tenant au widget de l'utilisateur final.",
+        "de": "Vom Multi-Tenant-Kontrollpanel zum Endbenutzer-Widget.",
+        "zh": "从多租户控制面板到最终用户小部件。",
+        "ru": "От многопользовательской панели управления до виджета конечного пользователя."
+    },
+    "demo.dashboard_title": { 
+        "en": "Centralized Dashboard", 
+        "es": "Dashboard Centralizado",
+        "fr": "Tableau de Bord Centralisé",
+        "de": "Zentralisiertes Dashboard",
+        "zh": "集中式控制面板",
+        "ru": "Централизованная панель управления"
+    },
+    "demo.dashboard_text": { 
+        "en": "Manage sites, moderate content, view analytics, and configure AI settings from one place.", 
+        "es": "Gestiona sitios, modera contenido, ve analíticas y configura la IA desde un solo lugar.",
+        "fr": "Gérer les sites, modérer le contenu, consulter les analyses et configurer les paramètres de l'IA depuis un seul endroit.",
+        "de": "Verwalten Sie Websites, moderieren Sie Inhalte, zeigen Sie Analysen an und konfigurieren Sie KI-Einstellungen von einem Ort aus.",
+        "zh": "从一处管理网站、审核内容、查看分析并配置人工智能设置。",
+        "ru": "Управляйте сайтами, модерируйте контент, просматривайте аналитику и настраивайте ИИ из одного места."
+    },
+    "demo.widget_title": { 
+        "en": "Live Comment Widget", 
+        "es": "Widget de Comentarios en Vivo",
+        "fr": "Widget de Commentaires en Direct",
+        "de": "Live-Kommentar-Widget",
+        "zh": "实时评论小部件",
+        "ru": "Виджет живых комментариев"
+    },
+    "demo.widget_text": { 
+        "en": "The fast, responsive, and feature-rich client that integrates into your site.", 
+        "es": "El cliente rápido, adaptable y rico en funciones que se integra en tu sitio.",
+        "fr": "Le client rapide, réactif et riche en fonctionnalités qui s'intègre à votre site.",
+        "de": "Das schnelle, reaktionsschnelle und funktionsreiche Client-Widget, das in Ihre Website integriert wird.",
+        "zh": "快速、响应迅速、功能丰富，可集成到您网站中的客户端小部件。",
+        "ru": "Быстрый, адаптивный и многофункциональный клиент, который интегрируется в ваш сайт."
+    },
+    "features.title": { 
+        "en": "A Complete Engagement Platform", 
+        "es": "Una Plataforma de Interacción Completa",
+        "fr": "Une Plateforme d'Engagement Complète",
+        "de": "Eine Komplette Engagement-Plattform",
+        "zh": "一个完整的互动平台",
+        "ru": "Полная платформа для взаимодействия"
+    },
+    "features.subtitle": { 
+        "en": "More than just comments. A full suite of tools for your community.", 
+        "es": "Más que solo comentarios. Una suite completa de herramientas para tu comunidad.",
+        "fr": "Plus que de simples commentaires. Une suite complète d'outils pour votre communauté.",
+        "de": "Mehr als nur Kommentare. Eine komplette Suite von Tools für Ihre Community.",
+        "zh": "不仅仅是评论。为您的社区提供一整套工具。",
+        "ru": "Больше, чем просто комментарии. Полный набор инструментов для вашего сообщества."
+    },
+    "features.live_chat_title": { 
+        "en": "Real-time Live Chat", 
+        "es": "Chat en Vivo",
+        "fr": "Chat en Direct en Temps Réel",
+        "de": "Echtzeit-Live-Chat",
+        "zh": "实时聊天",
+        "ru": "Чат в реальном времени"
+    },
+    "features.live_chat_desc": { 
+        "en": "Engage your audience instantly with WebSocket-powered live chat, complete with typing indicators and viewer counts.", 
+        "es": "Interactúa al instante con tu audiencia mediante chat en vivo (WebSockets), con indicadores de escritura y conteo de espectadores.",
+        "fr": "Engagez votre audience instantanément avec le chat en direct basé sur WebSocket, complété par des indicateurs de frappe et des compteurs de spectateurs.",
+        "de": "Sprechen Sie Ihr Publikum sofort mit WebSocket-basiertem Live-Chat an, komplett mit Tippindikatoren und Zuschauerzahlen.",
+        "zh": "通过 WebSocket 驱动的实时聊天立即与您的受众互动，并配备打字指示器和观众计数。",
+        "ru": "Мгновенно привлекайте аудиторию с помощью чата в реальном времени на базе WebSocket, с индикаторами набора текста и счетчиками зрителей."
+    },
+    "features.ai_title": { 
+        "en": "AI-Powered Moderation", 
+        "es": "Moderación con IA",
+        "fr": "Modération Alimentée par l'IA",
+        "de": "KI-gesteuerte Moderation",
+        "zh": "人工智能驱动的审核",
+        "ru": "Модерация на базе ИИ"
+    },
+    "features.ai_desc": { 
+        "en": "Automatically analyzes sentiment, summarizes debates, and filters toxicity using modern LLMs to keep your community safe.", 
+        "es": "Analiza sentimientos, resume debates y filtra toxicidad automáticamente usando LLMs modernos para mantener tu comunidad segura.",
+        "fr": "Analyse automatiquement le sentiment, résume les débats et filtre la toxicité à l'aide de LLMs modernes pour assurer la sécurité de votre communauté.",
+        "de": "Analysiert automatisch die Stimmung, fasst Debatten zusammen und filtert Toxizität mithilfe moderner LLMs, um Ihre Community sicher zu halten.",
+        "zh": "使用现代大型语言模型自动分析情感、总结辩论并过滤有害内容，以确保您的社区安全。",
+        "ru": "Автоматически анализирует настроения, резюмирует обсуждения и фильтрует токсичность с использованием современных LLM для обеспечения безопасности вашего сообщества."
+    },
+    "features.speed_title": { 
+        "en": "Blazing Fast Client", 
+        "es": "Cliente Ultra-Rápido",
+        "fr": "Client Ultra-Rapide",
+        "de": "Blitzschneller Client",
+        "zh": "极速客户端",
+        "ru": "Молниеносный клиент"
+    },
+    "features.speed_desc": { 
+        "en": "A lightweight Vanilla JS widget that never blocks your main thread, thanks to a Web Worker architecture and comment virtualization.", 
+        "es": "Un widget Vanilla JS ligero que nunca bloquea tu hilo principal, gracias a una arquitectura de Web Workers y virtualización de comentarios.",
+        "fr": "Un widget Vanilla JS léger qui ne bloque jamais votre fil principal, grâce à une architecture de Web Workers et à la virtualisation des commentaires.",
+        "de": "Ein leichtes Vanilla JS-Widget, das dank einer Web Worker-Architektur und Kommentarvirtualisierung niemals Ihren Hauptthread blockiert.",
+        "zh": "一个轻量级的 Vanilla JS 小部件，由于采用 Web Worker 架构和评论虚拟化，绝不会阻塞您的主线程。",
+        "ru": "Легкий виджет на чистом JS (Vanilla JS), который никогда не блокирует ваш основной поток, благодаря архитектуре Web Worker и виртуализации комментариев."
+    },
+    "features.community_title": { 
+        "en": "Full Community System", 
+        "es": "Sistema de Comunidad Completo",
+        "fr": "Système Communautaire Complet",
+        "de": "Volles Community-System",
+        "zh": "完整的社区系统",
+        "ru": "Полноценная система сообщества"
+    },
+    "features.community_desc": { 
+        "en": "Users get rich profiles, follow/block capabilities, in-app notifications, and encrypted local session data for privacy.", 
+        "es": "Perfiles de usuario, capacidad de seguir/bloquear, notificaciones en-app y datos de sesión encriptados para mayor privacidad.",
+        "fr": "Les utilisateurs bénéficient de profils riches, de capacités de suivre/bloquer, de notifications in-app et de données de session locales cryptées pour la confidentialité.",
+        "de": "Benutzer erhalten umfangreiche Profile, Folge-/Blockierfunktionen, In-App-Benachrichtigungen und verschlüsselte lokale Sitzungsdaten für den Datenschutz.",
+        "zh": "用户可获得丰富的个人资料、关注/屏蔽功能、应用内通知以及加密的本地会话数据以保护隐私。",
+        "ru": "Пользователи получают расширенные профили, возможность подписки/блокировки, уведомления в приложении и зашифрованные локальные данные сеанса для конфиденциальности."
+    },
+    "features.rich_title": { 
+        "en": "Rich Interactions", 
+        "es": "Interacciones Enriquecidas",
+        "fr": "Interactions Enrichies",
+        "de": "Umfangreiche Interaktionen",
+        "zh": "丰富的互动",
+        "ru": "Расширенные возможности взаимодействия"
+    },
+    "features.rich_desc": { 
+        "en": "Go beyond text with audio recording & transcription, user @mentions, text quoting, emoji reactions, and integrated surveys.", 
+        "es": "Más allá del texto: grabación de audio y transcripción, @menciones, citas de texto, emojis y encuestas integradas.",
+        "fr": "Allez au-delà du texte avec l'enregistrement et la transcription audio, les @mentions d'utilisateur, les citations de texte, les réactions emoji et les sondages intégrés.",
+        "de": "Gehen Sie über Text hinaus mit Audioaufnahme und -transkription, Benutzer-@Erwähnungen, Textzitaten, Emoji-Reaktionen und integrierten Umfragen.",
+        "zh": "通过音频录制和转录、用户@提及、文本引用、表情符号反应和集成调查，超越文本的限制。",
+        "ru": "Выйдите за рамки текста: запись и транскрипция аудио, @упоминания пользователей, цитирование текста, реакции эмодзи и встроенные опросы."
+    },
+    "features.security_title": { 
+        "en": "Secure & Private", 
+        "es": "Seguro y Privado",
+        "fr": "Sécurisé et Privé",
+        "de": "Sicher und Privat",
+        "zh": "安全且私密",
+        "ru": "Безопасность и конфиденциальность"
+    },
+    "features.security_desc": { 
+        "en": "Built-in Captcha support (Turnstile/reCAPTCHA) and AES-GCM encryption for cached user profiles in the browser.", 
+        "es": "Soporte Captcha integrado (Turnstile/reCAPTCHA) y encriptación AES-GCM para los perfiles cacheados en el navegador.",
+        "fr": "Prise en charge intégrée de Captcha (Turnstile/reCAPTCHA) et chiffrement AES-GCM pour les profils utilisateur mis en cache dans le navigateur.",
+        "de": "Integrierte Captcha-Unterstützung (Turnstile/reCAPTCHA) und AES-GCM-Verschlüsselung für zwischengespeicherte Benutzerprofile im Browser.",
+        "zh": "内置 Captcha 支持（Turnstile/reCAPTCHA）和 AES-GCM 加密，用于浏览器中缓存的用户配置文件。",
+        "ru": "Встроенная поддержка Captcha (Turnstile/reCAPTCHA) и шифрование AES-GCM для кэшированных профилей пользователей в браузере."
+    },
+    "architecture.title": { 
+        "en": "Built for Performance & Scale", 
+        "es": "Construido para Rendimiento y Escala",
+        "fr": "Conçu pour la Performance et l'Échelle",
+        "de": "Gebaut für Leistung und Skalierung",
+        "zh": "专为性能和扩展性而打造",
+        "ru": "Создан для производительности и масштабирования"
+    },
+    "architecture.subtitle": { 
+        "en": "A modern, decoupled microservice architecture.", 
+        "es": "Una arquitectura de microservicios moderna y desacoplada.",
+        "fr": "Une architecture de microservices moderne et découplée.",
+        "de": "Eine moderne, entkoppelte Microservice-Architektur.",
+        "zh": "现代、解耦的微服务架构。",
+        "ru": "Современная, децентрализованная микросервисная архитектура."
+    },
+    "architecture.stack_title": { 
+        "en": "The Quelora Stack", 
+        "es": "El Stack de Quelora",
+        "fr": "La Pile Quelora",
+        "de": "Der Quelora Stack",
+        "zh": "Quelora 技术栈",
+        "ru": "Стек Quelora"
+    },
+    "architecture.stack_desc": { 
+        "en": "Quelora runs on a robust backend API (Node.js, Express) that handles logic, authentication, and AI tasks. It uses Redis for high-speed caching and real-time operations, and MongoDB for persistent, scalable data storage.", 
+        "es": "Quelora corre sobre una API backend robusta (Node.js, Express) que maneja lógica, autenticación y tareas de IA. Usa Redis para caché de alta velocidad y MongoDB para almacenamiento persistente.",
+        "fr": "Quelora s'exécute sur une API backend robuste (Node.js, Express) qui gère la logique, l'authentification et les tâches d'IA. Elle utilise Redis pour la mise en cache haute vitesse et MongoDB pour le stockage persistant.",
+        "de": "Quelora läuft auf einer robusten Backend-API (Node.js, Express), die Logik, Authentifizierung und KI-Aufgaben verwaltet. Es verwendet Redis für Hochgeschwindigkeits-Caching und MongoDB für persistenten Speicher.",
+        "zh": "Quelora 运行在一个强大的后端 API（Node.js、Express）上，用于处理逻辑、身份验证和人工智能任务。它使用 Redis 进行高速缓存，并使用 MongoDB 进行持久、可扩展的数据存储。",
+        "ru": "Quelora работает на надежном бэкенд API (Node.js, Express), который обрабатывает логику, аутентификацию и задачи ИИ. Он использует Redis для высокоскоростного кэширования и MongoDB для постоянного хранения данных."
+    },
+    "architecture.feature1": { 
+        "en": "**Client:** Vanilla JS, Web Workers, WebSocket", 
+        "es": "**Cliente:** Vanilla JS, Web Workers, WebSocket",
+        "fr": "**Client :** Vanilla JS, Web Workers, WebSocket",
+        "de": "**Client:** Vanilla JS, Web Workers, WebSocket",
+        "zh": "**客户端:** Vanilla JS, Web Workers, WebSocket",
+        "ru": "**Клиент:** Vanilla JS, Web Workers, WebSocket"
+    },
+    "architecture.feature2": { 
+        "en": "**API:** Node.js, Express, Puppeteer, Socket.io", 
+        "es": "**API:** Node.js, Express, Puppeteer, Socket.io",
+        "fr": "**API :** Node.js, Express, Puppeteer, Socket.io",
+        "de": "**API:** Node.js, Express, Puppeteer, Socket.io",
+        "zh": "**API:** Node.js, Express, Puppeteer, Socket.io",
+        "ru": "**API:** Node.js, Express, Puppeteer, Socket.io"
+    },
+    "architecture.feature3": { 
+        "en": "**Databases:** Redis (Cache) & MongoDB (Storage)", 
+        "es": "**Bases de datos:** Redis (Caché) & MongoDB (Almacenamiento)",
+        "fr": "**Bases de données :** Redis (Cache) & MongoDB (Stockage)",
+        "de": "**Datenbanken:** Redis (Cache) & MongoDB (Speicher)",
+        "zh": "**数据库:** Redis (缓存) & MongoDB (存储)",
+        "ru": "**Базы данных:** Redis (Кэш) & MongoDB (Хранилище)"
+    },
+    "get_started.title": { 
+        "en": "Deploy in Minutes", 
+        "es": "Despliegue en Minutos",
+        "fr": "Déploiement en Quelques Minutes",
+        "de": "In wenigen Minuten bereitstellen",
+        "zh": "在几分钟内部署",
+        "ru": "Развертывание за минуты"
+    },
+    "get_started.subtitle": { 
+        "en": "Launch your self-hosted instance with our optimized Docker Compose.", 
+        "es": "Inicia tu instancia auto-alojada con nuestro Docker Compose optimizado.",
+        "fr": "Lancez votre instance auto-hébergée avec notre Docker Compose optimisé.",
+        "de": "Starten Sie Ihre selbst gehostete Instanz mit unserem optimierten Docker Compose.",
+        "zh": "使用我们优化的 Docker Compose 启动您的自托管实例。",
+        "ru": "Запустите свой самоуправляемый экземпляр с помощью нашего оптимизированного Docker Compose."
+    },
+    "get_started.clone_title": { 
+        "en": "1. Clone Infrastructure and Components", 
+        "es": "1. Clona la Infraestructura y Componentes",
+        "fr": "1. Cloner l'Infrastructure et les Composants",
+        "de": "1. Infrastruktur und Komponenten klonen",
+        "zh": "1. 克隆基础设施和组件",
+        "ru": "1. Клонирование Инфраструктуры и Компонентов"
+    },
+    "get_started.clone_desc_new": { 
+        "en": "The Docker Compose infrastructure (`quelora-infra`) manages the orchestration of the API, Dashboard, Client, and databases (Redis/Mongo).", 
+        "es": "La infraestructura Docker Compose (`quelora-infra`) gestiona la orquestación de la API, Dashboard, Cliente y las bases de datos (Redis/Mongo).",
+        "fr": "L'infrastructure Docker Compose (`quelora-infra`) gère l'orchestration de l'API, du tableau de bord, du client et des bases de données (Redis/Mongo).",
+        "de": "Die Docker Compose-Infrastruktur (`quelora-infra`) verwaltet die Orchestrierung der API, des Dashboards, des Clients und der Datenbanken (Redis/Mongo).",
+        "zh": "Docker Compose 基础设施 (`quelora-infra`) 管理 API、仪表板、客户端和数据库（Redis/Mongo）的编排。",
+        "ru": "Инфраструктура Docker Compose (`quelora-infra`) управляет оркестрацией API, Dashboard, Клиента и баз данных (Redis/Mongo)."
+    },
+    "get_started.build_title": { 
+        "en": "2. Configuration and Final Deployment", 
+        "es": "2. Configuración y Despliegue Final",
+        "fr": "2. Configuration et Déploiement Final",
+        "de": "2. Konfiguration und Endgültige Bereitstellung",
+        "zh": "2. 配置和最终部署",
+        "ru": "2. Конфигурация и Финальное Развертывание"
+    },
+    "get_started.build_desc_new": { 
+        "en": "Define environment variables for databases and services, then build and launch the complete microservices stack.", 
+        "es": "Define las variables de entorno para las bases de datos y servicios, luego construye y lanza la pila completa de microservicios.",
+        "fr": "Définissez les variables d'environnement pour les bases de données et les services, puis construisez et lancez la pile complète de microservices.",
+        "de": "Definieren Sie Umgebungsvariablen für Datenbanken und Dienste, erstellen und starten Sie dann den gesamten Microservice-Stack.",
+        "zh": "定义数据库和服务的环境变量，然后构建并启动完整的微服务栈。",
+        "ru": "Определите переменные окружения для баз данных и сервисов, затем соберите и запустите полный стек микросервисов."
+    },
+    "get_started.full_docs": { 
+        "en": "Full Documentation (Infra)", 
+        "es": "Documentación Completa (Infra)",
+        "fr": "Documentation Complète (Infra)",
+        "de": "Vollständige Dokumentation (Infra)",
+        "zh": "完整文档 (基础设施)",
+        "ru": "Полная Документация (Инфраструктура)"
+    },
+    "footer.description": { 
+        "en": "Open-source dynamic content and moderation platform for modern websites.", 
+        "es": "Plataforma de contenido dinámico y moderación de código abierto para sitios web modernos.",
+        "fr": "Plateforme open source de contenu dynamique et de modération pour les sites web modernes.",
+        "de": "Open-Source-Plattform für dynamische Inhalte und Moderation für moderne Websites.",
+        "zh": "适用于现代网站的开源动态内容和审核平台。",
+        "ru": "Открытая платформа для динамического контента и модерации для современных веб-сайтов."
+    },
+    "footer.github": { 
+        "en": "GitHub", 
+        "es": "GitHub",
+        "fr": "GitHub",
+        "de": "GitHub",
+        "zh": "GitHub",
+        "ru": "GitHub"
+    },
+    "footer.docs": { 
+        "en": "Docs", 
+        "es": "Docs",
+        "fr": "Docs",
+        "de": "Doks",
+        "zh": "文档",
+        "ru": "Документы"
+    },
+    "footer.contact": { 
+        "en": "Contact", 
+        "es": "Contacto",
+        "fr": "Contact",
+        "de": "Kontakt",
+        "zh": "联系",
+        "ru": "Контакты"
+    },
+    "footer.copyright": { 
+        "en": "© 2025 Quelora. Open-source under GPL v3 License.", 
+        "es": "© 2025 Quelora. Código abierto bajo licencia GPL v3.",
+        "fr": "© 2025 Quelora. Open source sous licence GPL v3.",
+        "de": "© 2025 Quelora. Open Source unter GPL v3 Lizenz.",
+        "zh": "© 2025 Quelora. 在 GPL v3 许可下开源。",
+        "ru": "© 2025 Quelora. Открытый исходный код под лицензией GPL v3."
+    },
+    "contact.title": { 
+        "en": "Professional Contact", 
+        "es": "Contacto Profesional",
+        "fr": "Contact Professionnel",
+        "de": "Professioneller Kontakt",
+        "zh": "职业联系",
+        "ru": "Профессиональный контакт"
+    },
+    "contact.subtitle": { 
+        "en": "Interested in collaborating? Send me a message.", 
+        "es": "¿Interesado en colaborar? Envíame un mensaje.",
+        "fr": "Intéressé par une collaboration ? Envoyez-moi un message.",
+        "de": "Interessiert an einer Zusammenarbeit? Senden Sie mir eine Nachricht.",
+        "zh": "有兴趣合作吗？给我发消息。",
+        "ru": "Заинтересованы в сотрудничестве? Отправьте мне сообщение."
+    },
+    "contact.name": { 
+        "en": "Full Name *", 
+        "es": "Nombre Completo *",
+        "fr": "Nom Complet *",
+        "de": "Vollständiger Name *",
+        "zh": "姓名 *",
+        "ru": "Полное имя *"
+    },
+    "contact.email": { 
+        "en": "Email *", 
+        "es": "Email *",
+        "fr": "Email *",
+        "de": "E-Mail *",
+        "zh": "电子邮件 *",
+        "ru": "Электронная почта *"
+    },
+    "contact.company": { 
+        "en": "Company (Optional)", 
+        "es": "Empresa (Opcional)",
+        "fr": "Entreprise (Optionnel)",
+        "de": "Unternehmen (Optional)",
+        "zh": "公司（可选）",
+        "ru": "Компания (Необязательно)"
+    },
+    "contact.subject": { 
+        "en": "Subject *", 
+        "es": "Asunto *",
+        "fr": "Sujet *",
+        "de": "Betreff *",
+        "zh": "主题 *",
+        "ru": "Тема *"
+    },
+    "contact.message": { 
+        "en": "Message *", 
+        "es": "Mensaje *",
+        "fr": "Message *",
+        "de": "Nachricht *",
+        "zh": "消息 *",
+        "ru": "Сообщение *"
+    },
+    "contact.send": { 
+        "en": "Send Message", 
+        "es": "Enviar Mensaje",
+        "fr": "Envoyer le Message",
+        "de": "Nachricht senden",
+        "zh": "发送消息",
+        "ru": "Отправить сообщение"
+    },
+    "contact.sending": { 
+        "en": "Sending...", 
+        "es": "Enviando...",
+        "fr": "Envoi en cours...",
+        "de": "Wird gesendet...",
+        "zh": "正在发送...",
+        "ru": "Отправка..."
+    },
+    "contact.success_title": { 
+        "en": "Message Sent!", 
+        "es": "¡Mensaje Enviado!",
+        "fr": "Message Envoyé !",
+        "de": "Nachricht gesendet!",
+        "zh": "消息已发送!",
+        "ru": "Сообщение отправлено!"
+    },
+    "contact.success_desc": { 
+        "en": "Thank you for getting in touch. I will get back to you shortly.", 
+        "es": "Gracias por contactarte. Te responderé a la brevedad.",
+        "fr": "Merci de m'avoir contacté. Je vous répondrai sous peu.",
+        "de": "Vielen Dank für Ihre Kontaktaufnahme. Ich werde Ihnen in Kürze antworten.",
+        "zh": "感谢您的联系。我将尽快给您回复。",
+        "ru": "Спасибо, что связались. Я отвечу вам в ближайшее время."
+    },
+    "contact.close": { 
+        "en": "Close", 
+        "es": "Cerrar",
+        "fr": "Fermer",
+        "de": "Schließen",
+        "zh": "关闭",
+        "ru": "Закрыть"
+    }
+};
 
         function applyTranslations(lang) {
             document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
                 let translation = newTranslations[key] && newTranslations[key][lang] ? newTranslations[key][lang] : i18next.t(key);
-                
-                element.innerHTML = ''; 
+
+                element.innerHTML = '';
 
                 if (translation.includes('**')) {
                     const parts = translation.split('**');
@@ -407,7 +876,7 @@
                 document.title = newTranslations['page_title'][lang];
             }
         }
-        
+
         languageOptions.forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -445,7 +914,7 @@
             const currentLang = i18next.language;
             applyTranslations(currentLang);
             updateLanguageDisplay(currentLang);
-            
+
             i18next.on('languageChanged', (lng) => {
                 applyTranslations(lng);
                 updateLanguageDisplay(lng);
@@ -473,15 +942,15 @@
         function closeContactModal() {
             if (contactModalOverlay) {
                 contactModalOverlay.classList.add('hidden');
-                
+
                 if (contactFormWrapper) contactFormWrapper.classList.remove('hidden');
                 if (contactSuccessView) contactSuccessView.classList.add('hidden');
-                
+
                 if (contactForm) contactForm.reset();
                 if (contactStatus) contactStatus.textContent = '';
                 if (contactStatus) contactStatus.className = 'contact-status';
                 if (contactSubmitButton) contactSubmitButton.disabled = false;
-                
+
                 const sendText = (window.i18next && i18next.t('contact.send')) || "Send Message";
                 if (contactSubmitButton) contactSubmitButton.textContent = sendText;
             }
@@ -574,6 +1043,92 @@
                 }
             }
         });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const dashboardInner = document.querySelector('#dashboardCarousel .carousel-inner');
+            const widgetInner = document.querySelector('#widgetCarousel .carousel-inner');
+
+            if (dashboardInner) {
+                let dashboardHTML = '';
+                for (let i = 1; i <= 26; i++) {
+                    const activeClass = (i === 2) ? 'active' : '';
+                    dashboardHTML += `
+                        <div class="carousel-item ${activeClass}">
+                            <img src="https://quelora.github.io/media/image/Dashboard/${i}.png" 
+                                 class="d-block w-100" 
+                                 alt="Quelora Dashboard Screenshot ${i}"
+                                 style="cursor: pointer;"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#lightboxModal"
+                                 data-gallery="dashboard"
+                                 data-slide-to-index="${i - 1}">
+                        </div>`;
+                }
+                dashboardInner.innerHTML = dashboardHTML;
+            }
+
+            if (widgetInner) {
+                let widgetHTML = '';
+                for (let i = 1; i <= 19; i++) {
+                    const activeClass = (i === 2) ? 'active' : '';
+                    widgetHTML += `
+                        <div class="carousel-item ${activeClass}">
+                            <img src="https://quelora.github.io/media/image/Widget/${i}.png" 
+                                 class="d-block w-100" 
+                                 alt="Quelora Widget Screenshot ${i}"
+                                 style="cursor: pointer;"
+                                 data-bs-toggle="modal"
+                                 data-bs-target="#lightboxModal"
+                                 data-gallery="widget"
+                                 data-slide-to-index="${i - 1}">
+                        </div>`;
+                }
+                widgetInner.innerHTML = widgetHTML;
+            }
+        });
+
+        const lightboxModal = document.getElementById('lightboxModal');
+        if (lightboxModal) {
+            const lightboxCarouselEl = document.getElementById('lightboxCarousel');
+            const lightboxCarousel = bootstrap.Carousel.getOrCreateInstance(lightboxCarouselEl);
+            const lightboxCarouselInner = lightboxCarouselEl.querySelector('.carousel-inner');
+
+            lightboxModal.addEventListener('show.bs.modal', function (event) {
+                const clickedImage = event.relatedTarget; 
+                
+                const gallery = clickedImage.getAttribute('data-gallery');
+                const slideIndex = parseInt(clickedImage.getAttribute('data-slide-to-index'), 10);
+
+                let imageCount = 0;
+                let basePath = '';
+                let altText = '';
+
+                if (gallery === 'dashboard') {
+                    imageCount = 26;
+                    basePath = 'https://quelora.github.io/media/image/Dashboard/';
+                    altText = 'Quelora Dashboard Screenshot';
+                } else if (gallery === 'widget') {
+                    imageCount = 19;
+                    basePath = 'https://quelora.github.io/media/image/Widget/';
+                    altText = 'Quelora Widget Screenshot';
+                }
+
+                lightboxCarouselInner.innerHTML = ''; 
+
+                let newGalleryHTML = '';
+                for (let i = 1; i <= imageCount; i++) {
+                    const activeClass = (i - 1 === slideIndex) ? 'active' : '';
+                    newGalleryHTML += `
+                        <div class="carousel-item ${activeClass}">
+                            <img src="${basePath}${i}.png" alt="${altText} ${i}">
+                        </div>`;
+                }
+                
+                lightboxCarouselInner.innerHTML = newGalleryHTML;
+
+                lightboxCarousel.to(slideIndex);
+            });
+        }
     </script>
 </body>
 </html>

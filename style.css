@@ -105,19 +105,25 @@ p.lead {
     border-bottom: 5px solid var(--color-primary-accent);
 }
 
+/* Modificaciones para Carousel/Gallery */
 .img-placeholder {
     width: 100%;
-    background-color: var(--color-background-dark);
-    border: 1px dashed var(--color-border);
+    /* Removido el dashed border para carrusel, pero manteniendo el aspect ratio */
+    border: 1px solid var(--color-border);
     border-radius: 12px;
-    display: flex;
+    display: flex; /* Para contener el carousel y centrar la imagen */
     align-items: center;
     justify-content: center;
     color: var(--color-text-secondary);
     font-weight: 600;
     aspect-ratio: 16 / 10;
-    padding: 1rem;
-    text-align: center;
+    overflow: hidden; /* Importante para el carousel */
+    background-color: var(--color-background-dark);
+}
+.img-placeholder img {
+    height: 100%;
+    object-fit: cover;
+    width: 100%; /* Asegura que la imagen ocupe todo el espacio del carrusel */
 }
 [data-theme="dark"] .img-placeholder {
     background-color: var(--color-card-background-dark);
@@ -317,4 +323,47 @@ footer {
     font-size: 15px;
     color: var(--color-text-secondary);
     margin-bottom: 25px;
+}
+
+/* ==================================================
+   ESTILOS PARA EL LIGHTBOX MODAL
+   ================================================== */
+
+.modal-fullscreen .modal-content {
+    /* Fondo oscuro semitransparente para el modo lightbox */
+    background-color: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+.modal-fullscreen .modal-header {
+    /* Posiciona el botón de cierre arriba a la derecha, sobre el contenido */
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1056; /* Asegura que esté sobre el carrusel */
+    border-bottom: 0; /* Sin línea de separación */
+}
+
+.modal-fullscreen .modal-body {
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+/* Ajustes del carrusel interno del modal */
+#lightboxCarousel,
+#lightboxCarousel .carousel-inner,
+#lightboxCarousel .carousel-item {
+    height: 100%; /* Ocupa toda la altura del modal */
+    width: 100%;
+}
+
+#lightboxCarousel .carousel-item img {
+    /* Esta es la propiedad clave */
+    object-fit: contain; /* Ajusta la imagen sin deformarla */
+    
+    width: 100%;
+    height: 100%;
 }
