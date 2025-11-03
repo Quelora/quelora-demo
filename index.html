@@ -4,165 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="page_title">Quelora | High-Performance Comment System with Augmented Intelligence</title>
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <link rel="stylesheet" href="style.css">
+    
     <script src="https://unpkg.com/i18next@23.12.2/i18next.min.js"></script>
-
-    <style>
-        /* Paleta de Colores Sofisticada (sin cambios) */
-        :root {
-            --color-primary-accent: #007BFF; /* Azul profesional */
-            --color-primary-hover: #0056b3;
-            --color-text-dark: #1C1C1C;
-            --color-text-light: #EAEAEA;
-            --color-text-secondary: #6C757D;
-            --color-background-light: #FFFFFF;
-            --color-background-dark: #F8F9FA;
-            --color-card-background-light: #FFFFFF;
-            --color-card-background-dark: #F0F0F0;
-            --color-border: #E0E0E0;
-            --transition-speed: 0.3s;
-        }
-
-        [data-theme="dark"] {
-            --color-text-dark: #EAEAEA;
-            --color-text-light: #1C1C1C;
-            --color-text-secondary: #9CA3AF;
-            --color-background-light: #0A0A0A; /* Negro puro */
-            --color-background-dark: #1F2937; /* Gris oscuro para contraste */
-            --color-card-background-light: #1F2937;
-            --color-card-background-dark: #151515;
-            --color-border: #374151;
-            --bs-heading-color: var(--color-text-dark) !important;
-            --bs-card-color: var(--color-text-dark) !important;
-            --bs-card-title-color: var(--color-text-dark) !important;
-        }
-
-        /* Base */
-        body {
-            font-family: 'Inter', sans-serif;
-            color: var(--color-text-dark);
-            background-color: var(--color-background-light);
-            transition: background-color var(--transition-speed);
-            line-height: 1.6;
-        }
-
-        /* Tipografía */
-        h1, h2, h3, h4 {
-            font-weight: 800; /* Más audaz */
-            letter-spacing: -0.04em;
-        }
-        .display-4 {
-            font-weight: 900;
-        }
-
-        /* Navbar */
-        .navbar {
-            background-color: var(--color-background-light) !important;
-            box-shadow: 0 1px 15px rgba(0, 0, 0, 0.05);
-            border-bottom: 1px solid var(--color-border);
-        }
-        [data-theme="dark"] .navbar {
-            box-shadow: 0 1px 15px rgba(0, 0, 0, 0.4);
-            border-bottom-color: #2D3748;
-        }
-        .nav-link, .navbar-brand {
-            color: var(--color-text-dark) !important;
-            font-weight: 600;
-        }
-
-        /* Botones Elegantes */
-        .btn-quelora {
-            background-color: var(--color-primary-accent);
-            color: white;
-            border: 1px solid var(--color-primary-accent);
-            font-weight: 600;
-            padding: 0.6rem 2rem;
-            border-radius: 10px;
-            transition: all var(--transition-speed);
-            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
-        }
-        .btn-quelora:hover {
-            background-color: var(--color-primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.4);
-            color: white;
-        }
-        .btn-outline-primary {
-            color: var(--color-primary-accent);
-            border-color: var(--color-primary-accent);
-            border-radius: 10px;
-        }
-        .btn-outline-primary:hover {
-            background-color: var(--color-primary-accent);
-            color: white;
-        }
-        .btn-outline-secondary {
-             color: var(--color-text-secondary);
-             border-color: var(--color-border);
-             border-radius: 10px;
-        }
-        .btn-outline-secondary:hover {
-            background-color: var(--color-background-dark);
-            color: var(--color-text-dark);
-        }
-        [data-theme="dark"] .btn-outline-secondary:hover {
-            background-color: #374151;
-        }
-
-        /* Hero Section */
-        .hero {
-            background-color: var(--color-background-dark);
-            padding: 8rem 0 6rem;
-            border-bottom: 5px solid var(--color-primary-accent); /* Línea de acento */
-        }
-
-        /* Cards and Features (Refinando la estética) */
-        .card {
-            background-color: var(--color-card-background-light);
-            border: 1px solid var(--color-border);
-            border-radius: 16px; /* Más redondeado */
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08); /* Sombra profesional */
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed), background-color var(--transition-speed);
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-        }
-        [data-theme="dark"] .card {
-            background-color: var(--color-card-background-dark);
-            border-color: #374151;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-        }
-
-        .icon-lg {
-            font-size: 2.5rem;
-            color: var(--color-primary-accent);
-        }
-
-        /* Sección de Código */
-        pre {
-            background-color: var(--color-background-dark);
-            color: var(--color-text-dark);
-            border: 1px solid var(--color-border);
-            border-left: 5px solid var(--color-primary-accent); /* Barra de acento para código */
-            border-radius: 8px;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-            overflow-x: auto;
-        }
-        [data-theme="dark"] pre {
-            background-color: #151515;
-            border-color: #374151;
-        }
-
-        /* Footer */
-        footer {
-            background-color: var(--color-background-dark) !important;
-            border-top: 1px solid var(--color-border);
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light sticky-top">
@@ -176,15 +25,15 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link" href="#ai-performance" data-i18n="nav.performance">Performance</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#core-architecture" data-i18n="nav.architecture">Architecture</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#get-started" data-i18n="nav.get_started_short">Deployment</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#docs" data-i18n="nav.docs">Docs</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#demo" data-i18n="nav.demo">Demo</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#features" data-i18n="nav.features">Features</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#architecture" data-i18n="nav.architecture">Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="https://github.com/Quelora/quelora-infra#readme" target="_blank" data-i18n="nav.docs">Docs</a></li>
                 </ul>
                 <div class="d-flex align-items-center">
                     <div class="dropdown me-2">
                         <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                             <img src="https://flagcdn.com/w20/us.png" alt="English" id="currentLanguageFlag">
+                            <img src="https://flagcdn.com/w20/us.png" alt="English" id="currentLanguageFlag">
                             <span id="currentLanguage" class="ms-1">EN</span>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="languageDropdown">
@@ -199,7 +48,7 @@
                         <i class="bi bi-sun-fill theme-icon" id="themeIcon"></i>
                     </button>
                     
-                    <a href="https://github.com/Quelora/quelora-infra" target="_blank" class="btn btn-outline-primary ms-2" data-i18n="nav.view_infra">View Infra</a>
+                    <a href="#" id="navContactLink" class="btn btn-outline-primary ms-2" data-i18n="footer.contact">Contact</a>
                 </div>
             </div>
         </div>
@@ -211,162 +60,182 @@
             <p class="lead mb-4 text-secondary" data-i18n="hero.new_subtitle">Advanced moderation, geolocation, and analytics powered by AI, natively integrated into your website.</p>
             <div class="d-flex justify-content-center gap-3 flex-wrap pt-2">
                 <a href="/news.html" class="btn btn-quelora btn-lg px-5" data-i18n="hero.view_live_demo">View Live Demo</a>
-                <a href="https://github.com/Quelora/quelora-api" class="btn btn-outline-secondary btn-lg px-5" data-i18n="hero.explore_api">Explore API</a>
+                <a href="#" id="heroContactLink" class="btn btn-outline-secondary btn-lg px-5" data-i18n="footer.contact">Contact</a>
             </div>
         </div>
     </section>
 
-    <section id="ai-performance" class="py-5">
+    <section id="demo" class="py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 data-i18n="performance.title">AI-Powered Features & Max Speed</h2>
-                <p class="lead text-secondary" data-i18n="performance.subtitle">The robust engine needed to manage demanding social content with guaranteed speed and intelligence.</p>
+                <h2 data-i18n="demo.title">See it in Action</h2>
+                <p class="lead text-secondary" data-i18n="demo.subtitle">From the multi-tenant control panel to the end-user widget.</p>
             </div>
-            <div class="row g-5 align-items-center">
-                
-                <div class="col-lg-6">
-                     <h3 data-i18n="performance.demo_title" class="mb-3">Zero Latency Proof</h3>
-                    <p class="text-secondary mb-4" data-i18n="performance.demo_desc">Our live demo verifies Quelora's **speed and robustness** in processing, moderating, and visualizing thousands of dynamic comments with **minimal latency**. A performance feat only possible thanks to our caching architecture (**Redis**).</p>
-                    <div class="d-flex flex-column gap-3">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-lightning-fill text-success fs-4 me-3"></i>
-                            <span data-i18n="performance.feature1">**Redis Caching:** Ultra-fast transactions for real-time data.</span>
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <div class="card p-3">
+                        <div class="img-placeholder">
+                            
                         </div>
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-database-fill-check text-success fs-4 me-3"></i>
-                            <span data-i18n="performance.feature2">**Mongo Persistence:** Flexible, scalable database for high volumes.</span>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-robot text-success fs-4 me-3"></i>
-                            <span data-i18n="performance.feature3">**Web Scraping:** Versatile dynamic data ingestion via Puppeteer/Chrome.</span>
+                        <div class="card-body text-center">
+                            <h4 data-i18n="demo.dashboard_title">Centralized Dashboard</h4>
+                            <p class="text-secondary" data-i18n="demo.dashboard_text">Manage sites, moderate content, view analytics, and configure AI settings from one place.</p>
                         </div>
                     </div>
-                    <a href="/news.html" class="btn btn-quelora mt-4 px-5" data-i18n="demos.view_live_demo_link">View Live Demo</a>
                 </div>
-
-                <div class="col-lg-6">
-                    <div class="card p-4 h-100">
-                        <h4 class="mb-3" data-i18n="performance.ai_title">AI-Augmented Content Management</h4>
-                        <p class="text-secondary" data-i18n="performance.ai_desc">We use the most advanced AI models (Gemini, OpenAI, Grok) to ensure a safe community environment and provide precise sentiment analysis, translation, and geolocation services.</p>
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **LLM Moderation:** Multi-provider toxicity and sentiment filtering.</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **Translation Services:** Automatic content translation (`translateService`).</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **Geospatial Analytics:** Traffic and activity statistics by location (`GeoLite2`).</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-primary me-2"></i> **Enterprise Security:** SSO, Rate Limiting, and Helmet implementation.</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <section id="core-architecture" class="py-5 bg-primary-subtle" style="background-color: var(--color-background-dark) !important;">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 data-i18n="architecture.title">World-Class Architecture</h2>
-                <p class="lead text-secondary" data-i18n="architecture.subtitle">A robust, scalable microservices solution that guarantees reliability and performance.</p>
-            </div>
-            <div class="row g-4 justify-content-center">
-                 <div class="col-md-4">
-                    <div class="card h-100 p-4 text-center">
-                        <i class="bi bi-server icon-lg mx-auto mb-3"></i>
-                        <h3 data-i18n="architecture.api_title" class="h4">Quelora API (Node.js)</h3>
-                        <p class="text-secondary" data-i18n="architecture.api_description">The central engine managing business logic, AI moderation, notifications, and SSO.</p>
-                        <a href="https://github.com/Quelora/quelora-api" class="btn btn-outline-primary mt-auto" data-i18n="repositories.view_repo">View Repo</a>
-                    </div>
-                </div>
-                 <div class="col-md-4">
-                    <div class="card h-100 p-4 text-center">
-                        <i class="bi bi-plug icon-lg mx-auto mb-3"></i>
-                        <h3 data-i18n="architecture.client_title" class="h4">Lightweight Integration Widget</h3>
-                        <p class="text-secondary" data-i18n="architecture.client_description">A Vanilla JS client embeddable in any website, optimized for speed and user experience (includes audio and push notifications).</p>
-                        <a href="https://github.com/Quelora/quelora-client" class="btn btn-outline-primary mt-auto" data-i18n="repositories.view_repo">View Repo</a>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 p-4 text-center">
-                        <i class="bi bi-speedometer2 icon-lg mx-auto mb-3"></i>
-                        <h3 data-i18n="architecture.dashboard_title" class="h4">Admin Control Panel (Dashboard)</h3>
-                        <p class="text-secondary" data-i18n="architecture.dashboard_description">Administrative interface for managing users, posts, geo-located data, and real-time analytics.</p>
-                        <a href="https://github.com/Quelora/quelora-dashboard" class="btn btn-outline-primary mt-auto" data-i18n="repositories.view_repo">View Repo</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="get-started" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 data-i18n="get_started.title">High-Level Deployment in Minutes</h2>
-                <p class="lead text-secondary" data-i18n="get_started.subtitle">Launch your self-hosted instance with our optimized Docker Compose.</p>
-            </div>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.clone_title">1. Clone Infrastructure and Components</h4>
-                            <p data-i18n="get_started.clone_desc_new">The Docker Compose infrastructure (`quelora-infra`) manages the orchestration of the API, Dashboard, Client, and databases (Redis/Mongo).</p>
-                            <pre><code>git clone https://github.com/Quelora/quelora-infra.git
-cd quelora-infra
-git submodule update --remote --recursive</code></pre>
+                <div class="col-lg-5">
+                    <div class="card p-3">
+                        <div class="img-placeholder">
+                            
                         </div>
-                    </div>
-                    
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h4 class="mb-3" data-i18n="get_started.build_title">2. Configuration and Final Deployment</h4>
-                            <p data-i18n="get_started.build_desc_new">Define environment variables for databases and services, then build and launch the complete microservices stack.</p>
-                            <pre><code>cp .env.example .env
-# Edit .env with your configuration (Redis/Mongo/LLM Keys)
-
-docker compose -f docker-compose-production.yml build
-docker compose -f docker-compose-production.yml up -d</code></pre>
+                        <div class="card-body text-center">
+                            <h4 data-i18n="demo.widget_title">Live Comment Widget</h4>
+                            <p class="text-secondary" data-i18n="demo.widget_text">The fast, responsive, and feature-rich client that integrates into your site.</p>
                         </div>
-                    </div>
-                    
-                    <div class="text-center mt-5">
-                        <a href="https://github.com/Quelora/quelora-infra#readme" class="btn btn-quelora btn-lg px-5" data-i18n="get_started.full_docs">Full Documentation (Infra)</a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="docs" class="py-5 bg-primary-subtle" style="background-color: var(--color-background-dark) !important;">
+    <section id="features" class="py-5" style="background-color: var(--color-background-dark) !important;">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 data-i18n="docs.title">Documentation for Developers</h2>
-                <p class="lead text-secondary" data-i18n="docs.subtitle">Learn how to integrate, extend, and optimize Quelora for your specific needs.</p>
+                <h2 data-i18n="features.title">A Complete Engagement Platform</h2>
+                <p class="lead text-secondary" data-i18n="features.subtitle">More than just comments. A full suite of tools for your community.</p>
             </div>
             <div class="row g-4">
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100 p-4">
-                        <h3 data-i18n="docs.1.title" class="h5">Core API Reference</h3>
-                        <p class="text-secondary" data-i18n="docs.1.description">Documentation of API endpoints (`authRoutes`, `statsRoutes`) and data model management (Mongo).</p>
-                        <a href="#" class="btn btn-outline-primary mt-auto" data-i18n="docs.read_more">Read More</a>
+                        <div class="icon-box"><i class="bi bi-broadcast"></i></div>
+                        <h4 data-i18n="features.live_chat_title">Real-time Live Chat</h4>
+                        <p class="text-secondary" data-i18n="features.live_chat_desc">Engage your audience instantly with WebSocket-powered live chat, complete with typing indicators and viewer counts.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100 p-4">
-                        <h3 data-i18n="docs.2.title" class="h5">Client Integration (Widget)</h3>
-                        <p class="text-secondary" data-i18n="docs.2.description">Step-by-step guide for integrating the Vanilla JS widget into any environment. CSS customization included.</p>
-                        <a href="#" class="btn btn-outline-primary mt-auto" data-i18n="docs.read_more">Read More</a>
+                        <div class="icon-box"><i class="bi bi-robot"></i></div>
+                        <h4 data-i18n="features.ai_title">AI-Powered Moderation</h4>
+                        <p class="text-secondary" data-i18n="features.ai_desc">Automatically analyzes sentiment, summarizes debates, and filters toxicity using modern LLMs to keep your community safe.</p>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6 col-lg-4">
                     <div class="card h-100 p-4">
-                        <h3 data-i18n="docs.3.title" class="h5">Provider Extension</h3>
-                        <p class="text-secondary" data-i18n="docs.3.description">Guides for adding new AI providers (`ModerationProviders`) or SSO providers (`ssoProviders`).</p>
-                        <a href="#" class="btn btn-outline-primary mt-auto" data-i18n="docs.read_more">Read More</a>
+                        <div class="icon-box"><i class="bi bi-speedometer2"></i></div>
+                        <h4 data-i18n="features.speed_title">Blazing Fast Client</h4>
+                        <p class="text-secondary" data-i18n="features.speed_desc">A lightweight Vanilla JS widget that never blocks your main thread, thanks to a Web Worker architecture and comment virtualization.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4">
+                        <div class="icon-box"><i class="bi bi-people-fill"></i></div>
+                        <h4 data-i18n="features.community_title">Full Community System</h4>
+                        <p class="text-secondary" data-i18n="features.community_desc">Users get rich profiles, follow/block capabilities, in-app notifications, and encrypted local session data for privacy.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4">
+                        <div class="icon-box"><i class="bi bi-mic-fill"></i></div>
+                        <h4 data-i18n="features.rich_title">Rich Interactions</h4>
+                        <p class="text-secondary" data-i18n="features.rich_desc">Go beyond text with audio recording & transcription, user @mentions, text quoting, emoji reactions, and integrated surveys.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="card h-100 p-4">
+                        <div class="icon-box"><i class="bi bi-shield-lock-fill"></i></div>
+                        <h4 data-i18n="features.security_title">Secure & Private</h4>
+                        <p class="text-secondary" data-i18n="features.security_desc">Built-in Captcha support (Turnstile/reCAPTCHA) and AES-GCM encryption for cached user profiles in the browser.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+    <section id="architecture" class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 data-i18n="architecture.title">Built for Performance & Scale</h2>
+                <p class="lead text-secondary" data-i18n="architecture.subtitle">A modern, decoupled microservice architecture.</p>
+            </div>
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-6">
+                    <h3 data-i18n="architecture.stack_title">The Quelora Stack</h3>
+                    <p class="text-secondary" data-i18n="architecture.stack_desc">Quelora runs on a robust backend API (Node.js, Express) that handles logic, authentication, and AI tasks. It uses Redis for high-speed caching and real-time operations, and MongoDB for persistent, scalable data storage.</p>
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-braces text-primary fs-4 me-3"></i>
+                            <span data-i18n="architecture.feature1">**Client:** Vanilla JS, Web Workers, WebSocket</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-server text-primary fs-4 me-3"></i>
+                            <span data-i18n="architecture.feature2">**API:** Node.js, Express, Puppeteer, Socket.io</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-database-fill-check text-primary fs-4 me-3"></i>
+                            <span data-i18n="architecture.feature3">**Databases:** Redis (Cache) & MongoDB (Storage)</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card p-3">
+                        <div class="img-placeholder">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="contactModalOverlay" class="contact-modal-overlay hidden">
+        <div class="contact-modal">
+            
+            <div id="contactFormWrapper">
+                <button id="closeContactModal" class="contact-close-btn" aria-label="Close Modal">
+                    <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    </svg>
+                </button>
+                
+                <h3 data-i18n="contact.title">Professional Contact</h3>
+                <p data-i18n="contact.subtitle">Interested in collaborating? Send me a message.</p>
+                
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="contactName" data-i18n="contact.name">Full Name *</label>
+                        <input type="text" id="contactName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail" data-i18n="contact.email">Email *</label>
+                        <input type="email" id="contactEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactCompany" data-i18n="contact.company">Company (Optional)</label>
+                        <input type="text" id="contactCompany" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubject" data-i18n="contact.subject">Subject *</label>
+                        <input type="text" id="contactSubject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage" data-i18n="contact.message">Message *</label>
+                        <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="contactSubmitButton" class="primary-btn" data-i18n="contact.send">Send Message</button>
+                    </div>
+                </form>
+                <div id="contactStatus" class="contact-status"></div>
+            </div>
+
+            <div id="contactSuccessView" class="contact-success-view hidden">
+                <h3 data-i18n="contact.success_title">Message Sent!</h3>
+                <p data-i18n="contact.success_desc">Thank you for getting in touch. I will get back to you shortly.</p>
+                <button id="closeSuccessBtn" class="primary-btn" data-i18n="contact.close">Close</button>
+            </div>
+
+        </div>
+    </div>
 
     <footer class="py-5" style="background-color: var(--color-background-dark) !important;">
         <div class="container">
@@ -383,10 +252,10 @@ docker compose -f docker-compose-production.yml up -d</code></pre>
                         <a href="https://github.com/Quelora" class="btn btn-outline-secondary">
                             <i class="bi bi-github"></i> <span data-i18n="footer.github">GitHub</span>
                         </a>
-                        <a href="#" class="btn btn-outline-secondary">
+                        <a href="https://github.com/Quelora/quelora-infra#readme" class="btn btn-outline-secondary">
                             <i class="bi bi-file-text"></i> <span data-i18n="footer.docs">Docs</span>
                         </a>
-                        <a href="#" class="btn btn-outline-secondary">
+                        <a href="#" class="btn btn-outline-secondary" id="contactLink">
                             <i class="bi bi-chat"></i> <span data-i18n="footer.contact">Contact</span>
                         </a>
                     </div>
@@ -401,7 +270,6 @@ docker compose -f docker-compose-production.yml up -d</code></pre>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Theme toggle functionality (Conservada y adaptada a nuevas variables)
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
         const htmlElement = document.documentElement;
@@ -432,21 +300,23 @@ docker compose -f docker-compose-production.yml up -d</code></pre>
             }
         });
         
-        // Language selector functionality (Conservada)
         const languageOptions = document.querySelectorAll('.language-option');
         const currentLanguageFlag = document.getElementById('currentLanguageFlag');
         const currentLanguageText = document.getElementById('currentLanguage');
         
-        // Custom translations to integrate the new content
         const newTranslations = {
             "page_title": {
                 "en": "Quelora | High-Performance Comment System with Augmented Intelligence",
-                "es": "Quelora | Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada"
+                "es": "Quelora | Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada",
+                "fr": "Quelora | Système de Commentaires Haute Performance avec Intelligence Augmentée",
+                "de": "Quelora | Hochleistungs-Kommentarsystem mit Erweiterter Intelligenz"
             },
-            "nav.architecture": { "en": "Architecture", "es": "Arquitectura" },
-            "nav.performance": { "en": "Performance", "es": "Rendimiento" },
-            "nav.get_started_short": { "en": "Deployment", "es": "Despliegue" },
-            "nav.view_infra": { "en": "View Infra", "es": "Ver Infra" },
+            "nav.demo": { "en": "Demo", "es": "Demo", "fr": "Démo", "de": "Demo" },
+            "nav.features": { "en": "Features", "es": "Funcionalidades", "fr": "Fonctionnalités", "de": "Funktionen" },
+            "nav.architecture": { "en": "Architecture", "es": "Arquitectura", "fr": "Architecture", "de": "Architektur" },
+            "nav.get_started_short": { "en": "Deployment", "es": "Despliegue", "fr": "Déploiement", "de": "Bereitstellung" },
+            "nav.docs": { "en": "Docs", "es": "Docs", "fr": "Docs", "de": "Doks" },
+            "nav.view_infra": { "en": "View Infra", "es": "Ver Infra", "fr": "Voir l'Infra", "de": "Infra ansehen" },
             "hero.new_title": {
                 "en": "Quelora. The High-Performance Comment System with Augmented Intelligence.",
                 "es": "Quelora. El Sistema de Comentarios de Alto Rendimiento con Inteligencia Aumentada."
@@ -457,85 +327,87 @@ docker compose -f docker-compose-production.yml up -d</code></pre>
             },
             "hero.view_live_demo": { "en": "View Live Demo", "es": "Ver Demo en Vivo" },
             "hero.explore_api": { "en": "Explore API", "es": "Explorar API" },
-            "architecture.title": { "en": "World-Class Architecture", "es": "Arquitectura de Clase Mundial" },
-            "architecture.subtitle": { "en": "A robust, scalable microservices solution that guarantees reliability and performance.", "es": "Una solución de microservicios robusta y escalable que garantiza confiabilidad y rendimiento." },
-            "architecture.api_title": { "en": "Quelora API (Node.js)", "es": "Quelora API (Node.js)" },
-            "architecture.api_description": { "en": "The central engine managing business logic, AI moderation, notifications, and SSO.", "es": "El motor central que gestiona la lógica de negocio, la moderación por IA, las notificaciones y el SSO." },
-            "architecture.client_title": { "en": "Lightweight Integration Widget", "es": "Widget de Integración Ligera" },
-            "architecture.client_description": { "en": "A Vanilla JS client embeddable in any website, optimized for speed and user experience (includes audio and push notifications).", "es": "Un cliente Vanilla JS integrable en cualquier web, optimizado para la velocidad y la experiencia de usuario (incluye audio y notificaciones push)." },
-            "architecture.dashboard_title": { "en": "Admin Control Panel (Dashboard)", "es": "Panel de Control (Dashboard)" },
-            "architecture.dashboard_description": { "en": "Administrative interface for managing users, posts, geo-located data, and real-time analytics.", "es": "Interfaz administrativa para la gestión de usuarios, posts, datos geolocalizados y analíticas en tiempo real." },
-            "performance.title": { "en": "AI-Powered Features & Max Speed", "es": "Características Impulsadas por IA y Velocidad Máxima" },
-            "performance.subtitle": { "en": "The robust engine needed to manage demanding social content with guaranteed speed and intelligence.", "es": "El motor robusto que se necesita para gestionar contenido social exigente con velocidad e inteligencia garantizadas." },
-            "performance.demo_title": { "en": "Zero Latency Proof", "es": "Prueba de Latencia Cero" },
-            "performance.demo_desc": { "en": "Our live demo verifies Quelora's **speed and robustness** in processing, moderating, and visualizing thousands of dynamic comments with **minimal latency**. A performance feat only possible thanks to our caching architecture (**Redis**).", "es": "La demo en vivo comprueba la **velocidad y robustez** de Quelora para procesar, moderar y visualizar miles de comentarios dinámicos con una **latencia mínima**. Una proeza de rendimiento solo posible gracias a nuestra arquitectura de caching (**Redis**)." },
-            "performance.feature1": { "en": "**Redis Caching:** Ultra-fast transactions for real-time data.", "es": "**Caching Redis:** Transacciones ultra-rápidas para tiempo real." },
-            "performance.feature2": { "en": "**Mongo Persistence:** Flexible, scalable database for high volumes.", "es": "**Persistencia Mongo:** Base de datos flexible y escalable para grandes volúmenes." },
-            "performance.feature3": { "en": "**Web Scraping:** Versatile dynamic data ingestion via Puppeteer/Chrome.", "es": "**Web Scraping:** Ingesta versátil de datos dinámicos mediante Puppeteer/Chrome." },
-            "demos.view_live_demo_link": { "en": "View Live Demo", "es": "Ver Demo en Vivo" },
-            "performance.ai_title": { "en": "AI-Augmented Content Management", "es": "Gestión de Contenido Aumentada por IA" },
-            "performance.ai_desc": { "en": "We use the most advanced AI models (Gemini, OpenAI, Grok) to ensure a safe community environment and provide precise sentiment analysis, translation, and geolocation services.", "es": "Utilizamos los modelos de IA más avanzados (Gemini, OpenAI, Grok) para asegurar un entorno comunitario seguro y ofrecer servicios de análisis de sentimiento, traducción y geolocalización precisos." },
-            "get_started.title": { "en": "High-Level Deployment in Minutes", "es": "Despliegue de Alto Nivel en Minutos" },
+            "demo.title": { "en": "See it in Action", "es": "Verlo en Acción" },
+            "demo.subtitle": { "en": "From the multi-tenant control panel to the end-user widget.", "es": "Desde el panel de control multi-tenant hasta el widget del usuario final." },
+            "demo.dashboard_title": { "en": "Centralized Dashboard", "es": "Dashboard Centralizado" },
+            "demo.dashboard_text": { "en": "Manage sites, moderate content, view analytics, and configure AI settings from one place.", "es": "Gestiona sitios, modera contenido, ve analíticas y configura la IA desde un solo lugar." },
+            "demo.widget_title": { "en": "Live Comment Widget", "es": "Widget de Comentarios en Vivo" },
+            "demo.widget_text": { "en": "The fast, responsive, and feature-rich client that integrates into your site.", "es": "El cliente rápido, adaptable y rico en funciones que se integra en tu sitio." },
+            "features.title": { "en": "A Complete Engagement Platform", "es": "Una Plataforma de Interacción Completa" },
+            "features.subtitle": { "en": "More than just comments. A full suite of tools for your community.", "es": "Más que solo comentarios. Una suite completa de herramientas para tu comunidad." },
+            "features.live_chat_title": { "en": "Real-time Live Chat", "es": "Chat en Vivo" },
+            "features.live_chat_desc": { "en": "Engage your audience instantly with WebSocket-powered live chat, complete with typing indicators and viewer counts.", "es": "Interactúa al instante con tu audiencia mediante chat en vivo (WebSockets), con indicadores de escritura y conteo de espectadores." },
+            "features.ai_title": { "en": "AI-Powered Moderation", "es": "Moderación con IA" },
+            "features.ai_desc": { "en": "Automatically analyzes sentiment, summarizes debates, and filters toxicity using modern LLMs to keep your community safe.", "es": "Analiza sentimientos, resume debates y filtra toxicidad automáticamente usando LLMs modernos para mantener tu comunidad segura." },
+            "features.speed_title": { "en": "Blazing Fast Client", "es": "Cliente Ultra-Rápido" },
+            "features.speed_desc": { "en": "A lightweight Vanilla JS widget that never blocks your main thread, thanks to a Web Worker architecture and comment virtualization.", "es": "Un widget Vanilla JS ligero que nunca bloquea tu hilo principal, gracias a una arquitectura de Web Workers y virtualización de comentarios." },
+            "features.community_title": { "en": "Full Community System", "es": "Sistema de Comunidad Completo" },
+            "features.community_desc": { "en": "Users get rich profiles, follow/block capabilities, in-app notifications, and encrypted local session data for privacy.", "es": "Perfiles de usuario, capacidad de seguir/bloquear, notificaciones en-app y datos de sesión encriptados para mayor privacidad." },
+            "features.rich_title": { "en": "Rich Interactions", "es": "Interacciones Enriquecidas" },
+            "features.rich_desc": { "en": "Go beyond text with audio recording & transcription, user @mentions, text quoting, emoji reactions, and integrated surveys.", "es": "Más allá del texto: grabación de audio y transcripción, @menciones, citas de texto, emojis y encuestas integradas." },
+            "features.security_title": { "en": "Secure & Private", "es": "Seguro y Privado" },
+            "features.security_desc": { "en": "Built-in Captcha support (Turnstile/reCAPTCHA) and AES-GCM encryption for cached user profiles in the browser.", "es": "Soporte Captcha integrado (Turnstile/reCAPTCHA) y encriptación AES-GCM para los perfiles cacheados en el navegador." },
+            "architecture.title": { "en": "Built for Performance & Scale", "es": "Construido para Rendimiento y Escala" },
+            "architecture.subtitle": { "en": "A modern, decoupled microservice architecture.", "es": "Una arquitectura de microservicios moderna y desacoplada." },
+            "architecture.stack_title": { "en": "The Quelora Stack", "es": "El Stack de Quelora" },
+            "architecture.stack_desc": { "en": "Quelora runs on a robust backend API (Node.js, Express) that handles logic, authentication, and AI tasks. It uses Redis for high-speed caching and real-time operations, and MongoDB for persistent, scalable data storage.", "es": "Quelora corre sobre una API backend robusta (Node.js, Express) que maneja lógica, autenticación y tareas de IA. Usa Redis para caché de alta velocidad y MongoDB para almacenamiento persistente." },
+            "architecture.feature1": { "en": "**Client:** Vanilla JS, Web Workers, WebSocket", "es": "**Cliente:** Vanilla JS, Web Workers, WebSocket" },
+            "architecture.feature2": { "en": "**API:** Node.js, Express, Puppeteer, Socket.io", "es": "**API:** Node.js, Express, Puppeteer, Socket.io" },
+            "architecture.feature3": { "en": "**Databases:** Redis (Cache) & MongoDB (Storage)", "es": "**Bases de datos:** Redis (Caché) & MongoDB (Almacenamiento)" },
+            "get_started.title": { "en": "Deploy in Minutes", "es": "Despliegue en Minutos" },
             "get_started.subtitle": { "en": "Launch your self-hosted instance with our optimized Docker Compose.", "es": "Inicia tu instancia auto-alojada con nuestro Docker Compose optimizado." },
             "get_started.clone_title": { "en": "1. Clone Infrastructure and Components", "es": "1. Clona la Infraestructura y Componentes" },
             "get_started.clone_desc_new": { "en": "The Docker Compose infrastructure (`quelora-infra`) manages the orchestration of the API, Dashboard, Client, and databases (Redis/Mongo).", "es": "La infraestructura Docker Compose (`quelora-infra`) gestiona la orquestación de la API, Dashboard, Cliente y las bases de datos (Redis/Mongo)." },
             "get_started.build_title": { "en": "2. Configuration and Final Deployment", "es": "2. Configuración y Despliegue Final" },
             "get_started.build_desc_new": { "en": "Define environment variables for databases and services, then build and launch the complete microservices stack.", "es": "Define las variables de entorno para las bases de datos y servicios, luego construye y lanza la pila completa de microservicios." },
             "get_started.full_docs": { "en": "Full Documentation (Infra)", "es": "Documentación Completa (Infra)" },
-            "docs.title": { "en": "Documentation for Developers", "es": "Documentación para Desarrolladores" },
-            "docs.subtitle": { "en": "Learn how to integrate, extend, and optimize Quelora for your specific needs.", "es": "Aprende a integrar, extender y optimizar Quelora para tus necesidades específicas." },
-            "docs.1.title": { "en": "Core API Reference", "es": "Referencia API Core" },
-            "docs.1.description": { "en": "Documentation of API endpoints (`authRoutes`, `statsRoutes`) and data model management (Mongo).", "es": "Documentación de endpoints (`authRoutes`, `statsRoutes`) y gestión de modelos de datos (Mongo)." },
-            "docs.2.title": { "en": "Client Integration (Widget)", "es": "Integración del Cliente (Widget)" },
-            "docs.2.description": { "en": "Step-by-step guide for integrating the Vanilla JS widget into any environment. CSS customization included.", "es": "Guía paso a paso para integrar el widget Vanilla JS en cualquier entorno. Personalización CSS incluida." },
-            "docs.3.title": { "en": "Provider Extension", "es": "Extensión de Proveedores" },
-            "docs.3.description": { "en": "Guides for adding new AI providers (`ModerationProviders`) or SSO providers (`ssoProviders`).", "es": "Guías para añadir nuevos proveedores de IA (`ModerationProviders`) o de SSO (`ssoProviders`)." },
-            "docs.read_more": { "en": "Read More", "es": "Leer Más" },
             "footer.description": { "en": "Open-source dynamic content and moderation platform for modern websites.", "es": "Plataforma de contenido dinámico y moderación de código abierto para sitios web modernos." },
             "footer.github": { "en": "GitHub", "es": "GitHub" },
             "footer.docs": { "en": "Docs", "es": "Docs" },
             "footer.contact": { "en": "Contact", "es": "Contacto" },
             "footer.copyright": { "en": "© 2025 Quelora. Open-source under GPL v3 License.", "es": "© 2025 Quelora. Código abierto bajo licencia GPL v3." },
-
-            // Conservar las traducciones originales para compatibilidad con otros idiomas (fr, de)
-            "nav.features": { "en": "Features", "es": "Características", "fr": "Fonctionnalités", "de": "Funktionen" },
-            "nav.demos": { "en": "Demos", "es": "Demostraciones", "fr": "Démonstrations", "de": "Demos" },
-            "nav.docs": { "en": "Docs", "es": "Documentación", "fr": "Documentation", "de": "Dokumentation" },
-            "nav.community": { "en": "Community", "es": "Comunidad", "fr": "Communauté", "de": "Community" },
-            "nav.repositories": { "en": "Repositories", "es": "Repositorios", "fr": "Dépôts", "de": "Repositories" },
-            "features.1.title": { "en": "Comment System", "es": "Sistema de Comentarios", "fr": "Système de Commentaires", "de": "Kommentarsystem" },
-            "features.2.title": { "en": "Community Tools", "es": "Herramientas Comunitarias", "fr": "Outils Communautaires", "de": "Community-Tools" },
-            "features.3.title": { "en": "Vanilla JS Widget", "es": "Widget Vanilla JS", "fr": "Widget Vanilla JS", "de": "Vanilla JS Widget" },
-            "features.4.title": { "en": "NodeJS API", "es": "API NodeJS", "fr": "API NodeJS", "de": "NodeJS API" },
-            "features.5.title": { "en": "Dashboard", "es": "Panel de Control", "fr": "Tableau de Bord", "de": "Dashboard" },
-            "features.6.title": { "en": "Demo Page", "es": "Página de Demostración", "fr": "Page de Démonstration", "de": "Demo-Seite" },
-            "repositories.view_repo": { "en": "View Repo", "es": "Ver Repo", "fr": "Voir le Dépôt", "de": "Repository ansehen" }
+            
+            "contact.title": { "en": "Professional Contact", "es": "Contacto Profesional" },
+            "contact.subtitle": { "en": "Interested in collaborating? Send me a message.", "es": "¿Interesado en colaborar? Envíame un mensaje." },
+            "contact.name": { "en": "Full Name *", "es": "Nombre Completo *" },
+            "contact.email": { "en": "Email *", "es": "Email *" },
+            "contact.company": { "en": "Company (Optional)", "es": "Empresa (Opcional)" },
+            "contact.subject": { "en": "Subject *", "es": "Asunto *" },
+            "contact.message": { "en": "Message *", "es": "Mensaje *" },
+            "contact.send": { "en": "Send Message", "es": "Enviar Mensaje" },
+            "contact.sending": { "en": "Sending...", "es": "Enviando..." },
+            "contact.success_title": { "en": "Message Sent!", "es": "¡Mensaje Enviado!" },
+            "contact.success_desc": { "en": "Thank you for getting in touch. I will get back to you shortly.", "es": "Gracias por contactarte. Te responderé a la brevedad." },
+            "contact.close": { "en": "Close", "es": "Cerrar" }
         };
 
-        // Helper function to check if item is a plain object
-        function isObject(item) {
-            return (item && typeof item === 'object' && !Array.isArray(item));
-        }
-        
-        // Function to apply translations using the new structure
         function applyTranslations(lang) {
-             document.querySelectorAll('[data-i18n]').forEach(element => {
+            document.querySelectorAll('[data-i18n]').forEach(element => {
                 const key = element.getAttribute('data-i18n');
-                
-                // Get translation from new structure, or fallback to default i18next behavior
                 let translation = newTranslations[key] && newTranslations[key][lang] ? newTranslations[key][lang] : i18next.t(key);
+                
+                element.innerHTML = ''; 
 
-                if (translation) {
+                if (translation.includes('**')) {
+                    const parts = translation.split('**');
+                    parts.forEach((part, index) => {
+                        if (index % 2 === 1) {
+                            const strong = document.createElement('strong');
+                            strong.textContent = part;
+                            element.appendChild(strong);
+                        } else {
+                            element.appendChild(document.createTextNode(part));
+                        }
+                    });
+                } else {
                     element.textContent = translation;
                 }
             });
-            // Update page title separately
             if(newTranslations['page_title'] && newTranslations['page_title'][lang]) {
                 document.title = newTranslations['page_title'][lang];
             }
         }
         
-        // Language selection handler
         languageOptions.forEach(option => {
             option.addEventListener('click', (e) => {
                 e.preventDefault();
@@ -548,46 +420,159 @@ docker compose -f docker-compose-production.yml up -d</code></pre>
             });
         });
 
-        // Function to update language display in selector
         function updateLanguageDisplay(lang) {
             let flagUrl, languageText;
-            
             switch(lang) {
                 case 'es':
-                    flagUrl = 'https://flagcdn.com/w20/es.png';
-                    languageText = 'ES';
-                    break;
+                    flagUrl = 'https://flagcdn.com/w20/es.png'; languageText = 'ES'; break;
                 case 'fr':
-                    flagUrl = 'https://flagcdn.com/w20/fr.png';
-                    languageText = 'FR';
-                    break;
+                    flagUrl = 'https://flagcdn.com/w20/fr.png'; languageText = 'FR'; break;
                 case 'de':
-                    flagUrl = 'https://flagcdn.com/w20/de.png';
-                    languageText = 'DE';
-                    break;
-                default: // en
-                    flagUrl = 'https://flagcdn.com/w20/us.png';
-                    languageText = 'EN';
+                    flagUrl = 'https://flagcdn.com/w20/de.png'; languageText = 'DE'; break;
+                default:
+                    flagUrl = 'https://flagcdn.com/w20/us.png'; languageText = 'EN';
             }
-            
             currentLanguageFlag.src = flagUrl;
             currentLanguageFlag.alt = languageText;
             currentLanguageText.textContent = languageText;
         }
 
-        // Initialize i18next
         i18next.init({
-            lng: localStorage.getItem('language') || 'en', // DEFAULT TO ENGLISH
+            lng: localStorage.getItem('language') || 'en',
             debug: false,
-            resources: {
-                // We leave the resource object empty here and rely on the manual translation lookup for the new keys.
-            }
+            resources: {}
         }, function(err, t) {
-            applyTranslations(i18next.language);
-            // Re-bind the initialization process in case of slow loading
+            const currentLang = i18next.language;
+            applyTranslations(currentLang);
+            updateLanguageDisplay(currentLang);
+            
             i18next.on('languageChanged', (lng) => {
                 applyTranslations(lng);
+                updateLanguageDisplay(lng);
             });
+        });
+
+        const contactLink = document.getElementById('contactLink');
+        const navContactLink = document.getElementById('navContactLink');
+        const heroContactLink = document.getElementById('heroContactLink');
+        const contactModalOverlay = document.getElementById('contactModalOverlay');
+        const closeContactModalBtn = document.getElementById('closeContactModal');
+        const contactForm = document.getElementById('contactForm');
+        const contactStatus = document.getElementById('contactStatus');
+        const contactSubmitButton = document.getElementById('contactSubmitButton');
+        const contactFormWrapper = document.getElementById('contactFormWrapper');
+        const contactSuccessView = document.getElementById('contactSuccessView');
+        const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+
+        function openContactModal() {
+            if (contactModalOverlay) {
+                contactModalOverlay.classList.remove('hidden');
+            }
+        }
+
+        function closeContactModal() {
+            if (contactModalOverlay) {
+                contactModalOverlay.classList.add('hidden');
+                
+                if (contactFormWrapper) contactFormWrapper.classList.remove('hidden');
+                if (contactSuccessView) contactSuccessView.classList.add('hidden');
+                
+                if (contactForm) contactForm.reset();
+                if (contactStatus) contactStatus.textContent = '';
+                if (contactStatus) contactStatus.className = 'contact-status';
+                if (contactSubmitButton) contactSubmitButton.disabled = false;
+                
+                const sendText = (window.i18next && i18next.t('contact.send')) || "Send Message";
+                if (contactSubmitButton) contactSubmitButton.textContent = sendText;
+            }
+        }
+
+        async function handleContactSubmit(event) {
+            event.preventDefault();
+            if (!contactForm) return;
+
+            contactSubmitButton.disabled = true;
+            const sendingText = (window.i18next && i18next.t('contact.sending')) || "Sending...";
+            contactSubmitButton.textContent = sendingText;
+            contactStatus.textContent = '';
+            contactStatus.className = 'contact-status';
+
+            const formData = new FormData(contactForm);
+            const data = {
+                name: formData.get('name'),
+                email: formData.get('email'),
+                company: formData.get('company'),
+                subject: formData.get('subject'),
+                message: formData.get('message'),
+            };
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    contactForm.reset();
+                    if (contactFormWrapper) contactFormWrapper.classList.add('hidden');
+                    if (contactSuccessView) contactSuccessView.classList.remove('hidden');
+                } else {
+                    throw new Error(result.error || 'Unknown error.');
+                }
+
+            } catch (error) {
+                contactStatus.textContent = `Error: ${error.message}`;
+                contactStatus.className = 'contact-status error';
+                contactSubmitButton.disabled = false;
+                const sendText = (window.i18next && i18next.t('contact.send')) || "Send Message";
+                contactSubmitButton.textContent = sendText;
+            }
+        }
+
+        const setupContactTrigger = (button) => {
+            if (button) {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openContactModal();
+                });
+            }
+        };
+
+        setupContactTrigger(contactLink);
+        setupContactTrigger(navContactLink);
+        setupContactTrigger(heroContactLink);
+
+        if (closeContactModalBtn) {
+            closeContactModalBtn.addEventListener('click', closeContactModal);
+        }
+
+        if (contactModalOverlay) {
+            contactModalOverlay.addEventListener('click', (e) => {
+                if (e.target === contactModalOverlay) {
+                    closeContactModal();
+                }
+            });
+        }
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', handleContactSubmit);
+        }
+
+        if (closeSuccessBtn) {
+            closeSuccessBtn.addEventListener('click', closeContactModal);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (contactModalOverlay && !contactModalOverlay.classList.contains('hidden')) {
+                    closeContactModal();
+                }
+            }
         });
     </script>
 </body>

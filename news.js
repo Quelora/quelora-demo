@@ -655,6 +655,10 @@ const contactForm = document.getElementById('contactForm');
 const contactStatus = document.getElementById('contactStatus');
 const contactSubmitButton = document.getElementById('contactSubmitButton');
 
+const contactFormWrapper = document.getElementById('contactFormWrapper');
+const contactSuccessView = document.getElementById('contactSuccessView');
+const closeSuccessBtn = document.getElementById('closeSuccessBtn');
+
 function openContactModal() {
     if (contactModalOverlay) {
         contactModalOverlay.classList.remove('hidden');
@@ -668,6 +672,10 @@ function closeContactModal() {
         if (iframeViewer.classList.contains('hidden')) {
             document.body.classList.remove('iframe-open');
         }
+        
+        if (contactFormWrapper) contactFormWrapper.classList.remove('hidden');
+        if (contactSuccessView) contactSuccessView.classList.add('hidden');
+        
         contactForm.reset();
         contactStatus.textContent = '';
         contactStatus.className = 'contact-status';
@@ -680,7 +688,7 @@ async function handleContactSubmit(event) {
     if (!contactForm) return;
 
     contactSubmitButton.disabled = true;
-    contactStatus.textContent = 'Enviando...';
+    contactStatus.textContent = 'Sending...';
     contactStatus.className = 'contact-status';
 
     const formData = new FormData(contactForm);
@@ -704,17 +712,18 @@ async function handleContactSubmit(event) {
         const result = await response.json();
 
         if (response.ok) {
-            contactStatus.textContent = '¡Mensaje enviado con éxito! Gracias.';
-            contactStatus.className = 'contact-status success';
             contactForm.reset();
+            contactSubmitButton.disabled = false;
+            
+            if (contactFormWrapper) contactFormWrapper.classList.add('hidden');
+            if (contactSuccessView) contactSuccessView.classList.remove('hidden');
         } else {
-            throw new Error(result.error || 'Error desconocido.');
+            throw new Error(result.error || 'Unknown error.');
         }
 
     } catch (error) {
         contactStatus.textContent = `Error: ${error.message}`;
         contactStatus.className = 'contact-status error';
-    } finally {
         contactSubmitButton.disabled = false;
     }
 }
@@ -740,6 +749,10 @@ if (contactModalOverlay) {
 
 if (contactForm) {
     contactForm.addEventListener('submit', handleContactSubmit);
+}
+
+if (closeSuccessBtn) {
+    closeSuccessBtn.addEventListener('click', closeContactModal);
 }
 
 document.addEventListener('keydown', (e) => {

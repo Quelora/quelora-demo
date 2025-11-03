@@ -205,13 +205,16 @@ mongoose
     });
 
 const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: parseInt(process.env.SMTP_PORT || "587"),
-    secure: (process.env.SMTP_PORT === "465"),
+    host: process.env.SMTP_HOST || 'postfix',
+    port: parseInt(process.env.SMTP_PORT || "587"), 
+    secure: false,
     auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
+        user: process.env.SMTP_USER, 
+        pass: process.env.SMTP_PASS, 
     },
+    tls: {
+        rejectUnauthorized: false
+    }
 });
 
 transporter.verify((error, success) => {
@@ -340,12 +343,12 @@ app.post("/api/contact", async (req, res) => {
     const { name, email, company, subject, message } = req.body;
 
     if (!name || !email || !subject || !message) {
-        return res.status(400).json({ error: "Faltan campos obligatorios." });
+        return res.status(400).json({ error: "Required fields are missing." });
     }
 
     const mailOptions = {
-        from: `"${name}" <${process.env.SMTP_USER}>`,
-        replyTo: email,
+        from: `"${name}" <${process.env.SMTP_USER}>`, 
+        replyTo: email, 
         to: process.env.MAIL_TO,
         subject: `[Contacto Quelora] ${subject}`,
         html: `
@@ -363,10 +366,10 @@ app.post("/api/contact", async (req, res) => {
 
     try {
         await transporter.sendMail(mailOptions);
-        res.status(200).json({ message: "Mensaje enviado con éxito." });
+        res.status(200).json({ message: "Message sent successfully." });
     } catch (error) {
-        console.error("Error al enviar email:", error);
-        res.status(500).json({ error: "Error al enviar el mensaje." });
+        console.error("Error sending email:", error);
+        res.status(500).json({ error: "Error sending message." });
     }
 });
 
