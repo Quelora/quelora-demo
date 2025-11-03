@@ -1,4 +1,3 @@
-// filepath: run.js
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -7,6 +6,7 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import path from "path";
 import { fileURLToPath } from "url";
+import nodemailer from "nodemailer";
 
 dotenv.config();
 
@@ -122,6 +122,8 @@ app.use(
                     "https://cdnjs.cloudflare.com",
                     "https://ipapi.co",
                     "wss://*.quelora.org",
+                    "wss://quelora.localhost.ar:445",
+                    "wss://quelora.localhost.ar:444",
                 ],
                 frameSrc: [
                     "'self'",
@@ -174,7 +176,14 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(express.json());
+app.use(express.static(__dirname));
+
 app.use((req, res, next) => {
+    if (req.path === "/api/contact" && req.method === "POST") {
+        return next();
+    }
+    
     if (["POST", "PUT", "DELETE", "PATCH"].includes(req.method)) {
         return res
             .status(403)
@@ -194,6 +203,24 @@ mongoose
         console.error("❌ MongoDB connection error:", err);
         process.exit(1);
     });
+
+const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || "587"),
+    secure: (process.env.SMTP_PORT === "465"),
+    auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASS,
+    },
+});
+
+transporter.verify((error, success) => {
+    if (error) {
+        console.error("❌ Error al conectar con SMTP:", error);
+    } else {
+        console.log("✅ Servidor SMTP listo para enviar correos.");
+    }
+});
 
 const postSchema = new mongoose.Schema({
     cid: String,
@@ -309,7 +336,39 @@ app.get("/api/stats", async (req, res) => {
     }
 });
 
-app.use(express.static(__dirname));
+app.post("/api/contact", async (req, res) => {
+    const { name, email, company, subject, message } = req.body;
+
+    if (!name || !email || !subject || !message) {
+        return res.status(400).json({ error: "Faltan campos obligatorios." });
+    }
+
+    const mailOptions = {
+        from: `"${name}" <${process.env.SMTP_USER}>`,
+        replyTo: email,
+        to: process.env.MAIL_TO,
+        subject: `[Contacto Quelora] ${subject}`,
+        html: `
+            <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                <h2>Nuevo Mensaje de Contacto</h2>
+                <p><strong>Nombre:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Compañía:</strong> ${company || "No especificada"}</p>
+                <hr>
+                <h3>Asunto: ${subject}</h3>
+                <p>${message.replace(/\n/g, "<br>")}</p>
+            </div>
+        `,
+    };
+
+    try {
+        await transporter.sendMail(mailOptions);
+        res.status(200).json({ message: "Mensaje enviado con éxito." });
+    } catch (error) {
+        console.error("Error al enviar email:", error);
+        res.status(500).json({ error: "Error al enviar el mensaje." });
+    }
+});
 
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "index.html"));

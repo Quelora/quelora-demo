@@ -1,6 +1,8 @@
 ├── .env
 ├── .gitignore
 ├── LICENSE
+├── assets
+│   └── icon.png
 ├── favicon.ico
 ├── gallery.html
 ├── gallery.js
@@ -25,6 +27,8 @@
 │   │   ├── animations.css
 │   │   ├── community.css
 │   │   ├── cropper.css
+│   │   ├── dist
+│   │   │   └── quelora.min.css
 │   │   ├── emoji.css
 │   │   ├── icons.css
 │   │   ├── interaction.css
@@ -38,6 +42,7 @@
 │   │   ├── responsive.css
 │   │   ├── session.css
 │   │   ├── settings.css
+│   │   ├── survey.css
 │   │   ├── toast.css
 │   │   └── variables.css
 │   └── js
@@ -50,26 +55,13 @@
 │       ├── core.js
 │       ├── cropper.js
 │       ├── development.js
-│       ├── dist
-│       │   ├── locales
-│       │   │   ├── ar.json
-│       │   │   ├── auto.json
-│       │   │   ├── de.json
-│       │   │   ├── en.json
-│       │   │   ├── es.json
-│       │   │   ├── fr.json
-│       │   │   ├── it.json
-│       │   │   ├── ja.json
-│       │   │   ├── ru.json
-│       │   │   └── zh.json
-│       │   ├── quelora.min.css
-│       │   └── quelora.min.js
 │       ├── drawer.js
 │       ├── emoji.js
 │       ├── entity.js
 │       ├── geoStorage.js
 │       ├── i18n.js
 │       ├── icons.js
+│       ├── liveChatClient.js
 │       ├── locales
 │       │   ├── ar.json
 │       │   ├── auto.json
@@ -91,10 +83,10 @@
 │       ├── quote.js
 │       ├── registration.js
 │       ├── rollup.config.js
-│       ├── rollup.config.light.js
 │       ├── scaffold.js
 │       ├── session.js
 │       ├── storage.js
+│       ├── survey.js
 │       ├── sw.js
 │       ├── toast.js
 │       ├── ui.js

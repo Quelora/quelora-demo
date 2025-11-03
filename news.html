@@ -759,9 +759,154 @@
                     display: none !important; 
                 }
             }
+
+            .contact-modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.6);
+                z-index: 2000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 1;
+                transition: opacity 0.3s ease;
+            }
+            .contact-modal-overlay.hidden {
+                opacity: 0;
+                pointer-events: none;
+            }
+            .contact-modal {
+                background: var(--surface-color);
+                padding: 24px 30px;
+                border-radius: var(--card-border-radius);
+                width: 100%;
+                max-width: 500px;
+                position: relative;
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            }
+            .contact-modal h3 {
+                margin: 0 0 8px 0;
+                font-size: 22px;
+            }
+            .contact-modal p {
+                margin: 0 0 20px 0;
+                font-size: 14px;
+                color: var(--on-surface-secondary);
+            }
+            .contact-close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: #f0f2f5;
+                border: none;
+                border-radius: 50%;
+                cursor: pointer;
+                width: 30px;
+                height: 30px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--on-surface-secondary);
+            }
+            .contact-close-btn:hover {
+                background: #dddfe2;
+                color: var(--on-surface-primary);
+            }
+
+            .contact-form .form-group {
+                margin-bottom: 16px;
+            }
+            .contact-form .form-group label {
+                display: block;
+                font-size: 13px;
+                font-weight: 500;
+                margin-bottom: 6px;
+                color: var(--on-surface-secondary);
+            }
+            .contact-form .form-group input,
+            .contact-form .form-group textarea {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid var(--border-color);
+                border-radius: 6px;
+                font-size: 14px;
+                font-family: 'Roboto', sans-serif;
+            }
+            .contact-form .form-group textarea {
+                resize: vertical;
+                min-height: 80px;
+            }
+            .contact-form .form-actions {
+                margin-top: 20px;
+            }
+            .contact-form .primary-btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 15px;
+                border: none;
+                cursor: pointer;
+            }
+            .contact-form .primary-btn:disabled {
+                background-color: #aaa;
+                cursor: not-allowed;
+            }
+            .contact-status {
+                margin-top: 15px;
+                font-size: 14px;
+                text-align: center;
+            }
+            .contact-status.success {
+                color: #2e7d32;
+            }
+            .contact-status.error {
+                color: #d32f2f;
+            }
         </style>
     </head>
     <body>
+        <div id="contactModalOverlay" class="contact-modal-overlay hidden">
+            <div class="contact-modal">
+                <button id="closeContactModal" class="contact-close-btn" aria-label="Cerrar Modal">
+                    <svg viewBox="0 0 24 24" width="18px" height="18px" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path>
+                    </svg>
+                </button>
+                
+                <h3>Contact</h3>
+                <p>Interested in Qulora? Leave me a message.</p>
+                
+                <form id="contactForm" class="contact-form">
+                    <div class="form-group">
+                        <label for="contactName">Full Name *</label>
+                        <input type="text" id="contactName" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactEmail">Email *</label>
+                        <input type="email" id="contactEmail" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactCompany">Company (Optional)</label>
+                        <input type="text" id="contactCompany" name="company">
+                    </div>
+                    <div class="form-group">
+                        <label for="contactSubject">Subject *</label>
+                        <input type="text" id="contactSubject" name="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactMessage">Message *</label>
+                        <textarea id="contactMessage" name="message" rows="5" required></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" id="contactSubmitButton" class="primary-btn">Send Message</button>
+                    </div>
+                </form>
+                <div id="contactStatus" class="contact-status"></div>
+            </div>
+        </div>
+
         <div id="loader-overlay">
             <div class="spinner"></div>
         </div>
@@ -829,6 +974,7 @@
                 <a href="https://www.quelora.org/news.html">News</a>
                 <a href="https://www.quelora.org/reels.html">Reels</a>
                 <a href="https://www.quelora.org/gallery.html">Gallery</a>
+                <a href="#" id="contactLink">Contact Us</a>
             </nav>
         </header>
         

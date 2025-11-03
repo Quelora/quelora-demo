@@ -1,4 +1,3 @@
-// filepath: news.js
 const heroScrollContainer = document.getElementById("heroScrollContainer");
 const newsContainer = document.getElementById("newsContainer");
 const statusContainer = document.getElementById("statusContainer");
@@ -37,7 +36,7 @@ let heroData = [];
 const SCROLL_THRESHOLD = 800;
 let isPausedByUser = false;
 
-const STATS_INTERVAL = 10000;
+const STATS_INTERVAL = 30000;
 let statsIntervalId = null;
 let statsAbortController = null;
 
@@ -184,12 +183,6 @@ function setupIframeViewer() {
             closeIframeViewer();
         });
     }
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && !iframeViewer.classList.contains('hidden')) {
-            closeIframeViewer();
-        }
-    });
 
     if (iframeViewer) {
         iframeViewer.addEventListener('click', (e) => {
@@ -653,3 +646,109 @@ window.addEventListener("scroll", debounce(() => {
 
     await loadMoreNews(true);
 })();
+
+
+const contactLink = document.getElementById('contactLink');
+const contactModalOverlay = document.getElementById('contactModalOverlay');
+const closeContactModalBtn = document.getElementById('closeContactModal');
+const contactForm = document.getElementById('contactForm');
+const contactStatus = document.getElementById('contactStatus');
+const contactSubmitButton = document.getElementById('contactSubmitButton');
+
+function openContactModal() {
+    if (contactModalOverlay) {
+        contactModalOverlay.classList.remove('hidden');
+        document.body.classList.add('iframe-open');
+    }
+}
+
+function closeContactModal() {
+    if (contactModalOverlay) {
+        contactModalOverlay.classList.add('hidden');
+        if (iframeViewer.classList.contains('hidden')) {
+            document.body.classList.remove('iframe-open');
+        }
+        contactForm.reset();
+        contactStatus.textContent = '';
+        contactStatus.className = 'contact-status';
+        contactSubmitButton.disabled = false;
+    }
+}
+
+async function handleContactSubmit(event) {
+    event.preventDefault();
+    if (!contactForm) return;
+
+    contactSubmitButton.disabled = true;
+    contactStatus.textContent = 'Enviando...';
+    contactStatus.className = 'contact-status';
+
+    const formData = new FormData(contactForm);
+    const data = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        company: formData.get('company'),
+        subject: formData.get('subject'),
+        message: formData.get('message'),
+    };
+
+    try {
+        const response = await fetch('/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            contactStatus.textContent = '¡Mensaje enviado con éxito! Gracias.';
+            contactStatus.className = 'contact-status success';
+            contactForm.reset();
+        } else {
+            throw new Error(result.error || 'Error desconocido.');
+        }
+
+    } catch (error) {
+        contactStatus.textContent = `Error: ${error.message}`;
+        contactStatus.className = 'contact-status error';
+    } finally {
+        contactSubmitButton.disabled = false;
+    }
+}
+
+if (contactLink) {
+    contactLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        openContactModal();
+    });
+}
+
+if (closeContactModalBtn) {
+    closeContactModalBtn.addEventListener('click', closeContactModal);
+}
+
+if (contactModalOverlay) {
+    contactModalOverlay.addEventListener('click', (e) => {
+        if (e.target === contactModalOverlay) {
+            closeContactModal();
+        }
+    });
+}
+
+if (contactForm) {
+    contactForm.addEventListener('submit', handleContactSubmit);
+}
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (!iframeViewer.classList.contains('hidden')) {
+            closeIframeViewer();
+        } 
+        else if (contactModalOverlay && !contactModalOverlay.classList.contains('hidden')) {
+            closeContactModal();
+        }
+    }
+});
