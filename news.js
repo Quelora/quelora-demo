@@ -13,16 +13,6 @@ const statComments = document.getElementById('statComments');
 const statLikes = document.getElementById('statLikes');
 const statProfiles = document.getElementById('statProfiles');
 
-const iframeViewer = document.getElementById('iframeViewer');
-const iframeContainer = document.getElementById('externalIframe');
-
-const iframeLinkText = document.getElementById('iframeLinkText');
-const iframeMessage = document.getElementById('iframeMessage');
-
-// Removido: const iframeNewTabButton = document.getElementById('iframeNewTabButton');
-const iframeCloseButton = document.getElementById('iframeCloseButton');
-const iframeCommentButton = document.getElementById('iframeCommentButton');
-
 const mobileCommentButton = document.getElementById('mobileCommentButton');
 
 const welcomeModalOverlay = document.getElementById('welcomeModalOverlay');
@@ -45,27 +35,7 @@ const STATS_INTERVAL = 30000;
 let statsIntervalId = null;
 let statsAbortController = null;
 
-function showBlockMessage(link) {
-    if (iframeMessage) {
-        iframeMessage.innerHTML = `
-            <div class="block-message-content">
-                <h3>🚫 Content Blocked</h3>
-                <p>This website uses strict security policies and prevents its content from being embedded.</p>
-                <p>Please click the button below to view the content directly in a new tab.</p>
-                <a href="${link}" target="_blank" class="news-btn primary-btn">Open in New Tab</a>
-            </div>
-        `;
-        iframeMessage.classList.remove('hidden');
-        iframeContainer.classList.add('hidden');
-    }
-}
 
-function hideBlockMessage() {
-    if (iframeMessage) {
-        iframeMessage.classList.add('hidden');
-        iframeContainer.classList.remove('hidden');
-    }
-}
 
 
 function showLoader(show) {
@@ -506,7 +476,6 @@ function showWelcomeModal() {
     const isDismissed = sessionStorage.getItem('queloraWelcomeDismissed');
     if (!isDismissed && welcomeModalOverlay) {
         welcomeModalOverlay.classList.remove('hidden');
-        document.body.classList.add('iframe-open');
     } else if (welcomeModalOverlay) {
         welcomeModalOverlay.classList.add('hidden');
     }
@@ -516,10 +485,6 @@ function dismissWelcomeModalHandler() {
     if (welcomeModalOverlay) {
         welcomeModalOverlay.classList.add('hidden');
         sessionStorage.setItem('queloraWelcomeDismissed', 'true');
-        // Solo quitamos la clase si no hay otro modal/iframe abierto
-        if (iframeViewer.classList.contains('hidden')) {
-            document.body.classList.remove('iframe-open');
-        }
     }
 }
 
@@ -568,17 +533,12 @@ const contactSubmitButton = document.getElementById('contactSubmitButton');
 function openContactModal() {
     if (contactModalOverlay) {
         contactModalOverlay.classList.remove('hidden');
-        document.body.classList.add('iframe-open');
     }
 }
 
 function closeContactModal() {
     if (contactModalOverlay) {
         contactModalOverlay.classList.add('hidden');
-        // Mantener la clase iframe-open si el visor está abierto
-        if (iframeViewer.classList.contains('hidden')) {
-            document.body.classList.remove('iframe-open');
-        }
         contactForm.reset();
         contactStatus.textContent = '';
         contactStatus.className = 'contact-status';
@@ -655,10 +615,7 @@ if (contactForm) {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-        if (!iframeViewer.classList.contains('hidden')) {
-            closeIframeViewer();
-        } 
-        else if (contactModalOverlay && !contactModalOverlay.classList.contains('hidden')) {
+        if (contactModalOverlay && !contactModalOverlay.classList.contains('hidden')) {
             closeContactModal();
         }
         else if (welcomeModalOverlay && !welcomeModalOverlay.classList.contains('hidden')) {
